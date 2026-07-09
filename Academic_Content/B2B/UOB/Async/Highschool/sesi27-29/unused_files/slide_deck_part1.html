@@ -1,0 +1,2921 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python SMA - Optimasi Algoritma</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --yellow: #FFE500;
+            --blue: #00C6FF;
+            --black: #1A1A1A;
+            --white: #FFFFFF;
+            --bg-light: #E8E8E8;
+            --green: #00E676;
+            --pink: #FF9DE2;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            background-image: radial-gradient(#bcbcbc 2px, transparent 2px);
+            background-size: 30px 30px;
+            font-family: 'Fredoka', sans-serif;
+            color: var(--black);
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* App Container (Landscape 16:9 Simulator) */
+        .app-container {
+            position: relative; z-index: 10;
+            width: 98vw; max-width: 1400px;
+            height: 98vh; max-height: 900px;
+            display: flex; flex-direction: column;
+        }
+
+        /* Header Layout */
+        .header {
+            display: flex; justify-content: flex-start; align-items: flex-start;
+            padding: 30px 50px 10px;
+            position: relative;
+            width: 100%;
+        }
+        
+        .header img.rg-logo { 
+            height: 40px; object-fit: contain; 
+            filter: brightness(0); /* Black logo */
+            position: relative; z-index: 20; 
+        }
+
+        /* Banner Centered at Top */
+        .banner-container { 
+            position: absolute; top: 25px; left: 0; width: 100%;
+            text-align: center; display: flex; flex-direction: column; align-items: center; 
+            z-index: 10; pointer-events: none;
+        }
+        
+        .banner-shape {
+            background-color: var(--blue);
+            padding: 12px 60px;
+            border: 4px solid var(--black);
+            border-radius: 12px;
+            box-shadow: 6px 6px 0px var(--black);
+            display: inline-block;
+        }
+        
+        .banner-text { 
+            font-size: 28px; font-weight: 700; letter-spacing: 2px; color: var(--white); 
+            text-shadow: 2px 2px 0px var(--black), -1px -1px 0px var(--black), 1px -1px 0px var(--black), -1px 1px 0px var(--black), 1px 1px 0px var(--black);
+        }
+        
+        .banner-subtitle {
+            background-color: var(--yellow); 
+            color: var(--black); 
+            padding: 8px 40px; 
+            font-size: 16px; font-weight: 700;
+            border: 3px solid var(--black);
+            border-radius: 20px; 
+            margin-top: -15px; 
+            text-transform: uppercase; letter-spacing: 1px;
+            box-shadow: 4px 4px 0px var(--black);
+            display: inline-block;
+        }
+
+        /* Slides Area */
+        .slides-area {
+            flex: 1; position: relative; margin: 30px 50px 0; perspective: 1200px;
+            min-height: 0; 
+        }
+
+        .slide {
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            display: none;
+        }
+        
+        .slide.active { 
+            display: block; 
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.95) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .content-card {
+            background-color: var(--white);
+            border: 4px solid var(--black); 
+            border-radius: 24px;
+            padding: 40px 60px; 
+            box-shadow: 12px 12px 0px var(--black);
+            width: 100%; height: 100%; 
+            overflow-y: auto;
+            display: flex;
+            position: relative;
+        }
+
+        .content-card::-webkit-scrollbar { width: 14px; }
+        .content-card::-webkit-scrollbar-track { background: var(--bg-light); border-left: 3px solid var(--black); border-radius: 0 20px 20px 0; }
+        .content-card::-webkit-scrollbar-thumb { background: var(--blue); border: 3px solid var(--black); border-radius: 10px; }
+
+        /* Decorative corner element */
+        .content-card::after {
+            content: '';
+            position: absolute;
+            top: -15px; right: 30px;
+            width: 40px; height: 40px;
+            background-color: var(--yellow);
+            border: 3px solid var(--black);
+            border-radius: 50%;
+            box-shadow: 4px 4px 0px var(--black);
+            z-index: 5;
+        }
+
+        /* Inner container to restrict line width and center it */
+        .inner-content {
+            max-width: 900px;
+            margin: auto; /* Vertically & horizontally center */
+            width: 100%;
+            position: relative;
+            z-index: 10;
+        }
+
+        .slide-title {
+            font-size: 32px; font-weight: 700; color: var(--black); 
+            margin-bottom: 30px; line-height: 1.3;
+            background-color: var(--yellow);
+            display: inline-block;
+            padding: 10px 25px;
+            border: 3px solid var(--black);
+            border-radius: 12px;
+            box-shadow: 5px 5px 0px var(--black);
+        }
+
+        .slide-text { font-size: 22px; line-height: 1.6; color: var(--black); font-weight: 600; }
+        .slide-text p { margin-bottom: 20px; }
+        .slide-text ul { padding-left: 40px; margin-bottom: 20px; }
+        .slide-text li { margin-bottom: 15px; position: relative; list-style-type: none; }
+        .slide-text li::before {
+            content: '▶';
+            color: var(--blue);
+            position: absolute;
+            left: -35px;
+            font-size: 20px;
+            -webkit-text-stroke: 1px var(--black);
+        }
+        
+        .slide-text strong { 
+            color: var(--black); 
+            background-color: var(--blue); 
+            padding: 2px 12px; 
+            border: 3px solid var(--black);
+            border-radius: 8px; 
+            font-weight: 700; 
+            box-shadow: 3px 3px 0px var(--black);
+            display: inline-block;
+            transform: rotate(-1deg);
+        }
+
+        .quote-box {
+            background-color: var(--yellow); 
+            border: 4px solid var(--black);
+            padding: 20px 30px; 
+            border-radius: 16px; 
+            margin: 30px 0; 
+            font-weight: 700; color: var(--black); font-size: 24px;
+            box-shadow: 8px 8px 0px var(--blue);
+            position: relative;
+        }
+
+        .code-block {
+            background-color: var(--black); 
+            border: 4px solid var(--black); border-radius: 16px;
+            padding: 25px 30px; font-family: 'Consolas', 'Courier New', monospace; font-size: 22px;
+            color: var(--white); overflow-x: auto; margin: 30px 0; 
+            box-shadow: 8px 8px 0px var(--yellow); 
+            line-height: 1.5;
+        }
+
+        .keyword { color: var(--pink); font-weight: bold; }
+        .string { color: var(--green); font-weight: bold; }
+        .function { color: var(--blue); font-weight: bold; }
+        .operator { color: var(--yellow); font-weight: bold; }
+
+        /* Navigation Controls */
+        .nav-container {
+            padding: 25px 50px 35px; display: flex; justify-content: space-between; align-items: center;
+            min-height: 100px;
+        }
+
+        .nav-btn {
+            background-color: var(--yellow); 
+            border: 4px solid var(--black);
+            color: var(--black); padding: 12px 35px; border-radius: 30px; cursor: pointer;
+            font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 18px;
+            transition: all 0.1s; display: flex; align-items: center; gap: 8px;
+            box-shadow: 6px 6px 0px var(--black);
+        }
+
+        .nav-btn:hover:not(:disabled) { 
+            transform: translate(-2px, -2px); box-shadow: 8px 8px 0px var(--black); 
+            background-color: #FFF033;
+        }
+        
+        .nav-btn:active:not(:disabled) {
+            transform: translate(4px, 4px); box-shadow: 2px 2px 0px var(--black);
+        }
+        
+        .nav-btn:disabled { 
+            background-color: #e0e0e0;
+            color: #888;
+            border-color: #888;
+            box-shadow: 2px 2px 0px #888; 
+            transform: translate(4px, 4px); 
+            cursor: not-allowed; 
+        }
+        
+        .counter-group {
+            display: flex; flex-direction: column; align-items: center; gap: 10px;
+            background: var(--white);
+            padding: 12px 30px;
+            border: 4px solid var(--black);
+            border-radius: 24px;
+            box-shadow: 6px 6px 0px var(--black);
+            transform: rotate(1deg);
+        }
+
+        .slide-counter { font-size: 18px; font-weight: 700; color: var(--black); }
+
+        .progress-bar-bg {
+            width: 200px; height: 18px; background-color: var(--bg-light); 
+            border: 3px solid var(--black); border-radius: 10px; overflow: hidden;
+            box-shadow: inset 2px 2px 0px rgba(0,0,0,0.1);
+        }
+        
+        .progress-bar {
+            height: 100%; background-color: var(--blue); 
+            border-right: 3px solid var(--black);
+            transition: width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <!-- Header -->
+        <div class="header">
+            <!-- <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Ruangguru_logo.svg/3840px-Ruangguru_logo.svg.png" alt="Ruangguru" class="rg-logo"> -->
+            
+            <div class="banner-container">
+                <div class="banner-shape">
+                    <div id="banner-title" class="banner-text">PYTHON SMA</div>
+                </div>
+                <div id="banner-subtitle" class="banner-subtitle">Optimasi Algoritma Dasar</div>
+            </div>
+        </div>
+
+        <!-- Slides Wrapper -->
+        <div class="slides-area"><div class="slide active" data-title="BASIC PEMROGRAMAN" data-subtitle="OPTIMASI ALGORITMA">
+                <div class="content-card" style="align-items: center; justify-content: center; background: radial-gradient(circle, var(--blue) 0%, #0056b3 100%); color: var(--white); border-color: var(--black);">
+                    <div class="inner-content" style="text-align: center;">
+                        <span style="background-color: var(--yellow); color: var(--black); padding: 8px 24px; border: 3px solid var(--black); border-radius: 20px; font-size: 18px; font-weight: 700; box-shadow: 4px 4px 0px var(--black); display: inline-block; margin-bottom: 25px; transform: rotate(-2deg);">
+                            PYTHON FOR HIGH SCHOOL 🐍
+                        </span>
+                        <h1 style="font-size: 55px; font-weight: 700; margin-bottom: 15px; text-shadow: 4px 4px 0px var(--black); line-height: 1.2;">
+                            Optimasi Algoritma & <br>
+                            Financial Literacy 📊
+                        </h1>
+                        <p style="font-size: 24px; font-weight: 600; text-shadow: 2px 2px 0px var(--black); color: var(--yellow); margin-bottom: 40px;">
+                            Membuat Program yang Lebih Pintar, Efisien & Bermanfaat
+                        </p>
+                        <div style="font-size: 16px; font-weight: 600; opacity: 0.9; text-transform: uppercase; letter-spacing: 2px;">
+                            Sesi 27 - 29 • Pembelajaran Interaktif
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="BASIC PEMROGRAMAN" data-subtitle="OPTIMASI ALGORITMA">
+                <div class="content-card" style="background-color: var(--white); border-color: var(--black);">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Agenda Belajar Hari Ini 🎯</h2>
+                        <div class="slide-text">
+                            <p style="font-size: 24px; margin-bottom: 25px;">Hari ini kita akan belajar cara membuat program yang bukan hanya bisa berjalan, tapi juga berjalan dengan cara yang lebih rapi dan efisien.</p>
+                            <div style="background-color: rgba(0, 198, 255, 0.15); border: 4px solid var(--black); padding: 30px; border-radius: 20px; box-shadow: 8px 8px 0px var(--black); transform: rotate(0.5deg);">
+                                <h3 style="margin-bottom: 15px; color: var(--blue); font-size: 26px; -webkit-text-stroke: 1px var(--black);">Topik Utama Pembahasan:</h3>
+                                <ul style="padding-left: 20px; font-size: 20px;">
+                                    <li>Optimasi Algoritma Dasar & Step Count</li>
+                                    <li>Penerapan Function dengan Beberapa Parameter</li>
+                                    <li>Mengenal dan Memanfaatkan <code>return</code></li>
+                                    <li>Implementasi Modular Design</li>
+                                    <li>Studi Kasus Financial Literacy (Bunga Tunggal & Majemuk)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="BASIC PEMROGRAMAN" data-subtitle="OPTIMASI ALGORITMA">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Apa Itu Algoritma? 🧩</h2>
+                        <div class="slide-text">
+                            <p><strong>Algoritma</strong> adalah langkah-langkah untuk menyelesaikan masalah.</p>
+                            <p>Contoh sehari-hari:</p>
+                            <div class="quote-box">
+                                Mau membuat mie instan:<br>
+                                <ol style="margin-left: 20px; font-weight: 600; font-size: 20px; margin-top: 10px;">
+                                    <li>Rebus air.</li>
+                                    <li>Masukkan mie.</li>
+                                    <li>Tunggu matang.</li>
+                                    <li>Campur bumbu.</li>
+                                    <li>Sajikan.</li>
+                                </ol>
+                            </div>
+                            <p>Dalam coding, algoritma juga seperti resep langkah demi langkah. 🍲</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="BASIC PEMROGRAMAN" data-subtitle="OPTIMASI ALGORITMA">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Algoritma Bisa Berbeda-Beda 🛤️</h2>
+                        <div class="slide-text">
+                            <p>Masalah yang sama bisa diselesaikan dengan cara yang berbeda.</p>
+                            <p>Contoh: Kita ingin mencari nama "Budi" di daftar siswa.</p>
+                            <div style="display: flex; gap: 20px; margin: 20px 0;">
+                                <div style="flex: 1; background-color: #FFCDD2; padding: 20px; border: 3px solid var(--black); border-radius: 12px; box-shadow: 4px 4px 0px var(--black);">
+                                    <strong>Cara 1:</strong><br><br>
+                                    Cek nama satu per satu dari awal sampai ketemu.
+                                </div>
+                                <div style="flex: 1; background-color: #C8E6C9; padding: 20px; border: 3px solid var(--black); border-radius: 12px; box-shadow: 4px 4px 0px var(--black);">
+                                    <strong>Cara 2:</strong><br><br>
+                                    Kalau datanya sudah rapi atau terurut, kita bisa mencari dengan cara yang lebih cepat.
+                                </div>
+                            </div>
+                            <p style="background-color: var(--yellow); padding: 10px; border-radius: 8px; border: 2px solid var(--black); display: inline-block;">Jadi, tidak semua algoritma punya jumlah langkah yang sama!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="BASIC PEMROGRAMAN" data-subtitle="OPTIMASI ALGORITMA">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Apa Itu Optimasi Algoritma? ⚡</h2>
+                        <div class="slide-text">
+                            <p><strong>Optimasi algoritma</strong> adalah usaha membuat langkah penyelesaian menjadi lebih efisien.</p>
+                            <p>Efisien artinya:</p>
+                            <ul>
+                                <li>Langkahnya lebih sedikit</li>
+                                <li>Waktunya lebih cepat</li>
+                                <li>Kodenya lebih rapi</li>
+                                <li>Tidak melakukan hal yang tidak perlu</li>
+                            </ul>
+                            <div class="quote-box" style="transform: rotate(1deg);">
+                                "Program tetap menyelesaikan tugas yang sama, tapi dengan cara yang lebih pintar." 🧠
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="BASIC PEMROGRAMAN" data-subtitle="OPTIMASI ALGORITMA">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Analogi Optimasi: Mencari Buku 📚</h2>
+                        <div class="slide-text">
+                            <p>Bayangkan kamu mencari buku Matematika di rak.</p>
+                            <div style="display: flex; flex-direction: column; gap: 15px; margin: 20px 0;">
+                                <div style="background-color: var(--bg-light); padding: 15px; border: 3px dashed var(--black); border-radius: 12px;">
+                                    <strong>🐌 Cara lambat:</strong><br>
+                                    Kamu cek semua buku satu per satu dari kiri ke kanan.
+                                </div>
+                                <div style="background-color: var(--white); padding: 15px; border: 3px solid var(--black); border-radius: 12px; box-shadow: 5px 5px 0px var(--blue);">
+                                    <strong>🚀 Cara lebih cepat:</strong><br>
+                                    Kamu langsung cari di bagian buku pelajaran, lalu cari label "Matematika".
+                                </div>
+                            </div>
+                            <p>Tujuannya sama: menemukan buku.<br>
+                            Tapi cara kedua lebih efisien karena langkahnya lebih sedikit.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="BASIC PEMROGRAMAN" data-subtitle="OPTIMASI LOOP & STEP COUNT">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Apa Itu Step Count? 👣</h2>
+                        <div class="slide-text">
+                            <p><strong>Step count</strong> adalah jumlah langkah yang dilakukan oleh algoritma.</p>
+                            <p>Contoh:</p>
+                            <ul>
+                                <li>Jika program mengecek 5 data satu per satu, maka kurang lebih ada 5 langkah pengecekan.</li>
+                                <li>Kalau program mengecek 100 data satu per satu, maka ada sekitar 100 langkah pengecekan.</li>
+                            </ul>
+                            <div class="quote-box" style="background-color: #FFCCBC; border-color: #D84315;">
+                                Semakin banyak langkah, biasanya program semakin lama berjalan. ⏳
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="OPTIMASI LOOP & STEP COUNT">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Contoh Step Count Sederhana 🔢</h2>
+                        <div class="slide-text">
+                            <p>Kita punya daftar angka:</p>
+                            <div class="code-block" style="font-size: 18px; padding: 15px;">
+<span class="keyword">numbers</span> <span class="operator">=</span> [<span class="string">3</span>, <span class="string">7</span>, <span class="string">10</span>, <span class="string">15</span>, <span class="string">20</span>]
+                            </div>
+                            <p>Kita ingin mencari angka <code>15</code>. Program akan mengecek:</p>
+                            <ol style="margin-left: 20px; font-family: monospace; font-size: 20px;">
+                                <li>Apakah 3 adalah 15? ❌ Bukan.</li>
+                                <li>Apakah 7 adalah 15? ❌ Bukan.</li>
+                                <li>Apakah 10 adalah 15? ❌ Bukan.</li>
+                                <li style="color: var(--green); font-weight: bold;">Apakah 15 adalah 15? ✅ Iya.</li>
+                            </ol>
+                            <p style="margin-top: 20px; font-size: 26px;"><strong>Step count: 4 pengecekan.</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="OPTIMASI LOOP & STEP COUNT">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Contoh Python: Mencari Angka 💻</h2>
+                        <div class="slide-text">
+                            <div class="code-block" style="font-size: 16px;">
+<span class="keyword">numbers</span> <span class="operator">=</span> [<span class="string">3</span>, <span class="string">7</span>, <span class="string">10</span>, <span class="string">15</span>, <span class="string">20</span>]<br>
+<span class="keyword">target</span> <span class="operator">=</span> <span class="string">15</span><br><br>
+<span class="keyword">steps</span> <span class="operator">=</span> <span class="string">0</span><br><br>
+<span class="keyword">for</span> number <span class="keyword">in</span> numbers:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;steps <span class="operator">+=</span> <span class="string">1</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span> number <span class="operator">==</span> target:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Angka ditemukan!"</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">break</span><br><br>
+<span class="function">print</span>(<span class="string">"Jumlah langkah:"</span>, steps)
+                            </div>
+                            <p>Output:</p>
+                            <div class="code-block" style="background-color: #333; color: var(--green); font-size: 16px; margin-top: 10px;">
+Angka ditemukan!<br>
+Jumlah langkah: 4
+                            </div>
+                            <p>Program berhenti saat angka ditemukan.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="BASIC PEMROGRAMAN" data-subtitle="OPTIMASI LOOP & STEP COUNT">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Kenapa Ada <code>break</code>? 🛑</h2>
+                        <div class="slide-text">
+                            <p><code>break</code> digunakan untuk <strong>menghentikan loop</strong>.</p>
+                            <p>Kalau target sudah ditemukan, program tidak perlu lanjut mengecek data berikutnya.</p>
+                            <div class="quote-box" style="transform: rotate(-1deg);">
+                                Tanpa <code>break</code>, program tetap mengecek sampai akhir. Padahal jawabannya sudah ditemukan! 🤦‍♂️
+                            </div>
+                            <p>Ini adalah contoh <strong>optimasi sederhana</strong>.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="OPTIMASI ALGORITMA">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Algoritma Lambat: Tidak Berhenti 🐢</h2>
+                        <div class="slide-text">
+                            <div class="code-block" style="font-size: 16px;">
+<span class="keyword">numbers</span> <span class="operator">=</span> [<span class="string">3</span>, <span class="string">7</span>, <span class="string">10</span>, <span class="string">15</span>, <span class="string">20</span>]<br>
+<span class="keyword">target</span> <span class="operator">=</span> <span class="string">15</span><br><br>
+<span class="keyword">steps</span> <span class="operator">=</span> <span class="string">0</span><br><br>
+<span class="keyword">for</span> number <span class="keyword">in</span> numbers:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;steps <span class="operator">+=</span> <span class="string">1</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span> number <span class="operator">==</span> target:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Angka ditemukan!"</span>)<br><br>
+<span class="function">print</span>(<span class="string">"Jumlah langkah:"</span>, steps)
+                            </div>
+                            <p>Output:</p>
+                            <div class="code-block" style="background-color: #333; color: var(--green); font-size: 16px; margin-top: 10px;">
+Angka ditemukan!<br>
+Jumlah langkah: 5
+                            </div>
+                            <p style="color: #D84315; font-weight: bold; background-color: #FFCCBC; padding: 10px; border-radius: 8px; border: 2px solid #D84315; display: inline-block;">Program tetap mengecek sampai akhir, walaupun target sudah ditemukan di langkah ke-4!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="OPTIMASI LOOP & STEP COUNT">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Algoritma Lebih Efisien 🏎️</h2>
+                        <div class="slide-text">
+                            <div class="code-block" style="font-size: 16px;">
+<span class="keyword">numbers</span> <span class="operator">=</span> [<span class="string">3</span>, <span class="string">7</span>, <span class="string">10</span>, <span class="string">15</span>, <span class="string">20</span>]<br>
+<span class="keyword">target</span> <span class="operator">=</span> <span class="string">15</span><br><br>
+<span class="keyword">steps</span> <span class="operator">=</span> <span class="string">0</span><br><br>
+<span class="keyword">for</span> number <span class="keyword">in</span> numbers:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;steps <span class="operator">+=</span> <span class="string">1</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span> number <span class="operator">==</span> target:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Angka ditemukan!"</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">break</span><br><br>
+<span class="function">print</span>(<span class="string">"Jumlah langkah:"</span>, steps)
+                            </div>
+                            <p>Output:</p>
+                            <div class="code-block" style="background-color: #333; color: var(--green); font-size: 16px; margin-top: 10px;">
+Angka ditemukan!<br>
+Jumlah langkah: 4
+                            </div>
+                            <p style="background-color: #C8E6C9; padding: 10px; border-radius: 8px; border: 2px solid #388E3C; display: inline-block;">Dengan <code>break</code>, program berhenti lebih cepat. ✅</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="BASIC PEMROGRAMAN" data-subtitle="OPTIMASI ALGORITMA">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Membandingkan Dua Algoritma ⚖️</h2>
+                        <div class="slide-text">
+                            <div style="display: flex; gap: 20px; margin: 20px 0;">
+                                <div style="flex: 1; background-color: #FFCDD2; padding: 20px; border: 3px solid var(--black); border-radius: 12px; box-shadow: 4px 4px 0px var(--black);">
+                                    <strong>Algoritma A:</strong><br><br>
+                                    Mengecek semua data sampai akhir.
+                                </div>
+                                <div style="flex: 1; background-color: #C8E6C9; padding: 20px; border: 3px solid var(--black); border-radius: 12px; box-shadow: 4px 4px 0px var(--black);">
+                                    <strong>Algoritma B:</strong><br><br>
+                                    Berhenti saat data sudah ditemukan.
+                                </div>
+                            </div>
+                            <p>Jika target ada di tengah daftar, algoritma B lebih efisien. Karena algoritma B tidak melakukan pengecekan yang tidak perlu.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide interactive" data-title="PYTHON" data-subtitle="OPTIMASI LOOP & STEP COUNT">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Mini Activity: Hitung Step Count 🎯</h2>
+                        <div class="slide-text">
+                            <p>Perhatikan daftar ini:</p>
+                            <div class="code-block" style="font-size: 18px;">
+<span class="keyword">numbers</span> <span class="operator">=</span> [<span class="string">5</span>, <span class="string">8</span>, <span class="string">12</span>, <span class="string">20</span>, <span class="string">25</span>, <span class="string">30</span>]<br>
+<span class="keyword">target</span> <span class="operator">=</span> <span class="string">20</span>
+                            </div>
+                            <p>Jika program mencari dari kiri ke kanan dan berhenti saat ketemu, berapa step count-nya?</p>
+                            <div style="margin-top: 20px;">
+                                <input type="text" id="sa-step-count" class="custom-input" placeholder="...">
+                                <button onclick="checkStepCountGuess(document.getElementById('sa-step-count').value, this)" style="background-color: var(--yellow); border: 4px solid var(--black); border-radius: 16px; padding: 10px 20px; font-size: 18px; font-family: 'Fredoka', sans-serif; font-weight: bold; cursor: pointer; box-shadow: 4px 4px 0px var(--black); margin-left: 10px;">Cek Jawaban!</button>
+                            </div>
+                            <div class="feedback" style="display: none; margin-top: 15px; padding: 10px; border-radius: 5px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide interactive" data-title="PYTHON" data-subtitle="OPTIMASI LOOP & STEP COUNT">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Latihan: Tebak Output 🕵️‍♂️</h2>
+                        <div class="slide-text">
+                            <div class="code-block" style="font-size: 16px;">
+<span class="keyword">numbers</span> <span class="operator">=</span> [<span class="string">2</span>, <span class="string">4</span>, <span class="string">6</span>, <span class="string">8</span>, <span class="string">10</span>]<br>
+<span class="keyword">target</span> <span class="operator">=</span> <span class="string">6</span><br><br>
+<span class="keyword">steps</span> <span class="operator">=</span> <span class="string">0</span><br><br>
+<span class="keyword">for</span> number <span class="keyword">in</span> numbers:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;steps <span class="operator">+=</span> <span class="string">1</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span> number <span class="operator">==</span> target:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">break</span><br><br>
+<span class="function">print</span>(steps)
+                            </div>
+                            <p>Apa output-nya?</p>
+                            <div style="margin-top: 20px;">
+                                <input type="text" id="sa-tebak-output" class="custom-input" placeholder="...">
+                                <button onclick="checkTebakOutputGuess(document.getElementById('sa-tebak-output').value, this)" style="background-color: var(--yellow); border: 4px solid var(--black); border-radius: 16px; padding: 10px 20px; font-size: 18px; font-family: 'Fredoka', sans-serif; font-weight: bold; cursor: pointer; box-shadow: 4px 4px 0px var(--black); margin-left: 10px;">Cek Jawaban!</button>
+                            </div>
+                            <div class="feedback" style="display: none; margin-top: 15px; padding: 10px; border-radius: 5px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="OPTIMASI ALGORITMA">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Contoh Optimasi: Menghindari Kode Berulang ♻️</h2>
+                        <div class="slide-text">
+                            <p>Kode lambat atau kurang rapi:</p>
+                            <div class="code-block" style="font-size: 16px;">
+<span class="function">print</span>(<span class="string">"Halo, Andi"</span>)<br>
+<span class="function">print</span>(<span class="string">"Halo, Budi"</span>)<br>
+<span class="function">print</span>(<span class="string">"Halo, Citra"</span>)<br>
+<span class="function">print</span>(<span class="string">"Halo, Dina"</span>)
+                            </div>
+                            <p>Kalau jumlah namanya banyak, kita harus menulis banyak baris.</p>
+                            <p>Versi lebih efisien:</p>
+                            <div class="code-block" style="font-size: 16px;">
+<span class="keyword">names</span> <span class="operator">=</span> [<span class="string">"Andi"</span>, <span class="string">"Budi"</span>, <span class="string">"Citra"</span>, <span class="string">"Dina"</span>]<br><br>
+<span class="keyword">for</span> name <span class="keyword">in</span> names:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Halo,"</span>, name)
+                            </div>
+                            <p style="background-color: var(--yellow); padding: 10px; border-radius: 8px; border: 2px solid var(--black); display: inline-block;">Kode lebih pendek dan mudah diubah.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="BASIC PEMROGRAMAN" data-subtitle="OPTIMASI ALGORITMA">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Kenapa Loop Bisa Membantu Optimasi? 🔁</h2>
+                        <div class="slide-text">
+                            <p>Loop membantu kita melakukan aksi yang sama berkali-kali tanpa menulis kode berulang.</p>
+                            <p>Jika datanya bertambah, kita cukup mengubah isi list. Bukan menambah banyak baris <code>print()</code>.</p>
+                            <div style="display: inline-block; text-align: left; background-color: var(--white); color: var(--black); padding: 20px 40px; border: 4px solid var(--black); border-radius: 16px; box-shadow: 8px 8px 0px var(--blue); margin-top: 20px; transform: rotate(1deg);">
+                                <h3 style="margin-bottom: 15px;">Program menjadi:</h3>
+                                <ul style="padding-left: 20px;">
+                                    <li>Lebih rapi</li>
+                                    <li>Lebih mudah dirawat</li>
+                                    <li>Lebih mudah dikembangkan</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="OPTIMASI ALGORITMA">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Algoritma Lambat: Menjumlah Manual ➕</h2>
+                        <div class="slide-text">
+                            <div class="code-block" style="font-size: 18px;">
+<span class="keyword">total</span> <span class="operator">=</span> <span class="string">10</span> <span class="operator">+</span> <span class="string">20</span> <span class="operator">+</span> <span class="string">30</span> <span class="operator">+</span> <span class="string">40</span> <span class="operator">+</span> <span class="string">50</span><br><br>
+<span class="function">print</span>(total)
+                            </div>
+                            <p>Ini masih mudah kalau angkanya sedikit.</p>
+                            <div class="quote-box" style="transform: rotate(-1deg); background-color: #FFCDD2; border-color: #D84315;">
+                                Tapi kalau angkanya 100 data, cara ini melelahkan! 😵
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="OPTIMASI ALGORITMA">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Algoritma Lebih Efisien: Menggunakan Loop 🔄</h2>
+                        <div class="slide-text">
+                            <div class="code-block" style="font-size: 16px;">
+<span class="keyword">numbers</span> <span class="operator">=</span> [<span class="string">10</span>, <span class="string">20</span>, <span class="string">30</span>, <span class="string">40</span>, <span class="string">50</span>]<br><br>
+<span class="keyword">total</span> <span class="operator">=</span> <span class="string">0</span><br><br>
+<span class="keyword">for</span> number <span class="keyword">in</span> numbers:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;total <span class="operator">+=</span> number<br><br>
+<span class="function">print</span>(total)
+                            </div>
+                            <p>Output:</p>
+                            <div class="code-block" style="background-color: #333; color: var(--green); font-size: 16px; margin-top: 10px;">
+150
+                            </div>
+                            <p>Program bisa dipakai untuk jumlah data yang lebih banyak secara otomatis.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="OPTIMASI ALGORITMA">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Lebih Efisien Lagi: Menggunakan <code>sum()</code> ✨</h2>
+                        <div class="slide-text">
+                            <p>Python sudah punya function bawaan bernama <code>sum()</code>.</p>
+                            <div class="code-block" style="font-size: 18px;">
+<span class="keyword">numbers</span> <span class="operator">=</span> [<span class="string">10</span>, <span class="string">20</span>, <span class="string">30</span>, <span class="string">40</span>, <span class="string">50</span>]<br><br>
+<span class="keyword">total</span> <span class="operator">=</span> <span class="function">sum</span>(numbers)<br><br>
+<span class="function">print</span>(total)
+                            </div>
+                            <p>Output:</p>
+                            <div class="code-block" style="background-color: #333; color: var(--green); font-size: 18px; margin-top: 10px;">
+150
+                            </div>
+                            <p style="background-color: var(--yellow); padding: 10px; border-radius: 8px; border: 2px solid var(--black); display: inline-block;">Ini lebih singkat dan mudah dibaca!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="BASIC PEMROGRAMAN" data-subtitle="OPTIMASI ALGORITMA">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Membandingkan 3 Cara 📊</h2>
+                        <div class="slide-text">
+                            <table style="width: 100%; border-collapse: collapse; background-color: var(--white); border: 4px solid var(--black); box-shadow: 6px 6px 0px var(--black);">
+                                <thead>
+                                    <tr style="background-color: var(--blue); color: var(--white);">
+                                        <th style="padding: 15px; border: 2px solid var(--black);">Cara</th>
+                                        <th style="padding: 15px; border: 2px solid var(--black);">Contoh</th>
+                                        <th style="padding: 15px; border: 2px solid var(--black);">Kapan Cocok</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="padding: 15px; border: 2px solid var(--black);"><strong>Manual</strong></td>
+                                        <td style="padding: 15px; border: 2px solid var(--black);"><code>10 + 20 + 30</code></td>
+                                        <td style="padding: 15px; border: 2px solid var(--black);">Data sangat sedikit</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 15px; border: 2px solid var(--black);"><strong>Loop</strong></td>
+                                        <td style="padding: 15px; border: 2px solid var(--black);"><code>for n in numbers</code></td>
+                                        <td style="padding: 15px; border: 2px solid var(--black);">Ingin paham proses / kustomisasi</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 15px; border: 2px solid var(--black);"><strong>sum()</strong></td>
+                                        <td style="padding: 15px; border: 2px solid var(--black);"><code>sum(numbers)</code></td>
+                                        <td style="padding: 15px; border: 2px solid var(--black);">Ingin kode ringkas dan cepat</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="quote-box" style="margin-top: 20px;">
+                                Semua bisa benar. Tapi konteksnya berbeda! 💡
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="BASIC PEMROGRAMAN" data-subtitle="OPTIMASI ALGORITMA">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Optimasi Tidak Selalu Berarti Kode Terpendek 📐</h2>
+                        <div class="slide-text">
+                            <p>Kode pendek belum tentu paling mudah dipahami.</p>
+                            <p>Optimasi yang baik biasanya mempertimbangkan:</p>
+                            <ul>
+                                <li>Jumlah langkah</li>
+                                <li>Kecepatan</li>
+                                <li>Kerapian kode</li>
+                                <li>Kemudahan membaca kode</li>
+                                <li>Kemudahan memperbaiki bug</li>
+                            </ul>
+                            <div class="quote-box" style="transform: rotate(1deg);">
+                                Jadi, pilih algoritma yang cocok dengan konteks! 🎯
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide interactive" data-title="BASIC PEMROGRAMAN" data-subtitle="LATIHAN & MINI PROJECT">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Latihan: Pilih Algoritma Lebih Efisien 🤔</h2>
+                        <div class="slide-text">
+                            <p><strong>Kasus:</strong> Kamu ingin menghitung total nilai dari 30 siswa.</p>
+                            <div style="display: flex; gap: 20px; margin: 20px 0;">
+                                <div style="flex: 1; background-color: #FFF9C4; padding: 20px; border: 3px solid var(--black); border-radius: 12px; box-shadow: 4px 4px 0px var(--black);">
+                                    <strong>Cara A:</strong><br><br>
+                                    Menulis semua nilai satu per satu dalam operasi tambah.
+                                </div>
+                                <div style="flex: 1; background-color: #E1F5FE; padding: 20px; border: 3px solid var(--black); border-radius: 12px; box-shadow: 4px 4px 0px var(--black);">
+                                    <strong>Cara B:</strong><br><br>
+                                    Menyimpan nilai dalam list, lalu memakai loop atau <code>sum()</code>.
+                                </div>
+                            </div>
+                            <p>Mana yang lebih efisien?</p>
+                            <div style="margin-top: 20px;">
+                                <input type="text" id="sa-pilih-algo" class="custom-input" placeholder="A atau B?">
+                                <button onclick="checkPilihAlgoGuess(document.getElementById('sa-pilih-algo').value, this)" style="background-color: var(--yellow); border: 4px solid var(--black); border-radius: 16px; padding: 10px 20px; font-size: 18px; font-family: 'Fredoka', sans-serif; font-weight: bold; cursor: pointer; box-shadow: 4px 4px 0px var(--black); margin-left: 10px;">Cek Jawaban!</button>
+                            </div>
+                            <div class="feedback" style="display: none; margin-top: 15px; padding: 10px; border-radius: 5px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide interactive" data-title="PYTHON" data-subtitle="LATIHAN & MINI PROJECT">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Latihan: Perbaiki Kode Lambat 🛠️</h2>
+                        <div class="slide-text">
+                            <p>Kode awal:</p>
+                            <div class="code-block" style="font-size: 16px;">
+<span class="function">print</span>(<span class="string">"Item 1"</span>)<br>
+<span class="function">print</span>(<span class="string">"Item 2"</span>)<br>
+<span class="function">print</span>(<span class="string">"Item 3"</span>)<br>
+<span class="function">print</span>(<span class="string">"Item 4"</span>)<br>
+<span class="function">print</span>(<span class="string">"Item 5"</span>)
+                            </div>
+                            <p>Bagaimana cara membuat loop <code>for</code> yang lebih efisien menggunakan <code>range()</code>?</p>
+                            <button onclick="toggleAnswer(this)" style="background-color: var(--yellow); border: 4px solid var(--black); border-radius: 16px; padding: 10px 20px; font-size: 18px; font-family: 'Fredoka', sans-serif; font-weight: bold; cursor: pointer; box-shadow: 4px 4px 0px var(--black); margin-top: 10px;">Lihat Jawaban</button>
+                            <div class="hidden-answer" style="display: none; margin-top: 20px;">
+                                <div class="code-block" style="background-color: #333; font-size: 16px;">
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(<span class="string">1</span>, <span class="string">6</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Item"</span>, i)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="OPTIMASI LOOP & STEP COUNT">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Mini Project Optimasi 🏆</h2>
+                        <div class="slide-text">
+                            <p>Buat program yang mencari nama dalam daftar siswa.</p>
+                            <p><strong>Syarat:</strong></p>
+                            <ol style="margin-left: 20px; margin-bottom: 15px;">
+                                <li>Menyimpan daftar nama.</li>
+                                <li>Mencari satu nama target.</li>
+                                <li>Menghitung jumlah langkah pencarian.</li>
+                                <li>Berhenti jika nama sudah ditemukan.</li>
+                                <li>Menampilkan apakah nama ditemukan atau tidak.</li>
+                            </ol>
+                            <div class="code-block" style="font-size: 14px;">
+<span class="keyword">students</span> <span class="operator">=</span> [<span class="string">"Alya"</span>, <span class="string">"Bima"</span>, <span class="string">"Caca"</span>, <span class="string">"Dion"</span>, <span class="string">"Eka"</span>]<br>
+<span class="keyword">target</span> <span class="operator">=</span> <span class="string">"Dion"</span><br><br>
+<span class="keyword">steps</span> <span class="operator">=</span> <span class="string">0</span><br>
+<span class="keyword">found</span> <span class="operator">=</span> <span class="keyword">False</span><br><br>
+<span class="keyword">for</span> student <span class="keyword">in</span> students:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;steps <span class="operator">+=</span> <span class="string">1</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span> student <span class="operator">==</span> target:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;found <span class="operator">=</span> <span class="keyword">True</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">break</span><br><br>
+<span class="keyword">if</span> found:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Nama ditemukan"</span>)<br>
+<span class="keyword">else</span>:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Nama tidak ditemukan"</span>)<br><br>
+<span class="function">print</span>(<span class="string">"Jumlah langkah:"</span>, steps)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<!-- Slide 25: Section Cover -->
+            <div class="slide" data-title="BASIC PEMROGRAMAN" data-subtitle="FUNCTION">
+                <div class="content-card" style="align-items: center; justify-content: center; background: radial-gradient(circle, var(--blue) 0%, #0056b3 100%); color: var(--white); border-color: var(--black);">
+                    <div class="inner-content" style="text-align: center;">
+                        <span style="background-color: var(--yellow); color: var(--black); padding: 8px 24px; border: 3px solid var(--black); border-radius: 20px; font-size: 18px; font-weight: 700; box-shadow: 4px 4px 0px var(--black); display: inline-block; margin-bottom: 25px; transform: rotate(-2deg);">
+                            BAGIAN 2
+                        </span>
+                        <h1 style="font-size: 55px; font-weight: 700; margin-bottom: 15px; text-shadow: 4px 4px 0px var(--black); line-height: 1.2;">
+                            Function secara General 📦
+                        </h1>
+                        <p style="font-size: 24px; font-weight: 600; text-shadow: 2px 2px 0px var(--black); color: var(--yellow);">
+                            Memahami Konsep Kumpulan Perintah Bernama
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+<!-- Slide 25b: Content -->
+            <div class="slide" data-title="BASIC PEMROGRAMAN" data-subtitle="FUNCTION">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Apa Itu Function? 📦</h2>
+                        <div class="slide-text">
+                            <p><strong>Function</strong> adalah kumpulan perintah yang diberi nama.</p>
+                            <p>Kalau kita butuh menjalankan perintah itu lagi, kita cukup memanggil namanya.</p>
+                            <div class="quote-box" style="transform: rotate(1deg);">
+                                Sederhananya:<br>Function itu seperti tombol otomatis. 🔘<br>Sekali ditekan, beberapa perintah langsung berjalan.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="BASIC PEMROGRAMAN" data-subtitle="FUNCTION">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Analogi Function: Mesin Jus 🍹</h2>
+                        <div class="slide-text">
+                            <p>Bayangkan ada mesin jus.</p>
+                            <p>Kita masukkan buah, lalu mesin memprosesnya, lalu keluar jus.</p>
+                            <div style="background-color: #FFF9C4; padding: 20px; border: 4px solid var(--black); border-radius: 16px; box-shadow: 6px 6px 0px var(--black); margin: 20px 0;">
+                                <ul style="list-style-type: none; padding: 0; margin: 0;">
+                                    <li>🍎 <strong>Input:</strong> bahan yang masuk</li>
+                                    <li>⚙️ <strong>Proses:</strong> langkah-langkah di dalam function</li>
+                                    <li>🥤 <strong>Output:</strong> hasil yang keluar</li>
+                                </ul>
+                            </div>
+                            <p style="font-weight: bold; color: var(--blue);">Function membantu program bekerja lebih rapi!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="BASIC PEMROGRAMAN" data-subtitle="FUNCTION">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Function Seperti Resep 🧑‍🍳</h2>
+                        <div class="slide-text">
+                            <p>Resep membuat roti punya langkah-langkah:</p>
+                            <ol style="margin-left: 20px; margin-bottom: 15px;">
+                                <li>Siapkan bahan.</li>
+                                <li>Campur adonan.</li>
+                                <li>Panggang.</li>
+                                <li>Sajikan.</li>
+                            </ol>
+                            <p>Daripada menulis semua langkah berulang-ulang, kita bisa memberi nama: <strong>buat_roti</strong></p>
+                            <p>Saat butuh membuat roti, kita cukup menjalankan:</p>
+                            <div class="code-block" style="font-size: 20px; text-align: center;">
+<span class="function">buat_roti</span>()
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="BASIC PEMROGRAMAN" data-subtitle="OPTIMASI ALGORITMA">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Kenapa Function Berguna? 💡</h2>
+                        <div class="slide-text">
+                            <p>Function sangat berguna karena:</p>
+                            <div style="display: inline-block; background-color: var(--white); padding: 20px 40px; border: 4px solid var(--black); border-radius: 16px; box-shadow: 8px 8px 0px var(--yellow); transform: rotate(-1deg);">
+                                <ul>
+                                    <li>Kode tidak berulang-ulang</li>
+                                    <li>Program lebih rapi</li>
+                                    <li>Program lebih mudah dibaca</li>
+                                    <li>Bagian program lebih mudah diperbaiki</li>
+                                    <li>Function bisa dipakai ulang</li>
+                                </ul>
+                            </div>
+                            <p style="margin-top: 20px;">Function membuat program besar terasa seperti kumpulan bagian kecil yang mudah diatur.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="BASIC PEMROGRAMAN" data-subtitle="FUNCTION">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Function dalam Kehidupan Sehari-Hari 🌍</h2>
+                        <div class="slide-text">
+                            <table style="width: 100%; border-collapse: collapse; background-color: var(--white); border: 4px solid var(--black); box-shadow: 6px 6px 0px var(--black);">
+                                <thead>
+                                    <tr style="background-color: var(--blue); color: var(--white);">
+                                        <th style="padding: 15px; border: 2px solid var(--black);">Function</th>
+                                        <th style="padding: 15px; border: 2px solid var(--black);">Input</th>
+                                        <th style="padding: 15px; border: 2px solid var(--black);">Output</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="padding: 15px; border: 2px solid var(--black);">Mesin jus</td>
+                                        <td style="padding: 15px; border: 2px solid var(--black);">Buah</td>
+                                        <td style="padding: 15px; border: 2px solid var(--black);">Jus</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 15px; border: 2px solid var(--black);">Kalkulator</td>
+                                        <td style="padding: 15px; border: 2px solid var(--black);">Angka</td>
+                                        <td style="padding: 15px; border: 2px solid var(--black);">Hasil hitung</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 15px; border: 2px solid var(--black);">Mesin ATM</td>
+                                        <td style="padding: 15px; border: 2px solid var(--black);">Kartu dan PIN</td>
+                                        <td style="padding: 15px; border: 2px solid var(--black);">Akses akun</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 15px; border: 2px solid var(--black);">Aplikasi maps</td>
+                                        <td style="padding: 15px; border: 2px solid var(--black);">Lokasi tujuan</td>
+                                        <td style="padding: 15px; border: 2px solid var(--black);">Rute perjalanan</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="quote-box" style="margin-top: 20px;">
+                                Function menerima sesuatu, memprosesnya, lalu menghasilkan sesuatu! ✨
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<!-- Slide 30: Section Cover -->
+            <div class="slide" data-title="PYTHON" data-subtitle="FUNCTION DI PYTHON">
+                <div class="content-card" style="align-items: center; justify-content: center; background: radial-gradient(circle, var(--blue) 0%, #0056b3 100%); color: var(--white); border-color: var(--black);">
+                    <div class="inner-content" style="text-align: center;">
+                        <span style="background-color: var(--yellow); color: var(--black); padding: 8px 24px; border: 3px solid var(--black); border-radius: 20px; font-size: 18px; font-weight: 700; box-shadow: 4px 4px 0px var(--black); display: inline-block; margin-bottom: 25px; transform: rotate(-2deg);">
+                            BAGIAN 3
+                        </span>
+                        <h1 style="font-size: 55px; font-weight: 700; margin-bottom: 15px; text-shadow: 4px 4px 0px var(--black); line-height: 1.2;">
+                            Function di Python 🐍
+                        </h1>
+                        <p style="font-size: 24px; font-weight: 600; text-shadow: 2px 2px 0px var(--black); color: var(--yellow);">
+                            Mendefinisikan dan Memanggil Function def
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="FUNCTION DI PYTHON">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Bentuk Dasar Function di Python 🐍</h2>
+                        <div class="slide-text">
+                            <p>Di Python, function dibuat menggunakan keyword <code>def</code>.</p>
+                            <div class="code-block" style="font-size: 18px;">
+<span class="keyword">def</span> <span class="function">greet</span>():<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Halo!"</span>)
+                            </div>
+                            <p>Untuk menjalankan function, kita panggil namanya:</p>
+                            <div class="code-block" style="font-size: 18px;">
+<span class="function">greet</span>()
+                            </div>
+                            <p>Output:</p>
+                            <div class="code-block" style="background-color: #333; color: var(--green); font-size: 18px; margin-top: 10px;">
+Halo!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="FUNCTION DI PYTHON">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Cara Membaca Function 📖</h2>
+                        <div class="slide-text">
+                            <div class="code-block" style="font-size: 18px;">
+<span class="keyword">def</span> <span class="function">greet</span>():<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Halo!"</span>)
+                            </div>
+                            <p>Cara membacanya:</p>
+                            <div class="quote-box" style="transform: rotate(1deg);">
+                                "Buat function bernama <code>greet</code>. Saat function dipanggil, tampilkan teks <code>Halo!</code>"
+                            </div>
+                            <p>Bagian ini adalah <strong>nama function</strong>:</p>
+                            <div class="code-block" style="font-size: 18px; padding: 10px 20px;">
+<span class="function">greet</span>
+                            </div>
+                            <p>Bagian ini adalah <strong>isi function</strong>:</p>
+                            <div class="code-block" style="font-size: 18px; padding: 10px 20px;">
+<span class="function">print</span>(<span class="string">"Halo!"</span>)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="FUNCTION DI PYTHON">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Function Harus Dipanggil 📞</h2>
+                        <div class="slide-text">
+                            <p>Kalau function hanya dibuat tapi tidak dipanggil, isinya tidak akan berjalan.</p>
+                            <div class="code-block" style="font-size: 18px;">
+<span class="keyword">def</span> <span class="function">greet</span>():<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Halo!"</span>)
+                            </div>
+                            <p style="background-color: #FFCDD2; padding: 10px; border-radius: 8px; border: 2px solid #D84315; display: inline-block;">Kode di atas belum menampilkan apa-apa.</p>
+                            <p style="margin-top: 15px;">Agar berjalan, kita harus memanggil:</p>
+                            <div class="code-block" style="font-size: 18px;">
+<span class="function">greet</span>()
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide interactive" data-title="PYTHON" data-subtitle="OPTIMASI LOOP & STEP COUNT">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Latihan: Tebak Output 🕵️‍♂️</h2>
+                        <div class="slide-text">
+                            <div class="code-block" style="font-size: 18px;">
+<span class="keyword">def</span> <span class="function">say_hello</span>():<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Selamat pagi!"</span>)<br><br>
+<span class="function">say_hello</span>()<br>
+<span class="function">say_hello</span>()
+                            </div>
+                            <p>Apa output-nya?</p>
+                            <button onclick="toggleAnswer(this)" style="background-color: var(--yellow); border: 4px solid var(--black); border-radius: 16px; padding: 10px 20px; font-size: 18px; font-family: 'Fredoka', sans-serif; font-weight: bold; cursor: pointer; box-shadow: 4px 4px 0px var(--black); margin-top: 10px;">Lihat Jawaban</button>
+                            <div class="hidden-answer" style="display: none; margin-top: 20px;">
+                                <div class="code-block" style="background-color: #333; font-size: 18px; color: var(--green);">
+Selamat pagi!<br>
+Selamat pagi!
+                                </div>
+                                <p style="font-weight: bold; color: var(--blue);">Karena function dipanggil dua kali! ✌️</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="FUNCTION DI PYTHON">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Function dengan Parameter 📥</h2>
+                        <div class="slide-text">
+                            <p><strong>Parameter</strong> adalah data yang dikirim ke dalam function.</p>
+                            <p><strong>Analogi:</strong></p>
+                            <p>Kalau function adalah mesin jus, parameter adalah 🍎 buah yang dimasukkan.</p>
+                            <div class="code-block" style="font-size: 18px;">
+<span class="keyword">def</span> <span class="function">greet</span>(<span class="operator">name</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Halo,"</span>, name)
+                            </div>
+                            <p style="background-color: var(--yellow); padding: 10px; border-radius: 8px; border: 2px solid var(--black); display: inline-block;"><code>name</code> adalah parameter.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="FUNCTION DI PYTHON">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Contoh Function dengan Parameter ✨</h2>
+                        <div class="slide-text">
+                            <div class="code-block" style="font-size: 18px;">
+<span class="keyword">def</span> <span class="function">greet</span>(<span class="operator">name</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Halo,"</span>, name)<br><br>
+<span class="function">greet</span>(<span class="string">"Alya"</span>)<br>
+<span class="function">greet</span>(<span class="string">"Bima"</span>)
+                            </div>
+                            <p>Output:</p>
+                            <div class="code-block" style="background-color: #333; color: var(--green); font-size: 18px; margin-top: 10px;">
+Halo, Alya<br>
+Halo, Bima
+                            </div>
+                            <div class="quote-box" style="transform: rotate(-1deg);">
+                                Function-nya sama, tapi datanya berbeda! 🔀
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="FUNCTION DI PYTHON">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Function dengan Multiple Parameters 📚</h2>
+                        <div class="slide-text">
+                            <p>Function juga bisa punya lebih dari satu parameter.</p>
+                            <p>Contoh:</p>
+                            <div class="code-block" style="font-size: 16px;">
+<span class="keyword">def</span> <span class="function">introduce</span>(<span class="operator">name</span>, <span class="operator">age</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Namaku"</span>, name)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Umurku"</span>, age)
+                            </div>
+                            <p>Memanggil function:</p>
+                            <div class="code-block" style="font-size: 16px;">
+<span class="function">introduce</span>(<span class="string">"Alya"</span>, <span class="string">16</span>)
+                            </div>
+                            <p>Output:</p>
+                            <div class="code-block" style="background-color: #333; color: var(--green); font-size: 16px; margin-top: 10px;">
+Namaku Alya<br>
+Umurku 16
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="FUNCTION DI PYTHON">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Parameter Itu Seperti Formulir 📝</h2>
+                        <div class="slide-text">
+                            <p>Bayangkan kamu mengisi formulir:</p>
+                            <ul>
+                                <li>Nama</li>
+                                <li>Umur</li>
+                                <li>Kelas</li>
+                            </ul>
+                            <p>Function juga bisa menerima beberapa data sekaligus.</p>
+                            <div class="code-block" style="font-size: 16px;">
+<span class="keyword">def</span> <span class="function">student_info</span>(<span class="operator">name</span>, <span class="operator">grade</span>, <span class="operator">school</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(name)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(grade)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(school)
+                            </div>
+                            <p style="font-weight: bold; color: var(--blue);">Setiap parameter menyimpan satu informasi.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide interactive" data-title="PYTHON" data-subtitle="LATIHAN FUNCTION">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Latihan: Lengkapi Function 🧩</h2>
+                        <div class="slide-text">
+                            <p>Lengkapi kode berikut agar function bisa menampilkan nama dan skor.</p>
+                            <div class="code-block" style="font-size: 16px;">
+<span class="keyword">def</span> <span class="function">show_score</span>(_____, _____):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Nama:"</span>, name)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Score:"</span>, score)<br><br>
+<span class="function">show_score</span>(<span class="string">"Dina"</span>, <span class="string">90</span>)
+                            </div>
+                            <button onclick="toggleAnswer(this)" style="background-color: var(--yellow); border: 4px solid var(--black); border-radius: 16px; padding: 10px 20px; font-size: 18px; font-family: 'Fredoka', sans-serif; font-weight: bold; cursor: pointer; box-shadow: 4px 4px 0px var(--black); margin-top: 10px;">Lihat Jawaban</button>
+                            <div class="hidden-answer" style="display: none; margin-top: 20px;">
+                                <div class="code-block" style="background-color: #333; font-size: 16px;">
+<span class="keyword">def</span> <span class="function">show_score</span>(<span class="operator">name</span>, <span class="operator">score</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Nama:"</span>, name)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Score:"</span>, score)<br><br>
+<span class="function">show_score</span>(<span class="string">"Dina"</span>, <span class="string">90</span>)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<!-- Slide 39: Section Cover -->
+            <div class="slide" data-title="BASIC PEMROGRAMAN" data-subtitle="RETURN">
+                <div class="content-card" style="align-items: center; justify-content: center; background: radial-gradient(circle, var(--blue) 0%, #0056b3 100%); color: var(--white); border-color: var(--black);">
+                    <div class="inner-content" style="text-align: center;">
+                        <span style="background-color: var(--yellow); color: var(--black); padding: 8px 24px; border: 3px solid var(--black); border-radius: 20px; font-size: 18px; font-weight: 700; box-shadow: 4px 4px 0px var(--black); display: inline-block; margin-bottom: 25px; transform: rotate(-2deg);">
+                            BAGIAN 3B
+                        </span>
+                        <h1 style="font-size: 55px; font-weight: 700; margin-bottom: 15px; text-shadow: 4px 4px 0px var(--black); line-height: 1.2;">
+                            Mengenal Return 🔄
+                        </h1>
+                        <p style="font-size: 24px; font-weight: 600; text-shadow: 2px 2px 0px var(--black); color: var(--yellow);">
+                            Mengembalikan Hasil Perhitungan Function
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="BASIC PEMROGRAMAN" data-subtitle="RETURN">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Apa Itu <code>return</code>? 🔄</h2>
+                        <div class="slide-text">
+                            <p><code>return</code> digunakan untuk <strong>mengembalikan hasil</strong> dari function.</p>
+                            <p>Kalau <code>print()</code> hanya menampilkan hasil ke layar, <code>return</code> memberikan hasil agar bisa dipakai lagi oleh program.</p>
+                            <div style="background-color: var(--bg-light); padding: 20px; border: 4px solid var(--black); border-radius: 16px; margin: 20px 0;">
+                                <p style="margin-bottom: 10px;">Sederhananya:</p>
+                                <ul style="list-style-type: none; padding: 0; margin: 0;">
+                                    <li>🖥️ <code>print()</code> = menunjukkan hasil.</li>
+                                    <li>🤲 <code>return</code> = memberikan hasil untuk dipakai lagi.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="BASIC PEMROGRAMAN" data-subtitle="RETURN">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Analogi <code>return</code>: Mesin Kasir 🛒</h2>
+                        <div class="slide-text">
+                            <p>Bayangkan mesin kasir menghitung total belanja.</p>
+                            <div style="display: flex; flex-direction: column; gap: 15px; margin: 20px 0;">
+                                <div style="background-color: #FFCDD2; padding: 15px; border: 3px solid var(--black); border-radius: 12px;">
+                                    <strong>Mirip <code>print()</code>:</strong><br>
+                                    Kalau mesin hanya bicara "Totalnya 50.000".
+                                </div>
+                                <div style="background-color: #C8E6C9; padding: 15px; border: 3px solid var(--black); border-radius: 12px; box-shadow: 4px 4px 0px var(--black);">
+                                    <strong>Mirip <code>return</code>:</strong><br>
+                                    Kalau mesin memberikan struk yang bisa dipakai untuk pembayaran.
+                                </div>
+                            </div>
+                            <div class="quote-box" style="transform: rotate(1deg);">
+                                <code>return</code> membuat hasil function bisa diproses lagi! 🚀
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="FUNCTION DI PYTHON">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Function dengan <code>print()</code> 🖨️</h2>
+                        <div class="slide-text">
+                            <div class="code-block" style="font-size: 18px;">
+<span class="keyword">def</span> <span class="function">add_numbers</span>(<span class="operator">a</span>, <span class="operator">b</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(a <span class="operator">+</span> b)<br><br>
+<span class="function">add_numbers</span>(<span class="string">5</span>, <span class="string">3</span>)
+                            </div>
+                            <p>Output:</p>
+                            <div class="code-block" style="background-color: #333; color: var(--green); font-size: 18px; margin-top: 10px;">
+8
+                            </div>
+                            <p style="background-color: #FFCDD2; padding: 10px; border-radius: 8px; border: 2px solid #D84315; display: inline-block;">Program menampilkan hasil, tapi hasilnya tidak disimpan untuk dipakai lagi.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="FUNCTION DI PYTHON">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Function dengan <code>return</code> 📥</h2>
+                        <div class="slide-text">
+                            <div class="code-block" style="font-size: 16px;">
+<span class="keyword">def</span> <span class="function">add_numbers</span>(<span class="operator">a</span>, <span class="operator">b</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> a <span class="operator">+</span> b<br><br>
+<span class="keyword">result</span> <span class="operator">=</span> <span class="function">add_numbers</span>(<span class="string">5</span>, <span class="string">3</span>)<br><br>
+<span class="function">print</span>(result)
+                            </div>
+                            <p>Output:</p>
+                            <div class="code-block" style="background-color: #333; color: var(--green); font-size: 16px; margin-top: 10px;">
+8
+                            </div>
+                            <p style="background-color: #C8E6C9; padding: 10px; border-radius: 8px; border: 2px solid #2E7D32; display: inline-block;">Sekarang hasil <code>5 + 3</code> disimpan ke variable <code>result</code>.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="FUNCTION DI PYTHON">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Kenapa <code>return</code> Penting? 💡</h2>
+                        <div class="slide-text">
+                            <p>Dengan <code>return</code>, hasil function bisa digunakan untuk proses berikutnya.</p>
+                            <div class="code-block" style="font-size: 16px;">
+<span class="keyword">def</span> <span class="function">add_numbers</span>(<span class="operator">a</span>, <span class="operator">b</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> a <span class="operator">+</span> b<br><br>
+<span class="keyword">total</span> <span class="operator">=</span> <span class="function">add_numbers</span>(<span class="string">5</span>, <span class="string">3</span>)<br>
+<span class="keyword">final_score</span> <span class="operator">=</span> total <span class="operator">*</span> <span class="string">10</span><br><br>
+<span class="function">print</span>(final_score)
+                            </div>
+                            <p>Output:</p>
+                            <div class="code-block" style="background-color: #333; color: var(--green); font-size: 16px; margin-top: 10px;">
+80
+                            </div>
+                            <div class="quote-box" style="transform: rotate(-1deg);">
+                                Hasil function dipakai lagi untuk menghitung <code>final_score</code>.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="BASIC PEMROGRAMAN" data-subtitle="RETURN">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title"><code>print()</code> vs <code>return</code> ⚔️</h2>
+                        <div class="slide-text">
+                            <table style="width: 100%; border-collapse: collapse; background-color: var(--white); border: 4px solid var(--black); box-shadow: 6px 6px 0px var(--black);">
+                                <thead>
+                                    <tr style="background-color: var(--blue); color: var(--white);">
+                                        <th style="padding: 10px; border: 2px solid var(--black);"><code>print()</code></th>
+                                        <th style="padding: 10px; border: 2px solid var(--black);"><code>return</code></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="padding: 10px; border: 2px solid var(--black);">Menampilkan hasil ke layar</td>
+                                        <td style="padding: 10px; border: 2px solid var(--black);">Mengembalikan hasil</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 10px; border: 2px solid var(--black);">Cocok untuk pesan</td>
+                                        <td style="padding: 10px; border: 2px solid var(--black);">Cocok untuk perhitungan</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 10px; border: 2px solid var(--black);">Hasil sulit dipakai lagi</td>
+                                        <td style="padding: 10px; border: 2px solid var(--black);">Hasil bisa disimpan</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 10px; border: 2px solid var(--black);">Tidak selalu cocok untuk program besar</td>
+                                        <td style="padding: 10px; border: 2px solid var(--black);">Cocok untuk program yang lebih rapi</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide interactive" data-title="BASIC PEMROGRAMAN" data-subtitle="LATIHAN FUNCTION">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Latihan: Print atau Return? 🤔</h2>
+                        <div class="slide-text">
+                            <p><strong>Kasus 1:</strong> Function hanya menampilkan pesan "Selamat datang".</p>
+                            <p>Lebih cocok pakai apa?</p>
+                            <div style="margin-bottom: 20px;">
+                                <input type="text" id="sa-print-return-1" class="custom-input" placeholder="print() atau return?">
+                                <button onclick="checkPrintReturn1(document.getElementById('sa-print-return-1').value, this)" style="background-color: var(--yellow); border: 4px solid var(--black); border-radius: 16px; padding: 10px 20px; font-size: 16px; font-family: 'Fredoka', sans-serif; font-weight: bold; cursor: pointer; box-shadow: 4px 4px 0px var(--black); margin-left: 10px;">Cek</button>
+                                <div class="feedback" style="display: none; margin-top: 10px; padding: 10px; border-radius: 5px;"></div>
+                            </div>
+
+                            <p><strong>Kasus 2:</strong> Function menghitung total harga dan hasilnya mau dipakai untuk menghitung diskon.</p>
+                            <p>Lebih cocok pakai apa?</p>
+                            <div style="margin-bottom: 20px;">
+                                <input type="text" id="sa-print-return-2" class="custom-input" placeholder="print() atau return?">
+                                <button onclick="checkPrintReturn2(document.getElementById('sa-print-return-2').value, this)" style="background-color: var(--yellow); border: 4px solid var(--black); border-radius: 16px; padding: 10px 20px; font-size: 16px; font-family: 'Fredoka', sans-serif; font-weight: bold; cursor: pointer; box-shadow: 4px 4px 0px var(--black); margin-left: 10px;">Cek</button>
+                                <div class="feedback" style="display: none; margin-top: 10px; padding: 10px; border-radius: 5px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="FUNCTION DI PYTHON">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Function: Multiple Params & Return 🛠️</h2>
+                        <div class="slide-text">
+                            <div class="code-block" style="font-size: 16px;">
+<span class="keyword">def</span> <span class="function">calculate_total</span>(<span class="operator">price</span>, <span class="operator">quantity</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;total <span class="operator">=</span> price <span class="operator">*</span> quantity<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> total<br><br>
+<span class="keyword">total_payment</span> <span class="operator">=</span> <span class="function">calculate_total</span>(<span class="string">15000</span>, <span class="string">3</span>)<br><br>
+<span class="function">print</span>(<span class="string">"Total bayar:"</span>, total_payment)
+                            </div>
+                            <p>Output:</p>
+                            <div class="code-block" style="background-color: #333; color: var(--green); font-size: 16px; margin-top: 10px;">
+Total bayar: 45000
+                            </div>
+                            <div class="quote-box" style="transform: rotate(1deg);">
+                                Function menerima harga dan jumlah barang, lalu mengembalikan total.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide interactive" data-title="PYTHON" data-subtitle="LATIHAN FUNCTION">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Latihan: Lengkapi Return 📝</h2>
+                        <div class="slide-text">
+                            <p>Lengkapi kode berikut:</p>
+                            <div class="code-block" style="font-size: 16px;">
+<span class="keyword">def</span> <span class="function">calculate_area</span>(<span class="operator">length</span>, <span class="operator">width</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;area <span class="operator">=</span> length <span class="operator">*</span> width<br>
+&nbsp;&nbsp;&nbsp;&nbsp;______ area<br><br>
+<span class="keyword">result</span> <span class="operator">=</span> <span class="function">calculate_area</span>(<span class="string">10</span>, <span class="string">5</span>)<br>
+<span class="function">print</span>(result)
+                            </div>
+                            <button onclick="toggleAnswer(this)" style="background-color: var(--yellow); border: 4px solid var(--black); border-radius: 16px; padding: 10px 20px; font-size: 18px; font-family: 'Fredoka', sans-serif; font-weight: bold; cursor: pointer; box-shadow: 4px 4px 0px var(--black); margin-top: 10px;">Lihat Jawaban</button>
+                            <div class="hidden-answer" style="display: none; margin-top: 20px;">
+                                <div class="code-block" style="background-color: #333; font-size: 16px;">
+<span class="keyword">def</span> <span class="function">calculate_area</span>(<span class="operator">length</span>, <span class="operator">width</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;area <span class="operator">=</span> length <span class="operator">*</span> width<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> area<br><br>
+<span class="keyword">result</span> <span class="operator">=</span> <span class="function">calculate_area</span>(<span class="string">10</span>, <span class="string">5</span>)<br>
+<span class="function">print</span>(result)
+                                </div>
+                                <div class="code-block" style="background-color: #333; color: var(--green); font-size: 16px; margin-top: 10px;">
+50
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="FUNCTION DI PYTHON">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Function di Program Lebih Besar 🧩</h2>
+                        <div class="slide-text">
+                            <div class="code-block" style="font-size: 14px;">
+<span class="keyword">def</span> <span class="function">calculate_total</span>(<span class="operator">price</span>, <span class="operator">quantity</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> price <span class="operator">*</span> quantity<br><br>
+<span class="keyword">def</span> <span class="function">apply_discount</span>(<span class="operator">total</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> total <span class="operator">*</span> <span class="string">0.9</span><br><br>
+<span class="keyword">total</span> <span class="operator">=</span> <span class="function">calculate_total</span>(<span class="string">20000</span>, <span class="string">3</span>)<br>
+<span class="keyword">final_price</span> <span class="operator">=</span> <span class="function">apply_discount</span>(total)<br><br>
+<span class="function">print</span>(<span class="string">"Harga akhir:"</span>, final_price)
+                            </div>
+                            <p>Output:</p>
+                            <div class="code-block" style="background-color: #333; color: var(--green); font-size: 14px; margin-top: 10px;">
+Harga akhir: 54000.0
+                            </div>
+                            <p style="background-color: var(--yellow); padding: 10px; border-radius: 8px; border: 2px solid var(--black); display: inline-block;">Satu function menghitung total. Function lain menghitung diskon.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<!-- Slide 49: Section Cover -->
+            <div class="slide" data-title="BASIC PEMROGRAMAN" data-subtitle="MODULAR DESIGN">
+                <div class="content-card" style="align-items: center; justify-content: center; background: radial-gradient(circle, var(--blue) 0%, #0056b3 100%); color: var(--white); border-color: var(--black);">
+                    <div class="inner-content" style="text-align: center;">
+                        <span style="background-color: var(--yellow); color: var(--black); padding: 8px 24px; border: 3px solid var(--black); border-radius: 20px; font-size: 18px; font-weight: 700; box-shadow: 4px 4px 0px var(--black); display: inline-block; margin-bottom: 25px; transform: rotate(-2deg);">
+                            BAGIAN 4
+                        </span>
+                        <h1 style="font-size: 55px; font-weight: 700; margin-bottom: 15px; text-shadow: 4px 4px 0px var(--black); line-height: 1.2;">
+                            Modular Design 🧱
+                        </h1>
+                        <p style="font-size: 24px; font-weight: 600; text-shadow: 2px 2px 0px var(--black); color: var(--yellow);">
+                            Membagi Program Besar Menjadi Bagian-Bagian Kecil
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+<!-- Slide 49b: Content -->
+            <div class="slide" data-title="BASIC PEMROGRAMAN" data-subtitle="MODULAR DESIGN">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Apa Itu Modular Design? 🧱</h2>
+                        <div class="slide-text">
+                            <p><strong>Modular design</strong> adalah cara membagi program besar menjadi bagian-bagian kecil.</p>
+                            <p>Setiap bagian punya tugas sendiri. Dalam Python, bagian-bagian kecil ini biasanya dibuat sebagai function.</p>
+                            <div class="quote-box" style="transform: rotate(1deg);">
+                                Sederhananya:<br>Program besar dipecah menjadi potongan kecil agar lebih mudah dibuat dan diperbaiki.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="BASIC PEMROGRAMAN" data-subtitle="MODULAR DESIGN">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Analogi Modular Design: Restoran 🍽️</h2>
+                        <div class="slide-text">
+                            <p>Di restoran, semua pekerjaan tidak dilakukan oleh satu orang.</p>
+                            <p>Ada bagian:</p>
+                            <div style="display: flex; gap: 20px; flex-wrap: wrap; margin: 15px 0;">
+                                <div style="background-color: var(--white); padding: 10px 20px; border: 3px solid var(--black); border-radius: 12px; box-shadow: 4px 4px 0px var(--black);">🛒 Kasir</div>
+                                <div style="background-color: var(--white); padding: 10px 20px; border: 3px solid var(--black); border-radius: 12px; box-shadow: 4px 4px 0px var(--black);">🧑‍🍳 Koki</div>
+                                <div style="background-color: var(--white); padding: 10px 20px; border: 3px solid var(--black); border-radius: 12px; box-shadow: 4px 4px 0px var(--black);">💁 Pelayan</div>
+                                <div style="background-color: var(--white); padding: 10px 20px; border: 3px solid var(--black); border-radius: 12px; box-shadow: 4px 4px 0px var(--black);">🧹 Petugas Kebersihan</div>
+                            </div>
+                            <p>Setiap bagian punya tugas.</p>
+                            <div class="quote-box" style="transform: rotate(-1deg);">
+                                Program juga bisa begitu! Setiap function punya tugas masing-masing.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="MODULAR DESIGN">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Program Tanpa Modular Design 🍝</h2>
+                        <div class="slide-text">
+                            <div class="code-block" style="font-size: 14px;">
+<span class="keyword">name</span> <span class="operator">=</span> <span class="function">input</span>(<span class="string">"Nama: "</span>)<br>
+<span class="keyword">price</span> <span class="operator">=</span> <span class="function">int</span>(<span class="function">input</span>(<span class="string">"Harga barang: "</span>))<br>
+<span class="keyword">quantity</span> <span class="operator">=</span> <span class="function">int</span>(<span class="function">input</span>(<span class="string">"Jumlah barang: "</span>))<br><br>
+<span class="keyword">total</span> <span class="operator">=</span> price <span class="operator">*</span> quantity<br>
+<span class="keyword">discount</span> <span class="operator">=</span> total <span class="operator">*</span> <span class="string">0.1</span><br>
+<span class="keyword">final_price</span> <span class="operator">=</span> total <span class="operator">-</span> discount<br><br>
+<span class="function">print</span>(<span class="string">"Halo"</span>, name)<br>
+<span class="function">print</span>(<span class="string">"Total:"</span>, total)<br>
+<span class="function">print</span>(<span class="string">"Diskon:"</span>, discount)<br>
+<span class="function">print</span>(<span class="string">"Harga akhir:"</span>, final_price)
+                            </div>
+                            <p style="background-color: #FFCDD2; padding: 10px; border-radius: 8px; border: 2px solid #D84315; display: inline-block;">Kode ini masih bisa berjalan. Tapi semua proses bercampur di satu tempat.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="FUNCTION DI PYTHON">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Program dengan Modular Design 🍱</h2>
+                        <div class="slide-text">
+                            <div class="code-block" style="font-size: 14px;">
+<span class="keyword">def</span> <span class="function">get_total</span>(<span class="operator">price</span>, <span class="operator">quantity</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> price <span class="operator">*</span> quantity<br><br>
+<span class="keyword">def</span> <span class="function">get_discount</span>(<span class="operator">total</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> total <span class="operator">*</span> <span class="string">0.1</span><br><br>
+<span class="keyword">def</span> <span class="function">get_final_price</span>(<span class="operator">total</span>, <span class="operator">discount</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> total <span class="operator">-</span> discount<br><br>
+<span class="keyword">price</span> <span class="operator">=</span> <span class="string">20000</span><br>
+<span class="keyword">quantity</span> <span class="operator">=</span> <span class="string">3</span><br><br>
+<span class="keyword">total</span> <span class="operator">=</span> <span class="function">get_total</span>(price, quantity)<br>
+<span class="keyword">discount</span> <span class="operator">=</span> <span class="function">get_discount</span>(total)<br>
+<span class="keyword">final_price</span> <span class="operator">=</span> <span class="function">get_final_price</span>(total, discount)<br><br>
+<span class="function">print</span>(<span class="string">"Harga akhir:"</span>, final_price)
+                            </div>
+                            <div class="quote-box" style="transform: rotate(1deg);">
+                                Kode lebih rapi karena setiap function punya tugas! ✨
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="BASIC PEMROGRAMAN" data-subtitle="MODULAR DESIGN">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Kenapa Modular Design Berguna? 🚀</h2>
+                        <div class="slide-text">
+                            <p>Modular design membantu kita:</p>
+                            <div style="display: inline-block; background-color: var(--white); padding: 20px 40px; border: 4px solid var(--black); border-radius: 16px; box-shadow: 8px 8px 0px var(--yellow); transform: rotate(-1deg);">
+                                <ul style="margin-bottom: 0;">
+                                    <li>Membaca program lebih mudah</li>
+                                    <li>Mengubah satu bagian tanpa merusak semuanya</li>
+                                    <li>Menggunakan function berulang kali</li>
+                                    <li>Mencari bug lebih cepat</li>
+                                    <li>Membuat proyek lebih besar dengan lebih teratur</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="FUNCTION DI PYTHON">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Reusable Code ♻️</h2>
+                        <div class="slide-text">
+                            <p><strong>Reusable code</strong> adalah kode yang bisa dipakai ulang.</p>
+                            <p>Contoh:</p>
+                            <div class="code-block" style="font-size: 16px;">
+<span class="keyword">def</span> <span class="function">calculate_total</span>(<span class="operator">price</span>, <span class="operator">quantity</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> price <span class="operator">*</span> quantity
+                            </div>
+                            <p>Function ini bisa dipakai untuk:</p>
+                            <ul>
+                                <li>Menghitung total belanja makanan</li>
+                                <li>Menghitung total pembelian alat tulis</li>
+                                <li>Menghitung total modal usaha</li>
+                                <li>Menghitung total pembayaran tiket</li>
+                            </ul>
+                            <div class="quote-box" style="transform: rotate(1deg);">
+                                Sekali dibuat, bisa dipakai berkali-kali! 🔄
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="FUNCTION DI PYTHON">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Debugging Program Modular 🐛</h2>
+                        <div class="slide-text">
+                            <p>Kalau program modular error, kita bisa cek function satu per satu.</p>
+                            <p>Contoh:</p>
+                            <div class="code-block" style="font-size: 16px;">
+<span class="keyword">def</span> <span class="function">get_total</span>(<span class="operator">price</span>, <span class="operator">quantity</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> price <span class="operator">+</span> quantity
+                            </div>
+                            <p style="background-color: #FFCDD2; padding: 10px; border-radius: 8px; border: 2px solid #D84315; display: inline-block;">Kode di atas salah karena total harga seharusnya dikali:</p>
+                            <div class="code-block" style="font-size: 16px; margin-top: 10px;">
+price <span class="operator">*</span> quantity
+                            </div>
+                            <p>Dengan modular design, kita bisa langsung perbaiki function <code>get_total</code> tanpa harus mengacak-acak bagian lain!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide interactive" data-title="PYTHON" data-subtitle="LATIHAN FUNCTION">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Latihan Debugging 🕵️‍♂️</h2>
+                        <div class="slide-text">
+                            <p>Ada bug di function berikut.</p>
+                            <div class="code-block" style="font-size: 16px;">
+<span class="keyword">def</span> <span class="function">calculate_total</span>(<span class="operator">price</span>, <span class="operator">quantity</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> price <span class="operator">+</span> quantity<br><br>
+<span class="keyword">total</span> <span class="operator">=</span> <span class="function">calculate_total</span>(<span class="string">10000</span>, <span class="string">3</span>)<br>
+<span class="function">print</span>(total)
+                            </div>
+                            <p>Output yang benar harusnya: <code>30000</code></p>
+                            <p>Perbaiki function-nya!</p>
+                            <button onclick="toggleAnswer(this)" style="background-color: var(--yellow); border: 4px solid var(--black); border-radius: 16px; padding: 10px 20px; font-size: 18px; font-family: 'Fredoka', sans-serif; font-weight: bold; cursor: pointer; box-shadow: 4px 4px 0px var(--black); margin-top: 10px;">Lihat Jawaban</button>
+                            <div class="hidden-answer" style="display: none; margin-top: 20px;">
+                                <div class="code-block" style="background-color: #333; font-size: 16px;">
+<span class="keyword">def</span> <span class="function">calculate_total</span>(<span class="operator">price</span>, <span class="operator">quantity</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> price <span class="operator">*</span> quantity
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="BASIC PEMROGRAMAN" data-subtitle="OPTIMASI ALGORITMA">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Struktur File Sederhana 📂</h2>
+                        <div class="slide-text">
+                            <p>Untuk proyek yang lebih besar, kita bisa membagi file.</p>
+                            <p>Contoh struktur sederhana:</p>
+                            <div class="code-block" style="font-size: 16px; background-color: #333; color: var(--white);">
+project/<br>
+│<br>
+├── main.py<br>
+├── calculator.py<br>
+└── helper.py
+                            </div>
+                            <ul style="margin-top: 15px;">
+                                <li><code>main.py</code> berisi alur utama program.</li>
+                                <li><code>calculator.py</code> berisi function perhitungan.</li>
+                                <li><code>helper.py</code> berisi function bantuan.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="FUNCTION DI PYTHON">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Contoh Isi <code>calculator.py</code> 🧮</h2>
+                        <div class="slide-text">
+                            <div class="code-block" style="font-size: 16px;">
+<span class="keyword">def</span> <span class="function">calculate_total</span>(<span class="operator">price</span>, <span class="operator">quantity</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> price <span class="operator">*</span> quantity<br><br>
+<span class="keyword">def</span> <span class="function">calculate_discount</span>(<span class="operator">total</span>, <span class="operator">discount_rate</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> total <span class="operator">*</span> discount_rate
+                            </div>
+                            <div class="quote-box" style="transform: rotate(1deg);">
+                                File ini khusus menyimpan function perhitungan.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="OPTIMASI ALGORITMA">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Contoh Isi <code>main.py</code> 🚀</h2>
+                        <div class="slide-text">
+                            <div class="code-block" style="font-size: 14px;">
+<span class="keyword">from</span> calculator <span class="keyword">import</span> calculate_total, calculate_discount<br><br>
+<span class="keyword">price</span> <span class="operator">=</span> <span class="string">20000</span><br>
+<span class="keyword">quantity</span> <span class="operator">=</span> <span class="string">3</span><br><br>
+<span class="keyword">total</span> <span class="operator">=</span> <span class="function">calculate_total</span>(price, quantity)<br>
+<span class="keyword">discount</span> <span class="operator">=</span> <span class="function">calculate_discount</span>(total, <span class="string">0.1</span>)<br><br>
+<span class="function">print</span>(<span class="string">"Total:"</span>, total)<br>
+<span class="function">print</span>(<span class="string">"Diskon:"</span>, discount)
+                            </div>
+                            <p style="background-color: var(--yellow); padding: 10px; border-radius: 8px; border: 2px solid var(--black); display: inline-block;"><code>main.py</code> memakai function dari file lain (<code>calculator.py</code>).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="FUNCTION DI PYTHON">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Mini Project: Modular Shopping Calculator 🛒</h2>
+                        <div class="slide-text">
+                            <p>Buat program belanja sederhana dengan function!</p>
+                            <p><strong>Program harus punya:</strong></p>
+                            <ol>
+                                <li>Function menghitung total.</li>
+                                <li>Function menghitung diskon.</li>
+                                <li>Function menghitung harga akhir.</li>
+                                <li>Function menampilkan hasil.</li>
+                            </ol>
+                            <div class="code-block" style="font-size: 12px; max-height: 200px; overflow-y: auto;">
+<span class="keyword">def</span> <span class="function">calculate_total</span>(<span class="operator">price</span>, <span class="operator">quantity</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> price <span class="operator">*</span> quantity<br><br>
+<span class="keyword">def</span> <span class="function">calculate_discount</span>(<span class="operator">total</span>, <span class="operator">discount_rate</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> total <span class="operator">*</span> discount_rate<br><br>
+<span class="keyword">def</span> <span class="function">calculate_final_price</span>(<span class="operator">total</span>, <span class="operator">discount</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> total <span class="operator">-</span> discount<br><br>
+<span class="keyword">price</span> <span class="operator">=</span> <span class="string">25000</span><br>
+<span class="keyword">quantity</span> <span class="operator">=</span> <span class="string">4</span><br>
+<span class="keyword">discount_rate</span> <span class="operator">=</span> <span class="string">0.1</span><br><br>
+<span class="keyword">total</span> <span class="operator">=</span> <span class="function">calculate_total</span>(price, quantity)<br>
+<span class="keyword">discount</span> <span class="operator">=</span> <span class="function">calculate_discount</span>(total, discount_rate)<br>
+<span class="keyword">final_price</span> <span class="operator">=</span> <span class="function">calculate_final_price</span>(total, discount)<br><br>
+<span class="function">print</span>(<span class="string">"Total:"</span>, total)<br>
+<span class="function">print</span>(<span class="string">"Diskon:"</span>, discount)<br>
+<span class="function">print</span>(<span class="string">"Harga akhir:"</span>, final_price)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<!-- Slide 61: Section Cover -->
+            <div class="slide" data-title="BASIC PEMROGRAMAN" data-subtitle="FINANCIAL LITERACY">
+                <div class="content-card" style="align-items: center; justify-content: center; background: radial-gradient(circle, var(--blue) 0%, #0056b3 100%); color: var(--white); border-color: var(--black);">
+                    <div class="inner-content" style="text-align: center;">
+                        <span style="background-color: var(--yellow); color: var(--black); padding: 8px 24px; border: 3px solid var(--black); border-radius: 20px; font-size: 18px; font-weight: 700; box-shadow: 4px 4px 0px var(--black); display: inline-block; margin-bottom: 25px; transform: rotate(-2deg);">
+                            BAGIAN 5
+                        </span>
+                        <h1 style="font-size: 55px; font-weight: 700; margin-bottom: 15px; text-shadow: 4px 4px 0px var(--black); line-height: 1.2;">
+                            Financial Literacy 💰
+                        </h1>
+                        <p style="font-size: 24px; font-weight: 600; text-shadow: 2px 2px 0px var(--black); color: var(--yellow);">
+                            Menabung & Bunga Tunggal
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+<!-- Slide 61b: Content -->
+            <div class="slide" data-title="BASIC PEMROGRAMAN" data-subtitle="FINANCIAL LITERACY">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Kalkulator Keuangan Sederhana 📈</h2>
+                        <div class="slide-text">
+                            <p>Sekarang kita akan memakai function untuk membuat kalkulator keuangan sederhana.</p>
+                            <div class="quote-box" style="transform: rotate(1deg);">
+                                Kita akan membuat program Python yang bisa menghitung pertumbuhan tabungan kita dari waktu ke waktu! 🏦
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="BASIC PEMROGRAMAN" data-subtitle="OPTIMASI ALGORITMA">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Apa Itu Menabung? 🏦</h2>
+                        <div class="slide-text">
+                            <p><strong>Menabung</strong> adalah menyimpan sebagian uang agar bisa digunakan di masa depan.</p>
+                            <p>Contoh tujuan menabung:</p>
+                            <div style="display: flex; flex-wrap: wrap; gap: 15px; margin: 20px 0;">
+                                <div style="background-color: var(--bg-light); padding: 10px 20px; border: 3px solid var(--black); border-radius: 12px; box-shadow: 4px 4px 0px var(--black);">📚 Membeli buku</div>
+                                <div style="background-color: var(--bg-light); padding: 10px 20px; border: 3px solid var(--black); border-radius: 12px; box-shadow: 4px 4px 0px var(--black);">💻 Membeli laptop</div>
+                                <div style="background-color: var(--bg-light); padding: 10px 20px; border: 3px solid var(--black); border-radius: 12px; box-shadow: 4px 4px 0px var(--black);">🚑 Dana darurat</div>
+                                <div style="background-color: var(--bg-light); padding: 10px 20px; border: 3px solid var(--black); border-radius: 12px; box-shadow: 4px 4px 0px var(--black);">🚀 Modal project</div>
+                            </div>
+                            <div class="quote-box" style="transform: rotate(-1deg);">
+                                Dengan menabung, kita belajar menunda keinginan untuk mencapai tujuan yang lebih besar. 🎯
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="BASIC PEMROGRAMAN" data-subtitle="OPTIMASI ALGORITMA">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Apa Itu Bunga? 🌱</h2>
+                        <div class="slide-text">
+                            <p><strong>Bunga</strong> adalah tambahan uang yang bisa didapat dari tabungan atau pinjaman.</p>
+                            <p>Contoh sederhana:</p>
+                            <ul style="margin-left: 20px; margin-bottom: 20px;">
+                                <li>Kamu menabung <strong>Rp100.000</strong>.</li>
+                                <li>Setelah beberapa waktu, uangmu bertambah menjadi <strong>Rp105.000</strong>.</li>
+                            </ul>
+                            <div class="quote-box" style="transform: rotate(1deg); background-color: var(--yellow);">
+                                Tambahan Rp5.000 itu bisa disebut <strong>bunga</strong>. ✨
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="FINANCIAL LITERACY">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Apa Itu Bunga Tunggal? 💵</h2>
+                        <div class="slide-text">
+                            <p><strong>Bunga tunggal</strong> adalah bunga yang dihitung dari uang awal saja.</p>
+                            <p>Rumus sederhananya:</p>
+                            <div class="code-block" style="font-size: 16px;">
+<span class="keyword">bunga</span> <span class="operator">=</span> uang_awal <span class="operator">*</span> bunga_per_tahun <span class="operator">*</span> lama_menabung
+                            </div>
+                            <p>Contoh:</p>
+                            <ul>
+                                <li>Uang awal: <strong>100.000</strong></li>
+                                <li>Bunga per tahun: <strong>5% (0.05)</strong></li>
+                                <li>Lama menabung: <strong>2 tahun</strong></li>
+                            </ul>
+                            <div class="code-block" style="background-color: #333; color: var(--white); font-size: 16px;">
+Bunga: 100000 * 0.05 * 2 = 10000<br>
+Total akhir: 100000 + 10000 = 110000
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="BASIC PEMROGRAMAN" data-subtitle="OPTIMASI ALGORITMA">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Kenapa Cocok Pakai Function? ⚙️</h2>
+                        <div class="slide-text">
+                            <p>Menghitung bunga bisa dilakukan berkali-kali dengan angka yang berbeda.</p>
+                            <p>Daripada menulis rumus berulang-ulang, kita buat function!</p>
+                            <div style="display: flex; gap: 20px; margin: 20px 0;">
+                                <div style="flex: 1; background-color: #E1F5FE; padding: 15px; border: 3px solid var(--black); border-radius: 12px; box-shadow: 4px 4px 0px var(--black);">
+                                    <strong>📥 Input Function:</strong>
+                                    <ul>
+                                        <li>Uang awal</li>
+                                        <li>Persentase bunga</li>
+                                        <li>Lama menabung</li>
+                                    </ul>
+                                </div>
+                                <div style="flex: 1; background-color: #FFF9C4; padding: 15px; border: 3px solid var(--black); border-radius: 12px; box-shadow: 4px 4px 0px var(--black);">
+                                    <strong>📤 Output Function:</strong>
+                                    <ul>
+                                        <li>Jumlah bunga</li>
+                                        <li>Total akhir tabungan</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="FUNCTION DI PYTHON">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Kalkulator Bunga Tunggal 🧮</h2>
+                        <div class="slide-text">
+                            <div class="code-block" style="font-size: 16px;">
+<span class="keyword">def</span> <span class="function">calculate_simple_interest</span>(<span class="operator">principal</span>, <span class="operator">rate</span>, <span class="operator">years</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;interest <span class="operator">=</span> principal <span class="operator">*</span> rate <span class="operator">*</span> years<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> interest<br><br>
+<span class="keyword">interest</span> <span class="operator">=</span> <span class="function">calculate_simple_interest</span>(<span class="string">100000</span>, <span class="string">0.05</span>, <span class="string">2</span>)<br><br>
+<span class="function">print</span>(<span class="string">"Bunga:"</span>, interest)
+                            </div>
+                            <p>Output:</p>
+                            <div class="code-block" style="background-color: #333; color: var(--green); font-size: 16px; margin-top: 10px;">
+Bunga: 10000.0
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="FUNCTION DI PYTHON">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Function untuk Total Tabungan 🏦</h2>
+                        <div class="slide-text">
+                            <div class="code-block" style="font-size: 16px;">
+<span class="keyword">def</span> <span class="function">calculate_total_saving</span>(<span class="operator">principal</span>, <span class="operator">rate</span>, <span class="operator">years</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;interest <span class="operator">=</span> principal <span class="operator">*</span> rate <span class="operator">*</span> years<br>
+&nbsp;&nbsp;&nbsp;&nbsp;total <span class="operator">=</span> principal <span class="operator">+</span> interest<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> total<br><br>
+<span class="keyword">total</span> <span class="operator">=</span> <span class="function">calculate_total_saving</span>(<span class="string">100000</span>, <span class="string">0.05</span>, <span class="string">2</span>)<br><br>
+<span class="function">print</span>(<span class="string">"Total tabungan:"</span>, total)
+                            </div>
+                            <p>Output:</p>
+                            <div class="code-block" style="background-color: #333; color: var(--green); font-size: 16px; margin-top: 10px;">
+Total tabungan: 110000.0
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="FUNCTION DI PYTHON">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Function Lebih Lengkap 📦</h2>
+                        <div class="slide-text">
+                            <div class="code-block" style="font-size: 14px;">
+<span class="keyword">def</span> <span class="function">calculate_saving</span>(<span class="operator">principal</span>, <span class="operator">rate</span>, <span class="operator">years</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;interest <span class="operator">=</span> principal <span class="operator">*</span> rate <span class="operator">*</span> years<br>
+&nbsp;&nbsp;&nbsp;&nbsp;total <span class="operator">=</span> principal <span class="operator">+</span> interest<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> interest, total<br><br>
+<span class="keyword">interest</span>, <span class="keyword">total</span> <span class="operator">=</span> <span class="function">calculate_saving</span>(<span class="string">100000</span>, <span class="string">0.05</span>, <span class="string">2</span>)<br><br>
+<span class="function">print</span>(<span class="string">"Bunga:"</span>, interest)<br>
+<span class="function">print</span>(<span class="string">"Total akhir:"</span>, total)
+                            </div>
+                            <p>Output:</p>
+                            <div class="code-block" style="background-color: #333; color: var(--green); font-size: 14px; margin-top: 10px;">
+Bunga: 10000.0<br>
+Total akhir: 110000.0
+                            </div>
+                            <div class="quote-box" style="transform: rotate(1deg);">
+                                Function bisa mengembalikan lebih dari satu nilai sekaligus! ✌️
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="FUNCTION DI PYTHON">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Cara Membaca Parameter 📖</h2>
+                        <div class="slide-text">
+                            <div class="code-block" style="font-size: 16px;">
+<span class="keyword">def</span> <span class="function">calculate_saving</span>(<span class="operator">principal</span>, <span class="operator">rate</span>, <span class="operator">years</span>):
+                            </div>
+                            <p>Artinya function menerima 3 input:</p>
+                            <ul>
+                                <li><code>principal</code> = uang awal</li>
+                                <li><code>rate</code> = bunga per tahun</li>
+                                <li><code>years</code> = lama menabung</li>
+                            </ul>
+                            <p>Kalau kita memanggil:</p>
+                            <div class="code-block" style="font-size: 16px;">
+<span class="function">calculate_saving</span>(<span class="string">100000</span>, <span class="string">0.05</span>, <span class="string">2</span>)
+                            </div>
+                            <div class="quote-box" style="transform: rotate(-1deg);">
+                                Artinya: Uang awal <strong>100.000</strong>, bunga <strong>5%</strong>, selama <strong>2 tahun</strong>. ⏳
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="FUNCTION DI PYTHON">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Membandingkan Skenario 📊</h2>
+                        <div class="slide-text">
+                            <div class="code-block" style="font-size: 14px;">
+<span class="keyword">def</span> <span class="function">calculate_total_saving</span>(<span class="operator">principal</span>, <span class="operator">rate</span>, <span class="operator">years</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;interest <span class="operator">=</span> principal <span class="operator">*</span> rate <span class="operator">*</span> years<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> principal <span class="operator">+</span> interest<br><br>
+<span class="keyword">scenario_1</span> <span class="operator">=</span> <span class="function">calculate_total_saving</span>(<span class="string">100000</span>, <span class="string">0.05</span>, <span class="string">1</span>)<br>
+<span class="keyword">scenario_2</span> <span class="operator">=</span> <span class="function">calculate_total_saving</span>(<span class="string">100000</span>, <span class="string">0.05</span>, <span class="string">3</span>)<br>
+<span class="keyword">scenario_3</span> <span class="operator">=</span> <span class="function">calculate_total_saving</span>(<span class="string">100000</span>, <span class="string">0.05</span>, <span class="string">5</span>)<br><br>
+<span class="function">print</span>(<span class="string">"1 tahun:"</span>, scenario_1)<br>
+<span class="function">print</span>(<span class="string">"3 tahun:"</span>, scenario_2)<br>
+<span class="function">print</span>(<span class="string">"5 tahun:"</span>, scenario_3)
+                            </div>
+                            <p>Output:</p>
+                            <div class="code-block" style="background-color: #333; color: var(--green); font-size: 14px; margin-top: 5px;">
+1 tahun: 105000.0<br>
+3 tahun: 115000.0<br>
+5 tahun: 125000.0
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide interactive" data-title="PYTHON" data-subtitle="LATIHAN FUNCTION">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Latihan: Lengkapi Function 🧩</h2>
+                        <div class="slide-text">
+                            <p>Lengkapi kode berikut.</p>
+                            <div class="code-block" style="font-size: 16px;">
+<span class="keyword">def</span> <span class="function">simple_interest</span>(<span class="operator">principal</span>, <span class="operator">rate</span>, <span class="operator">years</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;interest <span class="operator">=</span> principal <span class="operator">*</span> rate <span class="operator">*</span> years<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="answer71" placeholder="______" style="width: 80px; padding: 5px; font-family: monospace; border: 2px solid var(--black); border-radius: 4px;"> interest<br><br>
+<span class="keyword">result</span> <span class="operator">=</span> <span class="function">simple_interest</span>(<span class="string">200000</span>, <span class="string">0.05</span>, <span class="string">2</span>)<br>
+<span class="function">print</span>(result)
+                            </div>
+                            <button onclick="checkAnswer71()" style="background-color: var(--yellow); border: 4px solid var(--black); border-radius: 16px; padding: 10px 20px; font-size: 18px; font-family: 'Fredoka', sans-serif; font-weight: bold; cursor: pointer; box-shadow: 4px 4px 0px var(--black); margin-top: 10px;">Cek Jawaban</button>
+                            <p id="feedback71" style="margin-top: 15px; font-weight: bold; display: none; padding: 10px; background-color: #333; border-radius: 8px; border: 2px solid var(--black);"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide interactive" data-title="PYTHON" data-subtitle="OPTIMASI LOOP & STEP COUNT">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Latihan: Tebak Output 🕵️‍♂️</h2>
+                        <div class="slide-text">
+                            <div class="code-block" style="font-size: 16px;">
+<span class="keyword">def</span> <span class="function">simple_interest</span>(<span class="operator">principal</span>, <span class="operator">rate</span>, <span class="operator">years</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> principal <span class="operator">*</span> rate <span class="operator">*</span> years<br><br>
+<span class="keyword">interest</span> <span class="operator">=</span> <span class="function">simple_interest</span>(<span class="string">100000</span>, <span class="string">0.1</span>, <span class="string">3</span>)<br><br>
+<span class="function">print</span>(interest)
+                            </div>
+                            <p>Apa output-nya?</p>
+                            <input type="text" id="answer72" placeholder="Jawaban..." style="width: 150px; padding: 10px; font-size: 16px; border: 3px solid var(--black); border-radius: 8px;">
+                            <br>
+                            <button onclick="checkAnswer72()" style="background-color: var(--yellow); border: 4px solid var(--black); border-radius: 16px; padding: 10px 20px; font-size: 18px; font-family: 'Fredoka', sans-serif; font-weight: bold; cursor: pointer; box-shadow: 4px 4px 0px var(--black); margin-top: 15px;">Cek Jawaban</button>
+                            <p id="feedback72" style="margin-top: 15px; font-weight: bold; display: none; padding: 10px; background-color: #333; border-radius: 8px; border: 2px solid var(--black);"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<!-- Slide 73: Section Cover -->
+            <div class="slide" data-title="BASIC PEMROGRAMAN" data-subtitle="FINANCIAL LITERACY">
+                <div class="content-card" style="align-items: center; justify-content: center; background: radial-gradient(circle, var(--blue) 0%, #0056b3 100%); color: var(--white); border-color: var(--black);">
+                    <div class="inner-content" style="text-align: center;">
+                        <span style="background-color: var(--yellow); color: var(--black); padding: 8px 24px; border: 3px solid var(--black); border-radius: 20px; font-size: 18px; font-weight: 700; box-shadow: 4px 4px 0px var(--black); display: inline-block; margin-bottom: 25px; transform: rotate(-2deg);">
+                            BAGIAN 6
+                        </span>
+                        <h1 style="font-size: 55px; font-weight: 700; margin-bottom: 15px; text-shadow: 4px 4px 0px var(--black); line-height: 1.2;">
+                            Bunga Majemuk & Loops 🔄
+                        </h1>
+                        <p style="font-size: 24px; font-weight: 600; text-shadow: 2px 2px 0px var(--black); color: var(--yellow);">
+                            Simulasi Pertumbuhan Uang dengan Perulangan
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+<!-- Slide 73b: Content -->
+            <div class="slide" data-title="BASIC PEMROGRAMAN" data-subtitle="FINANCIAL LITERACY">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Apa Itu Bunga Majemuk? 🔄</h2>
+                        <div class="slide-text">
+                            <p><strong>Bunga majemuk</strong> adalah bunga yang ikut bertambah setiap periode.</p>
+                            <p>Sederhananya:</p>
+                            <ul style="padding-left: 25px; margin: 15px 0;">
+                                <li>Pada <strong>tahun pertama</strong>, uang awal mendapat bunga.</li>
+                                <li>Pada <strong>tahun kedua</strong>, bunga dihitung dari uang awal + bunga tahun pertama.</li>
+                            </ul>
+                            <div class="quote-box" style="transform: rotate(1deg);">
+                                Jadi uangnya bisa tumbuh jauh lebih cepat dibanding bunga tunggal! 📈
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="BASIC PEMROGRAMAN" data-subtitle="FINANCIAL LITERACY">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Analogi Bunga Majemuk 🐣</h2>
+                        <div class="slide-text">
+                            <p>Biar gampang, bayangin kamu lagi beternak ayam atau dapet uang jajan!</p>
+                            <div style="display: flex; gap: 20px; margin: 20px 0;">
+                                <div style="flex: 1; background-color: #FFCDD2; padding: 15px; border: 3px solid var(--black); border-radius: 12px; box-shadow: 4px 4px 0px var(--black);">
+                                    <strong>💰 Bunga Tunggal (Uang Jajan Tetap):</strong><br>
+                                    Kamu dapet bonus Rp 10.000 tiap tahun dari Mama karena nabung. Celenganmu makin penuh, tapi bonusnya <strong>selalu tetap Rp 10.000</strong> tiap tahun.
+                                </div>
+                                <div style="flex: 1; background-color: #C8E6C9; padding: 15px; border: 3px solid var(--black); border-radius: 12px; box-shadow: 4px 4px 0px var(--black);">
+                                    <strong>🐓 Bunga Majemuk (Beternak Ayam):</strong><br>
+                                    Kamu punya ayam bertelur. Saat anaknya menetas dan besar, <strong>anak ayam itu ikut bertelur lagi!</strong> Telurnya makin lama makin banyak tak terkendali!
+                                </div>
+                            </div>
+                            <div class="quote-box" style="transform: rotate(-1deg);">
+                                Di Bunga Majemuk, "bunganya ikut berbunga lagi". Uangnya cepat jadi bukit! ⛰️💸
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="BASIC PEMROGRAMAN" data-subtitle="FINANCIAL LITERACY">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Inti Perbedaannya! ⚖️</h2>
+                        <div class="slide-text">
+                            <ul style="margin-bottom: 20px; font-size: 20px;">
+                                <li><strong>Bunga Tunggal:</strong> Hanya uang ASLI kamu yang menghasilkan bunga.</li>
+                                <li><strong>Bunga Majemuk:</strong> Uang kamu menghasilkan bunga, lalu <strong>bunga itu ikut menghasilkan bunga lagi!</strong></li>
+                            </ul>
+                            <p>Contoh: Uang awal <strong>Rp100.000</strong>, Bunga <strong>10%</strong>, Durasi <strong>3 tahun</strong></p>
+                            <div style="background-color: var(--white); border: 3px solid var(--black); border-radius: 8px; overflow: hidden; margin-top: 15px;">
+                                <div style="background-color: #FFCDD2; padding: 10px; font-weight: bold; border-bottom: 2px solid var(--black);">Cara Kerja Bunga Tunggal (Santai)</div>
+                                <div style="padding: 10px; font-size: 18px;">Tiap tahun kamu cuma dapet jatah tambah Rp 10.000. Datar aja terus.</div>
+                            </div>
+                            <div style="background-color: var(--white); border: 3px solid var(--black); border-radius: 8px; overflow: hidden; margin-top: 15px;">
+                                <div style="background-color: #C8E6C9; padding: 10px; font-weight: bold; border-bottom: 2px solid var(--black);">Cara Kerja Bunga Majemuk (Nge-Gas!)</div>
+                                <div style="padding: 10px; font-size: 18px;">Tahun 1 nambah 10rb. Tahun 2 nambahnya 11rb. Tahun 3 nambahnya 12.100. Makin lama nambahnya makin guede!</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="BASIC PEMROGRAMAN" data-subtitle="OPTIMASI ALGORITMA">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Kenapa Pakai Loop? 🔄</h2>
+                        <div class="slide-text">
+                            <p>Untuk bunga majemuk, kita menghitung pertumbuhan uang tahun demi tahun.</p>
+                            <p>Karena prosesnya <strong>berulang</strong>, kita bisa memakai <strong>loop</strong>!</p>
+                            <div style="background-color: var(--white); padding: 15px; border: 4px dashed var(--black); border-radius: 12px; margin: 20px 0; transform: rotate(1deg);">
+                                <ul>
+                                    <li>Tahun 1: hitung bunga</li>
+                                    <li>Tahun 2: hitung bunga lagi</li>
+                                    <li>Tahun 3: hitung bunga lagi</li>
+                                </ul>
+                            </div>
+                            <div class="quote-box" style="transform: rotate(-1deg); background-color: var(--yellow);">
+                                Loop membantu program mengulang perhitungan secara otomatis! 🤖
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="BUNGA MAJEMUK & LOOPS">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Program Bunga Majemuk dengan Loop ⚙️</h2>
+                        <div class="slide-text">
+                            <div class="code-block" style="font-size: 14px;">
+<span class="keyword">money</span> <span class="operator">=</span> <span class="string">100000</span><br>
+<span class="keyword">rate</span> <span class="operator">=</span> <span class="string">0.1</span><br>
+<span class="keyword">years</span> <span class="operator">=</span> <span class="string">3</span><br><br>
+<span class="keyword">for</span> year <span class="keyword">in</span> <span class="function">range</span>(<span class="string">1</span>, years <span class="operator">+</span> <span class="string">1</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;interest <span class="operator">=</span> money <span class="operator">*</span> rate<br>
+&nbsp;&nbsp;&nbsp;&nbsp;money <span class="operator">=</span> money <span class="operator">+</span> interest<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Tahun"</span>, year, <span class="string">":"</span>, money)
+                            </div>
+                            <p>Output:</p>
+                            <div class="code-block" style="background-color: #333; color: var(--green); font-size: 14px; margin-top: 5px;">
+Tahun 1 : 110000.0<br>
+Tahun 2 : 121000.0<br>
+Tahun 3 : 133100.0
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="OPTIMASI ALGORITMA">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Cara Membaca Program 📖</h2>
+                        <div class="slide-text">
+                            <p>Awalnya: <code>money = 100000</code></p>
+                            <p>Setiap tahun (di dalam loop):</p>
+                            <div class="code-block" style="font-size: 16px;">
+interest <span class="operator">=</span> money <span class="operator">*</span> rate<br>
+money <span class="operator">=</span> money <span class="operator">+</span> interest
+                            </div>
+                            <p>Artinya:</p>
+                            <ul style="margin-left: 20px;">
+                                <li>Program menghitung bunga berdasarkan uang <strong>saat ini</strong>.</li>
+                                <li>Lalu menambahkan bunga ke uang tersebut.</li>
+                            </ul>
+                            <div class="quote-box" style="transform: rotate(1deg);">
+                                Karena uang bertambah setiap tahun, bunga tahun berikutnya juga ikut membesar! 📈
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="FUNCTION DI PYTHON">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Membuat Function Bunga Majemuk 🛠️</h2>
+                        <div class="slide-text">
+                            <div class="code-block" style="font-size: 14px;">
+<span class="keyword">def</span> <span class="function">calculate_compound_interest</span>(<span class="operator">principal</span>, <span class="operator">rate</span>, <span class="operator">years</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;money <span class="operator">=</span> principal<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> year <span class="keyword">in</span> <span class="function">range</span>(<span class="string">1</span>, years <span class="operator">+</span> <span class="string">1</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interest <span class="operator">=</span> money <span class="operator">*</span> rate<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;money <span class="operator">=</span> money <span class="operator">+</span> interest<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> money<br><br>
+<span class="keyword">total</span> <span class="operator">=</span> <span class="function">calculate_compound_interest</span>(<span class="string">100000</span>, <span class="string">0.1</span>, <span class="string">3</span>)<br>
+<span class="function">print</span>(<span class="string">"Total akhir:"</span>, total)
+                            </div>
+                            <p>Output:</p>
+                            <div class="code-block" style="background-color: #333; color: var(--green); font-size: 14px; margin-top: 5px;">
+Total akhir: 133100.0
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="FUNCTION DI PYTHON">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Menampilkan Tabel Simulasi 📊</h2>
+                        <div class="slide-text">
+                            <div class="code-block" style="font-size: 12px; max-height: 250px; overflow-y: auto;">
+<span class="keyword">def</span> <span class="function">show_compound_table</span>(<span class="operator">principal</span>, <span class="operator">rate</span>, <span class="operator">years</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;money <span class="operator">=</span> principal<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Tahun | Total Uang"</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"------------------"</span>)<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> year <span class="keyword">in</span> <span class="function">range</span>(<span class="string">1</span>, years <span class="operator">+</span> <span class="string">1</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interest <span class="operator">=</span> money <span class="operator">*</span> rate<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;money <span class="operator">=</span> money <span class="operator">+</span> interest<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(year, <span class="string">"|"</span>, money)<br><br>
+<span class="function">show_compound_table</span>(<span class="string">100000</span>, <span class="string">0.1</span>, <span class="string">3</span>)
+                            </div>
+                            <p>Output:</p>
+                            <div class="code-block" style="background-color: #333; color: var(--white); font-size: 14px; margin-top: 5px; font-family: monospace;">
+Tahun | Total Uang<br>
+------------------<br>
+1 | 110000.0<br>
+2 | 121000.0<br>
+3 | 133100.0
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="FUNCTION DI PYTHON">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Membandingkan Bunga Tunggal & Majemuk ⚖️</h2>
+                        <div class="slide-text">
+                            <p>Mari kita lihat perbandingan kode kedua jenis bunga ini dalam Python:</p>
+                            <div class="code-block" style="font-size: 11px; max-height: 250px; overflow-y: auto;">
+<span class="keyword">def</span> <span class="function">simple_interest_total</span>(<span class="operator">principal</span>, <span class="operator">rate</span>, <span class="operator">years</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;interest <span class="operator">=</span> principal <span class="operator">*</span> rate <span class="operator">*</span> years<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> principal <span class="operator">+</span> interest<br><br>
+<span class="keyword">def</span> <span class="function">compound_interest_total</span>(<span class="operator">principal</span>, <span class="operator">rate</span>, <span class="operator">years</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;money <span class="operator">=</span> principal<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> year <span class="keyword">in</span> <span class="function">range</span>(<span class="string">1</span>, years <span class="operator">+</span> <span class="string">1</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;money <span class="operator">=</span> money <span class="operator">+</span> (money <span class="operator">*</span> rate)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> money<br><br>
+simple <span class="operator">=</span> <span class="function">simple_interest_total</span>(<span class="string">100000</span>, <span class="string">0.1</span>, <span class="string">3</span>)<br>
+compound <span class="operator">=</span> <span class="function">compound_interest_total</span>(<span class="string">100000</span>, <span class="string">0.1</span>, <span class="string">3</span>)<br><br>
+<span class="function">print</span>(<span class="string">"Bunga tunggal:"</span>, simple)<br>
+<span class="function">print</span>(<span class="string">"Bunga majemuk:"</span>, compound)
+                            </div>
+                            <p>Output Program:</p>
+                            <div class="code-block" style="background-color: #333; color: var(--white); font-size: 13px; margin-top: 5px; font-family: monospace;">
+Bunga tunggal: 130000.0<br>
+Bunga majemuk: 133100.0
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="BASIC PEMROGRAMAN" data-subtitle="FINANCIAL LITERACY">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Kenapa Bunga Majemuk Menang? 🏆</h2>
+                        <div class="slide-text">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px;">
+                                <div style="background-color: rgba(255,255,255,0.7); border: 2px solid var(--black); padding: 12px; border-radius: 8px;">
+                                    <h4 style="margin-top: 0; color: var(--blue);">Bunga Tunggal</h4>
+                                    <p style="font-size: 13px; font-family: monospace;">100000 + 10000 + 10000 + 10000 = <strong>130000</strong></p>
+                                    <span style="font-size: 13px; color: #555;">* Tiap tahun ditabokin uang Rp 10.000 yang jumlahnya sama persis! Nggak seru! 😴</span>
+                                </div>
+                                <div style="background-color: rgba(255,255,255,0.7); border: 2px solid var(--black); padding: 12px; border-radius: 8px;">
+                                    <h4 style="margin-top: 0; color: var(--green);">Bunga Majemuk</h4>
+                                    <ul style="font-size: 13px; padding-left: 15px; margin: 0;">
+                                        <li><strong>Th 1:</strong> 100000 + 10000 = 110000</li>
+                                        <li><strong>Th 2:</strong> 110000 + <span style="color:red;font-weight:bold;">11000</span> = 121000</li>
+                                        <li><strong>Th 3:</strong> 121000 + <span style="color:red;font-weight:bold;">12100</span> = <strong>133100</strong></li>
+                                    </ul>
+                                    <span style="font-size: 13px; color: #555;">* Lihat angka merah! Karena total uangmu makin banyak, bunganya ikut-ikutan jadi makin gede! 🤯</span>
+                                </div>
+                            </div>
+                            <div class="quote-box" style="margin-top: 15px; transform: rotate(-0.5deg);">
+                                Semakin lama ditabung, efek Bunga Majemuk bakal kerasa banget kayak BOLA SALJU RAKSASA! ⛄❄️
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="LATIHAN & MINI PROJECT">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Latihan: Tebak Hasil Tahun Pertama 🧠</h2>
+                        <div class="slide-text">
+                            <p>Perhatikan potongan kode berikut:</p>
+                            <div class="code-block" style="font-size: 14px; margin-bottom: 10px;">
+money <span class="operator">=</span> <span class="string">200000</span><br>
+rate <span class="operator">=</span> <span class="string">0.05</span><br><br>
+interest <span class="operator">=</span> money <span class="operator">*</span> rate<br>
+money <span class="operator">=</span> money <span class="operator">+</span> interest<br><br>
+<span class="function">print</span>(money)
+                            </div>
+                            <p><strong>Berapakah nilai yang akan tercetak di layar?</strong></p>
+                            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                                <input type="text" id="answer83" placeholder="Ketik angka hasil output..." style="padding: 10px; border: 2px solid var(--black); border-radius: 8px; flex: 1; font-family: inherit;">
+                                <button onclick="checkAnswer83(this)" class="action-btn" style="background-color: var(--yellow); margin: 0;">Cek Jawaban</button>
+                            </div>
+                            <div class="feedback" id="feedback83" style="display: none; margin-top: 10px; padding: 10px; border: 2px solid var(--black); border-radius: 8px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="LATIHAN & MINI PROJECT">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Latihan: Lengkapi Loop 🔄</h2>
+                        <div class="slide-text">
+                            <p>Lengkapi bagian yang kosong (<code>_____</code>) agar program berjalan selama <strong>5 tahun</strong>:</p>
+                            <div class="code-block" style="font-size: 14px; margin-bottom: 10px;">
+money <span class="operator">=</span> <span class="string">100000</span><br>
+rate <span class="operator">=</span> <span class="string">0.1</span><br><br>
+<span class="keyword">for</span> year <span class="keyword">in</span> <span class="function">range</span>(<span class="string">1</span>, <span class="input-highlight">_____</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;interest <span class="operator">=</span> money <span class="operator">*</span> rate<br>
+&nbsp;&nbsp;&nbsp;&nbsp;money <span class="operator">=</span> money <span class="operator">+</span> interest<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(year, money)
+                            </div>
+                            <p><strong>Angka apa yang harus mengisi kekosongan tersebut?</strong></p>
+                            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                                <input type="text" id="answer84" placeholder="Ketik angka range..." style="padding: 10px; border: 2px solid var(--black); border-radius: 8px; flex: 1; font-family: inherit;">
+                                <button onclick="checkAnswer84(this)" class="action-btn" style="background-color: var(--yellow); margin: 0;">Cek Jawaban</button>
+                            </div>
+                            <div class="feedback" id="feedback84" style="display: none; margin-top: 10px; padding: 10px; border: 2px solid var(--black); border-radius: 8px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="MINI PROJECT: SAVING GROWTH">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Mini Project: Saving Growth Simulator 💻</h2>
+                        <div class="slide-text">
+                            <p>Buat program Python untuk membandingkan bunga tunggal dan bunga majemuk.</p>
+                            <div style="background-color: rgba(255,255,255,0.7); border: 2px solid var(--black); padding: 15px; border-radius: 8px; margin-top: 10px;">
+                                <h3 style="margin-top:0; color: var(--blue);">Fitur Program:</h3>
+                                <ul style="margin: 0; padding-left: 20px; font-size: 14px; line-height: 1.6;">
+                                    <li>Menerima input <strong>uang awal</strong>, <strong>persentase bunga</strong>, dan <strong>durasi tahun</strong>.</li>
+                                    <li>Menghitung total akhir dengan bunga tunggal dan bunga majemuk.</li>
+                                    <li>Menampilkan tabel pertumbuhan bunga majemuk tahun demi tahun.</li>
+                                    <li>Menyimpulkan opsi mana yang memberikan hasil lebih besar.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="MINI PROJECT: SAVING GROWTH">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Starter Code Mini Project 🚀</h2>
+                        <div class="slide-text">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                                <span style="font-size:12px; font-weight:bold;">Gunakan kode awal berikut sebagai acuan:</span>
+                                <button onclick="copyStarterCode()" class="action-btn" style="padding: 4px 10px; margin: 0; font-size: 12px; background-color: var(--yellow);">Salin Kode 📋</button>
+                            </div>
+                            <div class="code-block" id="starterCodeText" style="font-size: 11px; max-height: 250px; overflow-y: auto; text-align: left;">
+<span class="keyword">def</span> <span class="function">simple_interest_total</span>(<span class="operator">principal</span>, <span class="operator">rate</span>, <span class="operator">years</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;interest <span class="operator">=</span> principal <span class="operator">*</span> rate <span class="operator">*</span> years<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> principal <span class="operator">+</span> interest<br><br>
+<span class="keyword">def</span> <span class="function">compound_interest_total</span>(<span class="operator">principal</span>, <span class="operator">rate</span>, <span class="operator">years</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;money <span class="operator">=</span> principal<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> year <span class="keyword">in</span> <span class="function">range</span>(<span class="string">1</span>, years <span class="operator">+</span> <span class="string">1</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;money <span class="operator">=</span> money <span class="operator">+</span> (money <span class="operator">*</span> rate)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> money<br><br>
+<span class="keyword">def</span> <span class="function">show_compound_table</span>(<span class="operator">principal</span>, <span class="operator">rate</span>, <span class="operator">years</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;money <span class="operator">=</span> principal<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Tahun | Total Uang"</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"------------------"</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> year <span class="keyword">in</span> <span class="function">range</span>(<span class="string">1</span>, years <span class="operator">+</span> <span class="string">1</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;money <span class="operator">=</span> money <span class="operator">+</span> (money <span class="operator">*</span> rate)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(year, <span class="string">"|"</span>, money)<br><br>
+principal <span class="operator">=</span> <span class="function">int</span>(<span class="function">input</span>(<span class="string">"Uang awal: "</span>))<br>
+rate_percent <span class="operator">=</span> <span class="function">float</span>(<span class="function">input</span>(<span class="string">"Bunga per tahun (%): "</span>))<br>
+years = <span class="function">int</span>(<span class="function">input</span>(<span class="string">"Durasi tahun: "</span>))<br><br>
+rate <span class="operator">=</span> rate_percent <span class="operator">/</span> <span class="string">100</span><br><br>
+simple_total <span class="operator">=</span> <span class="function">simple_interest_total</span>(principal, rate, years)<br>
+compound_total <span class="operator">=</span> <span class="function">compound_interest_total</span>(principal, rate, years)<br><br>
+<span class="function">print</span>(<span class="string">"\\n=== SIMULASI BUNGA MAJEMUK ==="</span>)<br>
+<span class="function">show_compound_table</span>(principal, rate, years)<br><br>
+<span class="function">print</span>(<span class="string">"\\n=== HASIL AKHIR ==="</span>)<br>
+<span class="function">print</span>(<span class="string">"Bunga tunggal:"</span>, simple_total)<br>
+<span class="function">print</span>(<span class="string">"Bunga majemuk:"</span>, compound_total)<br><br>
+<span class="keyword">if</span> compound_total <span class="operator">&gt;</span> simple_total:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Bunga majemuk menghasilkan total lebih besar."</span>)<br>
+<span class="keyword">elif</span> compound_total <span class="operator">==</span> simple_total:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Hasilnya sama."</span>)<br>
+<span class="keyword">else</span>:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Bunga tunggal menghasilkan total lebih besar."</span>)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="MINI PROJECT: SAVING GROWTH">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Challenge Tambahan 🌟</h2>
+                        <div class="slide-text">
+                            <p>Kalau sudah selesai, coba tingkatkan (upgrade) programmu!</p>
+                            <p><strong>Pilih minimal 1 upgrade berikut:</strong></p>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 5px;">
+                                <div style="background-color: rgba(255,255,255,0.7); border: 2px solid var(--black); padding: 8px; border-radius: 6px; font-size: 13px;">
+                                    🎯 <strong>Upgrade 1:</strong> Tambahkan target tabungan & status pencapaian.
+                                </div>
+                                <div style="background-color: rgba(255,255,255,0.7); border: 2px solid var(--black); padding: 8px; border-radius: 6px; font-size: 13px;">
+                                    ⚖️ <strong>Upgrade 2:</strong> Tambahkan simulasi 2 pilihan bunga berbeda.
+                                </div>
+                                <div style="background-color: rgba(255,255,255,0.7); border: 2px solid var(--black); padding: 8px; border-radius: 6px; font-size: 13px;">
+                                    💵 <strong>Upgrade 3:</strong> Buat function format Rupiah (misal: Rp 100.000).
+                                </div>
+                                <div style="background-color: rgba(255,255,255,0.7); border: 2px solid var(--black); padding: 8px; border-radius: 6px; font-size: 13px;">
+                                    💡 <strong>Upgrade 4:</strong> Berikan rekomendasi finansial berdasarkan hasil.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="PYTHON" data-subtitle="MINI PROJECT: SAVING GROWTH">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Kriteria Completion / Kehadiran 📋</h2>
+                        <div class="slide-text">
+                            <p>Tugas dihitung selesai jika program memenuhi kriteria berikut:</p>
+                            <div style="overflow-x: auto; margin-top: 5px;">
+                                <table style="width: 100%; border-collapse: collapse; background: white; border: 2px solid var(--black);">
+                                    <thead>
+                                        <tr style="background-color: var(--yellow); border-bottom: 2px solid var(--black);">
+                                            <th style="padding: 8px; text-align: left; border-right: 2px solid var(--black);">Kriteria Fitur Program</th>
+                                            <th style="padding: 8px; text-align: center; width: 80px;">Wajib?</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr style="border-bottom: 1px solid var(--black);">
+                                            <td style="padding: 6px 8px; border-right: 2px solid var(--black);">Menggunakan function dengan beberapa parameter</td>
+                                            <td style="padding: 6px 8px; text-align: center; font-weight: bold; color: var(--green);">Ya</td>
+                                        </tr>
+                                        <tr style="border-bottom: 1px solid var(--black);">
+                                            <td style="padding: 6px 8px; border-right: 2px solid var(--black);">Menggunakan kata kunci <code>return</code></td>
+                                            <td style="padding: 6px 8px; text-align: center; font-weight: bold; color: var(--green);">Ya</td>
+                                        </tr>
+                                        <tr style="border-bottom: 1px solid var(--black);">
+                                            <td style="padding: 6px 8px; border-right: 2px solid var(--black);">Menggunakan loop (perulangan) untuk bunga majemuk</td>
+                                            <td style="padding: 6px 8px; text-align: center; font-weight: bold; color: var(--green);">Ya</td>
+                                        </tr>
+                                        <tr style="border-bottom: 1px solid var(--black);">
+                                            <td style="padding: 6px 8px; border-right: 2px solid var(--black);">Menghitung total bunga tunggal & bunga majemuk</td>
+                                            <td style="padding: 6px 8px; text-align: center; font-weight: bold; color: var(--green);">Ya</td>
+                                        </tr>
+                                        <tr style="border-bottom: 1px solid var(--black);">
+                                            <td style="padding: 6px 8px; border-right: 2px solid var(--black);">Menampilkan tabel pertumbuhan uang tahun demi tahun</td>
+                                            <td style="padding: 6px 8px; text-align: center; font-weight: bold; color: var(--green);">Ya</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 6px 8px; border-right: 2px solid var(--black);">Menampilkan perbandingan & kesimpulan akhir</td>
+                                            <td style="padding: 6px 8px; text-align: center; font-weight: bold; color: var(--green);">Ya</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="BASIC PEMROGRAMAN" data-subtitle="RANGKUMAN SESI 27-29">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Rangkuman Coding 📝</h2>
+                        <div class="slide-text">
+                            <p>Hari ini kita telah mempelajari konsep-konsep pemrograman berikut:</p>
+                            <ul style="line-height: 1.6; padding-left: 20px;">
+                                <li><strong>Algoritma & Optimasi:</strong> Langkah penyelesaian masalah secara efisien.</li>
+                                <li><strong>Step Count:</strong> Membantu membandingkan jumlah langkah eksekusi program.</li>
+                                <li><strong>Function & Parameter:</strong> Kumpulan perintah modular yang menerima data input.</li>
+                                <li><strong>Return Statement:</strong> Mengembalikan hasil perhitungan agar bisa dipakai kembali.</li>
+                                <li><strong>Loops (Perulangan):</strong> Membantu memproses perhitungan berkala secara otomatis.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="BASIC PEMROGRAMAN" data-subtitle="RANGKUMAN SESI 27-29">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Rangkuman Financial Literacy 💰</h2>
+                        <div class="slide-text">
+                            <p>Kita juga belajar menghubungkan coding dengan konsep finansial:</p>
+                            <ul style="line-height: 1.6; padding-left: 20px;">
+                                <li><strong>Menabung:</strong> Menyimpan sebagian uang untuk kebutuhan di masa mendatang.</li>
+                                <li><strong>Bunga Tunggal:</strong> Bunga yang hanya dihitung berdasarkan jumlah uang awal.</li>
+                                <li><strong>Bunga Majemuk:</strong> Bunga yang dihitung dari total uang yang terus berkembang (bunga berbunga).</li>
+                                <li><strong>Simulasi Keuangan:</strong> Dengan program Python, kita dapat memproyeksikan keputusan finansial secara cepat dan akurat.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="slide" data-title="BASIC PEMROGRAMAN" data-subtitle="EXIT TICKET">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Exit Ticket 🎫</h2>
+                        <div class="slide-text">
+                            <p>Jawablah 5 pertanyaan berikut secara mandiri:</p>
+                            <ol style="font-size: 13px; line-height: 1.5; padding-left: 20px;">
+                                <li>Apa itu optimasi algoritma?</li>
+                                <li>Apa fungsi <code>return</code> dalam Python?</li>
+                                <li>Apa bedanya <code>print()</code> dan <code>return</code>?</li>
+                                <li>Kenapa program besar sebaiknya dibagi menjadi beberapa function?</li>
+                                <li>Apa bedanya bunga tunggal dan bunga majemuk?</li>
+                            </ol>
+                            <button onclick="toggleAnswer(this)" class="action-btn" style="background-color: var(--blue); color: white; width: 100%; margin-top: 10px;">Lihat Contoh Jawaban</button>
+                            <div class="answer-box" style="display: none; background: rgba(255,255,255,0.9); border: 2px solid var(--black); border-radius: 8px; padding: 12px; margin-top: 10px; font-size: 12.5px; max-height: 160px; overflow-y: auto;">
+                                <strong>Contoh Jawaban:</strong>
+                                <ol style="padding-left: 20px; margin-top: 5px;">
+                                    <li>Optimasi algoritma adalah membuat program menyelesaikan tugas dengan langkah yang lebih efisien.</li>
+                                    <li><code>return</code> mengembalikan hasil function agar bisa disimpan atau diproses lagi oleh bagian program lainnya.</li>
+                                    <li><code>print()</code> hanya mencetak teks ke layar, sedangkan <code>return</code> menghasilkan nilai nyata yang bisa disimpan ke variabel.</li>
+                                    <li>Supaya program lebih modular, rapi, mudah didebug, dan kodenya bisa digunakan kembali.</li>
+                                    <li>Bunga tunggal dihitung dari pokok awal saja, sedangkan bunga majemuk dihitung dari pokok yang terus ditambah bunga sebelumnya.</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Controls -->
+        <div class="nav-container">
+            <button id="btnPrev" class="nav-btn" disabled>← Prev</button>
+            <div class="counter-group">
+                <div class="slide-counter"><span id="counter">1</span> / <span id="totalSlides"></span></div>
+                <div class="progress-bar-bg">
+                    <div id="bar" class="progress-bar" style="width: 10%;"></div>
+                </div>
+            </div>
+            <button id="btnNext" class="nav-btn">Next →</button>
+        </div>
+
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const bar = document.getElementById('bar');
+        const counter = document.getElementById('counter');
+        const btnPrev = document.getElementById('btnPrev');
+        const btnNext = document.getElementById('btnNext');
+        let currentSlide = 0;
+        document.getElementById('totalSlides').innerText = slides.length;
+
+        function showSlide(index) {
+            slides[currentSlide].classList.remove('active');
+            
+            // Boundary checks
+            if (index < 0) index = 0;
+            if (index >= slides.length) index = slides.length - 1;
+            
+            currentSlide = index;
+            slides[currentSlide].classList.add('active');
+            
+            // Scroll content to top
+            const contentCard = slides[currentSlide].querySelector('.content-card');
+            if (contentCard) contentCard.scrollTo(0, 0);
+            
+            // Update UI
+            btnPrev.disabled = currentSlide === 0;
+            btnNext.disabled = currentSlide === slides.length - 1;
+            
+            counter.innerText = currentSlide + 1;
+            bar.style.width = ((currentSlide + 1) / slides.length * 100) + '%';
+
+            const bannerTitle = document.getElementById('banner-title');
+            const bannerSubtitle = document.getElementById('banner-subtitle');
+            
+            const activeSlide = slides[currentSlide];
+            const slideTitleText = activeSlide.getAttribute('data-title') || "BASIC PEMROGRAMAN";
+            const slideSubtitleText = activeSlide.getAttribute('data-subtitle') || "OPTIMASI ALGORITMA";
+            
+            if (bannerTitle) bannerTitle.innerText = slideTitleText;
+            if (bannerSubtitle) bannerSubtitle.innerText = slideSubtitleText;
+        }
+
+        btnNext.addEventListener('click', () => {
+            if (currentSlide < slides.length - 1) showSlide(currentSlide + 1);
+        });
+        
+        btnPrev.addEventListener('click', () => {
+            if (currentSlide > 0) showSlide(currentSlide - 1);
+        });
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName.toLowerCase() === 'input' || e.target.tagName.toLowerCase() === 'textarea') {
+                return;
+            }
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                if (currentSlide < slides.length - 1) showSlide(currentSlide + 1);
+            }
+            if (e.key === 'ArrowLeft') {
+                if (currentSlide > 0) showSlide(currentSlide - 1);
+            }
+        });
+
+        function checkStepCountGuess(userVal, btn) {
+            const container = btn.parentElement;
+            const feedback = container.nextElementSibling;
+            
+            let normalizedUser = userVal.replace(/\s+/g, '');
+            
+            feedback.style.display = 'block';
+            if (normalizedUser === '4') {
+                feedback.innerHTML = `✅ <strong>TEPAT SEKALI!</strong><br>Karena program mengecek 5, 8, 12, lalu 20. Total 4 langkah!`;
+                feedback.style.backgroundColor = "#00E676";
+                feedback.style.color = "var(--black)";
+                btn.disabled = true;
+                btn.style.opacity = '0.5';
+                document.getElementById('sa-step-count').disabled = true;
+            } else {
+                feedback.innerHTML = `❌ <strong>SALAH!</strong><br>Coba hitung lagi berapa elemen yang harus dicek sebelum angka 20 ditemukan (termasuk angka 20 itu sendiri).`;
+                feedback.style.backgroundColor = "#FF0055";
+                feedback.style.color = "white";
+            }
+        }
+
+        function checkTebakOutputGuess(userVal, btn) {
+            const container = btn.parentElement;
+            const feedback = container.nextElementSibling;
+            
+            let normalizedUser = userVal.replace(/\s+/g, '');
+            
+            feedback.style.display = 'block';
+            if (normalizedUser === '3') {
+                feedback.innerHTML = `✅ <strong>TEPAT SEKALI!</strong><br>Karena angka 6 ditemukan pada pengecekan ke-3!`;
+                feedback.style.backgroundColor = "#00E676";
+                feedback.style.color = "var(--black)";
+                btn.disabled = true;
+                btn.style.opacity = '0.5';
+                document.getElementById('sa-tebak-output').disabled = true;
+            } else {
+                feedback.innerHTML = `❌ <strong>SALAH!</strong><br>Hitung urutan elemen 6 berada di indeks ke berapa (ingat ini step count mulai dari 1).`;
+                feedback.style.backgroundColor = "#FF0055";
+                feedback.style.color = "white";
+            }
+        }
+
+        function toggleAnswer(btn) {
+            const answer = btn.nextElementSibling;
+            if (answer.style.display === 'none') {
+                answer.style.display = 'block';
+                btn.innerText = 'Sembunyikan Jawaban';
+            } else {
+                answer.style.display = 'none';
+                btn.innerText = 'Lihat Jawaban';
+            }
+        }
+
+        function checkPilihAlgoGuess(userVal, btn) {
+            const container = btn.parentElement;
+            const feedback = container.nextElementSibling;
+            
+            let normalizedUser = userVal.trim().toUpperCase();
+            
+            feedback.style.display = 'block';
+            if (normalizedUser === 'B' || normalizedUser === 'CARA B') {
+                feedback.innerHTML = `✅ <strong>TEPAT SEKALI!</strong><br>Cara B lebih efisien karena data lebih mudah diatur dan program tidak perlu ditulis panjang!`;
+                feedback.style.backgroundColor = "#00E676";
+                feedback.style.color = "var(--black)";
+                btn.disabled = true;
+                btn.style.opacity = '0.5';
+                document.getElementById('sa-pilih-algo').disabled = true;
+            } else {
+                feedback.innerHTML = `❌ <strong>SALAH!</strong><br>Coba pikirkan cara mana yang lebih rapi dan singkat untuk jumlah data yang banyak.`;
+                feedback.style.backgroundColor = "#FF0055";
+                feedback.style.color = "white";
+            }
+        }
+        function checkPrintReturn1(userVal, btn) {
+            const container = btn.parentElement;
+            const feedback = container.querySelector('.feedback');
+            let normalizedUser = userVal.trim().toLowerCase().replace('()', '');
+            feedback.style.display = 'block';
+            if (normalizedUser === 'print') {
+                feedback.innerHTML = `✅ <strong>TEPAT!</strong> Karena hanya butuh ditampilkan ke layar.`;
+                feedback.style.backgroundColor = "#00E676";
+                feedback.style.color = "var(--black)";
+                btn.disabled = true;
+                btn.style.opacity = '0.5';
+                document.getElementById('sa-print-return-1').disabled = true;
+            } else {
+                feedback.innerHTML = `❌ <strong>SALAH!</strong> Coba ingat mana yang cocok untuk pesan di layar.`;
+                feedback.style.backgroundColor = "#FF0055";
+                feedback.style.color = "white";
+            }
+        }
+
+        function checkPrintReturn2(userVal, btn) {
+            const container = btn.parentElement;
+            const feedback = container.querySelector('.feedback');
+            let normalizedUser = userVal.trim().toLowerCase().replace('()', '');
+            feedback.style.display = 'block';
+            if (normalizedUser === 'return') {
+                feedback.innerHTML = `✅ <strong>TEPAT!</strong> Karena nilainya mau dipakai lagi untuk dihitung.`;
+                feedback.style.backgroundColor = "#00E676";
+                feedback.style.color = "var(--black)";
+                btn.disabled = true;
+                btn.style.opacity = '0.5';
+                document.getElementById('sa-print-return-2').disabled = true;
+            } else {
+                feedback.innerHTML = `❌ <strong>SALAH!</strong> Ingat, hasil perhitungan harus disimpan untuk diskon.`;
+                feedback.style.backgroundColor = "#FF0055";
+                feedback.style.color = "white";
+            }
+        }
+
+        function checkAnswer71() {
+            const val = document.getElementById("answer71").value.trim().toLowerCase();
+            const feedback = document.getElementById("feedback71");
+            feedback.style.display = "block";
+            if(val === "return") {
+                feedback.innerHTML = "🎉 <strong>Benar!</strong> Kita menggunakan <code>return</code> untuk mengembalikan nilai interest.";
+                feedback.style.color = "var(--green)";
+            } else {
+                feedback.innerHTML = "❌ <strong>Coba lagi!</strong> Ingat kata kunci untuk mengembalikan nilai dari function.";
+                feedback.style.color = "var(--red)";
+            }
+        }
+
+        function checkAnswer72() {
+            const val = document.getElementById("answer72").value.trim();
+            const feedback = document.getElementById("feedback72");
+            feedback.style.display = "block";
+            if(val === "30000" || val === "30000.0") {
+                feedback.innerHTML = "🎉 <strong>Benar!</strong> 100000 * 0.1 * 3 = 30000.0";
+                feedback.style.color = "var(--green)";
+            } else {
+                feedback.innerHTML = "❌ <strong>Kurang tepat.</strong> Coba kalikan 100000 dengan 0.1, lalu kalikan 3.";
+                feedback.style.color = "var(--red)";
+            }
+        }
+
+        function checkAnswer83(btn) {
+            const val = document.getElementById("answer83").value.trim();
+            const feedback = document.getElementById("feedback83");
+            feedback.style.display = "block";
+            if (val === "210000" || val === "210000.0") {
+                feedback.innerHTML = "✅ <strong>TEPAT SEKALI!</strong><br>Bunga tahun pertama: 200,000 * 0.05 = 10,000. Total uang menjadi 210,000.";
+                feedback.style.backgroundColor = "#00E676";
+                feedback.style.color = "var(--black)";
+                btn.disabled = true;
+                btn.style.opacity = '0.5';
+                document.getElementById('answer83').disabled = true;
+            } else {
+                feedback.innerHTML = "❌ <strong>SALAH!</strong><br>Hitung kembali 5% dari 200.000, lalu tambahkan ke 200.000.";
+                feedback.style.backgroundColor = "#FF0055";
+                feedback.style.color = "white";
+            }
+        }
+
+        function checkAnswer84(btn) {
+            const val = document.getElementById("answer84").value.trim();
+            const feedback = document.getElementById("feedback84");
+            feedback.style.display = "block";
+            if (val === "6") {
+                feedback.innerHTML = "✅ <strong>TEPAT SEKALI!</strong><br>Karena range(1, 6) akan menghasilkan perulangan untuk tahun ke 1, 2, 3, 4, dan 5.";
+                feedback.style.backgroundColor = "#00E676";
+                feedback.style.color = "var(--black)";
+                btn.disabled = true;
+                btn.style.opacity = '0.5';
+                document.getElementById('answer84').disabled = true;
+            } else {
+                feedback.innerHTML = "❌ <strong>SALAH!</strong><br>Ingat bahwa batas akhir range() tidak diikutsertakan. Jika ingin berjalan 5 tahun (1 s/d 5), batas atasnya adalah berapa?";
+                feedback.style.backgroundColor = "#FF0055";
+                feedback.style.color = "white";
+            }
+        }
+
+        function copyStarterCode() {
+            const codeText = `def simple_interest_total(principal, rate, years):
+    interest = principal * rate * years
+    return principal + interest
+
+def compound_interest_total(principal, rate, years):
+    money = principal
+    for year in range(1, years + 1):
+        money = money + (money * rate)
+    return money
+
+def show_compound_table(principal, rate, years):
+    money = principal
+    print("Tahun | Total Uang")
+    print("------------------")
+    for year in range(1, years + 1):
+        money = money + (money * rate)
+        print(year, "|", money)
+
+principal = int(input("Uang awal: "))
+rate_percent = float(input("Bunga per tahun (%): "))
+years = int(input("Durasi tahun: "))
+
+rate = rate_percent / 100
+
+simple_total = simple_interest_total(principal, rate, years)
+compound_total = compound_interest_total(principal, rate, years)
+
+print("\\n=== SIMULASI BUNGA MAJEMUK ===")
+show_compound_table(principal, rate, years)
+
+print("\\n=== HASIL AKHIR ===")
+print("Bunga tunggal:", simple_total)
+print("Bunga majemuk:", compound_total)
+
+if compound_total > simple_total:
+    print("Bunga majemuk menghasilkan total lebih besar.")
+elif compound_total == simple_total:
+    print("Hasilnya sama.")
+else:
+    print("Bunga tunggal menghasilkan total lebih besar.")`;
+            
+            navigator.clipboard.writeText(codeText).then(() => {
+                alert("Kode awal berhasil disalin ke clipboard!");
+            }).catch(err => {
+                console.error("Gagal menyalin kode: ", err);
+            });
+        }
+    </script>
+</body>
+</html>

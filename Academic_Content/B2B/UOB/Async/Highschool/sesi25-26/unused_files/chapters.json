@@ -1,0 +1,86 @@
+{
+  "1": [
+    {
+      "time": 0,
+      "label": "Pengenalan Conditional"
+    },
+    {
+      "time": 47,
+      "label": "Analogi Kehidupan Nyata"
+    },
+    {
+      "time": 95,
+      "label": "Analogi Game"
+    }
+  ],
+  "2": [
+    {
+      "time": 0,
+      "label": "If dan Else di Python"
+    },
+    {
+      "time": 207,
+      "label": "Praktek Kode"
+    },
+    {
+      "time": 415,
+      "label": "Operator Perbandingan"
+    }
+  ],
+  "3": [
+    {
+      "time": 0,
+      "label": "Mengenal Elif"
+    },
+    {
+      "time": 198,
+      "label": "Kategori Nilai"
+    },
+    {
+      "time": 397,
+      "label": "Kesalahan Umum"
+    }
+  ],
+  "4": [
+    {
+      "time": 0,
+      "label": "Nested Conditionals"
+    },
+    {
+      "time": 219,
+      "label": "Pengecekan Bertahap"
+    },
+    {
+      "time": 439,
+      "label": "Contoh Kode"
+    }
+  ],
+  "5": [
+    {
+      "time": 0,
+      "label": "Logical Operator (And, Or)"
+    },
+    {
+      "time": 366,
+      "label": "Not Operator"
+    },
+    {
+      "time": 732,
+      "label": "Kondisi Kompleks"
+    }
+  ],
+  "6": [
+    {
+      "time": 0,
+      "label": "Kebutuhan vs Keinginan"
+    },
+    {
+      "time": 739,
+      "label": "Langkah Membuat Budget"
+    },
+    {
+      "time": 1479,
+      "label": "Menilai Risiko"
+    }
+  ]
+}

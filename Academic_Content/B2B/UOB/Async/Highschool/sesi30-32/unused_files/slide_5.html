@@ -1,0 +1,35 @@
+ data-title="DEBUGGING" data-subtitle="Latihan">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Latihan: Temukan Bug! 🔎🐛</h2>
+                        <div class="slide-text">
+                            <p>Di bawah ini terdapat rantai function untuk menghitung harga akhir belanjaan:</p>
+                            <div class="code-block" style="font-size: 14px; max-height: 200px; overflow-y: auto;">
+<span class="keyword">def</span> <span class="function">get_total</span>(price, quantity):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> price + quantity<br><br>
+<span class="keyword">def</span> <span class="function">get_discount</span>(total):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> total * <span class="string">0.1</span><br><br>
+<span class="keyword">def</span> <span class="function">get_final_price</span>(total, discount):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> total - discount
+                            </div>
+                            <p style="margin-top: 10px; font-size: 18px;"><strong>Pertanyaan:</strong> Di function manakah bug tersebut berada?</p>
+                            
+                            <div style="margin-top: 15px; display: flex; flex-direction: column; gap: 8px;">
+                                <div class="quiz-option" onclick="checkBugLocation('get_total', this)">
+                                    <span>get_total() ⚙️</span>
+                                </div>
+                                <div class="quiz-option" onclick="checkBugLocation('get_discount', this)">
+                                    <span>get_discount() ⚙️</span>
+                                </div>
+                                <div class="quiz-option" onclick="checkBugLocation('get_final_price', this)">
+                                    <span>get_final_price() ⚙️</span>
+                                </div>
+                                <div id="bug-location-feedback" class="result-box" style="display: none; min-height: 50px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 45: Latihan Perbaiki Dependency -->
+            

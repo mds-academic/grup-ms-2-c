@@ -1,0 +1,30 @@
+ data-title="ERROR HANDLING" data-subtitle="Latihan">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Latihan: Tebak Jenis Error! 🕵️‍♂️</h2>
+                        <div class="slide-text">
+                            <p>Perhatikan baris kode Python berikut:</p>
+                            <div class="code-block">
+number <span class="operator">=</span> <span class="function">int</span>(<span class="string">"abc"</span>)
+                            </div>
+                            <p style="margin-top: 15px;"><strong>Jika baris di atas dijalankan, error jenis apa yang akan muncul?</strong></p>
+                            
+                            <div style="margin-top: 20px;">
+                                <div class="quiz-option" onclick="checkErrorQuiz('ValueError', this)">
+                                    <span>ValueError 💥</span>
+                                </div>
+                                <div class="quiz-option" onclick="checkErrorQuiz('TypeError', this)">
+                                    <span>TypeError 💥</span>
+                                </div>
+                                <div class="quiz-option" onclick="checkErrorQuiz('ZeroDivisionError', this)">
+                                    <span>ZeroDivisionError 💥</span>
+                                </div>
+                                <div id="error-quiz-feedback" class="result-box" style="display: none; min-height: 50px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 34: Latihan Lengkapi try-except -->
+            

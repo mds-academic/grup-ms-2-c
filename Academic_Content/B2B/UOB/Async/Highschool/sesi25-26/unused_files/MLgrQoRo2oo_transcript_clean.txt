@@ -1,0 +1,52 @@
+[00:02] Halo teman-teman, hari ini kita akan
+[00:04] membahas tentang conditional. Nah,
+[00:07] sebelum kita membahas conditional, yuk
+[00:09] kita perhatikan slide berikut ini. Nah,
+[00:13] slide berikut ini menunjukkan bla bla
+[00:16] bla bla bla bla. Ini tes aja kok enggak
+[00:18] bukan asli. Nah, jadi teman-teman pada
+[00:21] saat kita pada saat kita mencoding atau
+[00:24] memprogram sesuatu, sebuah program itu
+[00:26] dia tidak berjalan lurus-lurus aja loh
+[00:28] seperti kereta api teman-teman. Tapi
+[00:31] mereka itu juga kadang harus memilih
+[00:33] apakah ee harus menggunakan cara A atau
+[00:36] cara B, apakah harus menjalankan ee cara
+[00:40] A atau menjalankan cara B dulu. Jadi
+[00:42] program itu dia harus memilih. Nah,
+[00:47] di dalam dunia pemrograman konsep
+[00:49] memilih jalan ini disebut dengan
+[00:52] Nah, kita sebagai manusia juga
+[00:57] membuat keputusan. Contohnya misalnya
+[00:59] kalau hujan jatuh, hujan jatuh. Kalau
+[01:01] misalnya hujan turun kita harus bawa
+[01:03] payung. Kalau perut lapar kita harus
+[01:05] makan. Nah, hujan turun dan perut lapar
+[01:08] itu namanya adalah condition atau
+[01:11] kondisi. Jadi, komputer itu juga pintar
+[01:15] untuk melakukan dan ee memilih sesuatu
+[01:18] berdasarkan kondisi yang telah kita
+[01:20] tetapkan. Nah, condition itu apa sih?
+[01:25] Condition itu kalau dalam program adalah
+[01:28] sebuah cara gimana komputer berpikir.
+[01:30] Nah, misalnya kalian sedang membuat
+[01:32] game, di game itu kalian membuat kondisi
+[01:35] di mana kalau misalnya dia makan apel
+[01:38] nyawanya akan bertambah. Kalau misalnya
+[01:40] dia kena duri, maka dia nyawanya akan
+[01:44] berkurang. Nah, kondisinya adalah makan
+[01:46] apel dan kena duri. Itu contoh kalau di
+[01:51] game. Contoh lain, bayangkan kalian
+[01:53] sedang berjalan ke ee di tengah hutan
+[01:56] terus kalian menemukan sebuah castle
+[01:58] yang isinya itu penuh harta gitu ya.
+[02:00] Nah, untuk membuka castle tersebut kita
+[02:03] harus punya kunci. Kalau kita enggak
+[02:04] punya kunci, kita tidak bisa buka
+[02:06] pintunya. Kalau misalnya kita tidak bisa
+[02:09] buka pintunya, kita enggak bisa dapat
+[02:10] hartanya. Nah,
+[02:12] punya kunci itu disebut dengan kondisi
+[02:15] ya, Teman-teman. Oke, tuh untuk
+[02:18] condition.
+[02:20] B

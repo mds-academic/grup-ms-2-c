@@ -1,0 +1,246 @@
+[00:00] Nested condition itu apa sih? Nested
+[00:02] condition adalah sebuah conditional yang
+[00:05] ada di dalam conditional. Nah, maksudnya
+[00:07] seperti apa, Kak? Contoh sederhana
+[00:09] seperti ini. Setelah program mengecek
+[00:11] sebuah kondisi, program akan mengecek
+[00:14] kondisi lain di dalamnya. Jadi, di sini
+[00:17] bukan berarti kalau misalnya kita di
+[00:19] multiple eh conditional sebelumnya itu
+[00:22] kan kita kalau ada kondisi satu, kondisi
+[00:25] dua, dan kondisi ketiga gitu ya. Nah,
+[00:27] kalau di dalam nestedate conditionals
+[00:30] itu berarti dia di dalam kondisi satu
+[00:32] itu ada kondisi lain. Berarti dia eh
+[00:35] kondisi satu benar terus dia akan
+[00:38] mengecek kondisi yang ada di dalam
+[00:39] kondisi satu tadi. Kalau multiple
+[00:41] condition yang sebelumnya itu kalau
+[00:43] misalnya kondisi satu tidak benar maka
+[00:45] dia akan ngecek nih kondisi yang
+[00:47] sebelumnya, kondisi yang kedua. Kalau
+[00:49] misalkan kondisi kedua salah, dia akan
+[00:51] mengecek kondisi ketiga. Nah, kalau next
+[00:53] state conditional ini dia kondisi satu
+[00:55] misalnya benar, maka dia akan mengecek
+[00:57] kondisi yang ada di dalam kondisi satu
+[00:59] itu tadi. Nah, contohnya di dalam
+[01:01] kehidupan nyata. Bayangkan di kita mau
+[01:04] menonton sebuah film. Nah, ketika kita
+[01:07] mau masuk bioskop, kita harus dicek dulu
+[01:10] nih. Kita dicek nih sama sapam apakah
+[01:12] kita punya tiket apa tidak. Kalau
+[01:14] misalnya kita punya tiket, maka kita
+[01:15] boleh masuk ke dalam bioskop. Nah,
+[01:17] setelah kita masuk ke dalam bioskop
+[01:19] tadi, kita ngecek lagi apakah kamu kita
+[01:23] mau misalnya mau menonton sebuah film
+[01:25] yang ada parental guidance-nya. Nah,
+[01:29] berarti petugas yang ada di dalam
+[01:31] bioskop itu dia akan mengecek kembali
+[01:33] apakah kamu cukup umur. Mungkin
+[01:35] dibuktikan dengan KTP gitu ya. Apakah
+[01:37] kamu punya KTP untuk menonton film?
+[01:39] Kalau misalnya dia ee punya KTP dan dia
+[01:43] bisa ee apa memverifikasi kalau misalnya
+[01:46] umurnya cukup, maka dia boleh menonton
+[01:48] filmnya. Jadi di sini ada pengecekan
+[01:51] dalam pengecekan. Pengecekan pertama
+[01:53] apakah dia punya tiket, pengecekan kedua
+[01:55] apakah umurnya cukup. Jadi kondisi
+[01:58] pertama dia cek dulu apakah dia punya
+[01:59] tiket. Kalau dia punya tiket dia baru
+[02:01] ngecek apakah umurnya cukup gitu ya.
+[02:03] Jadi di sini bukan kondisi satu, bukan
+[02:06] kondisi dua, tapi kondisi 1 memiliki
+[02:09] kondisi 1A misalnya seperti itu. Nah,
+[02:13] kita bahas lebih dalam yuk. Analoginya
+[02:16] seperti ini. Contoh lainnya ketika kita
+[02:18] mau mau mau memasuki sebuah gedung atau
+[02:21] kita mau memasuki sebuah museum. Nah,
+[02:24] ketika kita masuk museum itu kan kita
+[02:26] harus mendaftarkan ya, mendaftar dan
+[02:28] mendapatkan kartu akses. Di pintu awal
+[02:31] kita dicek apakah kita punya kartu akses
+[02:34] masuk ke museum. Oh iya, kita punya
+[02:36] kartu akses maka kita akan masuk ke
+[02:39] dalam museum. Nah, misalnya di dalam
+[02:43] museum ini kita melihat sebuah ruangan
+[02:45] nih. Nah, misalnya dia ruang rapat atau
+[02:48] misalnya dalam museum itu ada ruangan
+[02:50] khusus staf. Nah, kalau kita mau masuk
+[02:52] ke dalam ruang staf itu di depan tuh ada
+[02:54] kondisinya lagi ya. Apakah kamu punya
+[02:57] izin untuk masuk ke ruangan khusus tadi,
+[03:00] ruang rapat tadi atau ruang staf tadi.
+[03:02] Kalau kamu punya maka dia akan
+[03:04] menjalankan sesuatu. Kalau kamu tidak
+[03:06] punya maka dia akan menjalankan yang
+[03:07] lainnya. Jadi kalau dalam nonstate
+[03:10] condition kita syaratnya adalah harus
+[03:13] lulus dulu kondisi pertama
+[03:17] baru kita pergi ke kondisi kedua gitu
+[03:19] ya. Kalau misalnya yang multi branch eh
+[03:23] conditional sebelumnya kan kita kalau
+[03:24] kondisi pertama tidak lolos dia akan
+[03:26] mengecek kondisi kedua. Kalau di sini
+[03:28] kalau lolos maka dia akan ngecek lagi
+[03:31] kondisi kedua tidak langsung menjalankan
+[03:33] sebuah perintah. Oke kita lanjut bahasa
+[03:37] dalam bahasa peman Python nestedate
+[03:39] conditional itu diimplementasikan
+[03:41] seperti ini. Nah ini kita eh gunakan
+[03:44] analogi ee bioskop sebelumnya gitu ya.
+[03:47] anggap aja e bioskop ini punya peraturan
+[03:49] beli tiketnya harus sebelum masuk dan eh
+[03:53] kalau sudah masuk kita boleh pilih
+[03:54] langsung film yang mau kita tonton apa
+[03:56] gitu contohnya ya. Nah, di sini kita
+[03:59] punya bahasa Python ada pertama
+[04:02] deklarasi variabel dulu. Nah, deklarasi
+[04:06] variabelnya di sini ada dua, has ticket
+[04:10] atau eh bukan atau dan juga age. Nah,
+[04:14] kalau misalnya di sini kita lihat
+[04:16] misalnya eh kondisinya
+[04:19] Kak Nurul itu punya tiket dia true. Nah,
+[04:24] dan juga Kak Nurul itu usianya 16 tahun.
+[04:27] Nah, di sini nested conditionalnya
+[04:29] seperti ini. Pertama, dia ngecek apakah,
+[04:33] if, jika dia mempunyai tiket. Nah, kalau
+[04:37] misalnya dalam bahasa pemrograman Python
+[04:40] untuk nilai true sama false, kalau
+[04:42] nilainya true dia langsung nulis seperti
+[04:44] ini bisa ya. Jadi dia enggak perlu ada
+[04:47] lebih besar atau sama dengan sama dengan
+[04:49] true. Kalau kita juga bisa nulis seperti
+[04:52] ini ya, Teman-teman ya. if eh has ticket
+[04:56] has ticket
+[04:59] sama dengan sama dengan true. Nah, ini
+[05:02] kita bisa tulis seperti ini. Tapi Python
+[05:04] itu dia sudah sangat canggih. Ketika
+[05:06] kita tulis has ticket aja, dia akan
+[05:08] ngecek nih apakah ee apakah dia benar
+[05:12] kondisinya apa tidak gitu ya. Jadi ee
+[05:14] apa itu namanya? Dia akan langsung
+[05:18] mengecek.
+[05:19] Nah, kalau sudah nih dia ngecek apakah
+[05:23] dia punya tiket, kalau dia benar, maka
+[05:25] akan ada kondisi kedua di dalamnya.
+[05:28] Kondisi keduanya apa? Jika umurnya lebih
+[05:31] dari atau sama dengan 13, maka dia boleh
+[05:34] masuk ke dalam studio A misalnya. Tapi
+[05:37] kalau misalnya tidak, kita tuliskan else
+[05:39] di sini, maka dia akan menampilkan
+[05:41] tulisan umur belum cukup. Nah, jadi
+[05:44] kondisi pertamanya dia ngecek dulu
+[05:45] apakah punya tiket apa enggak. Kalau
+[05:47] misalnya dia enggak punya tiket, maka
+[05:50] program yang ada di dalam yang di
+[05:51] bawahnya itu akan dikip. Dia akan
+[05:54] langsung menjalankan yang else karena di
+[05:56] sini kondisinya dia tidak punya tiket
+[05:58] kalau misalnya di sini nilainya false
+[06:00] ya. Nah, dia akan langsung ke bawah
+[06:02] sini. Tapi kalau misalnya true maka dia
+[06:04] akan menjalankan if yang ada di dalamnya
+[06:06] seperti ini. Nah, kalau e kalau perintah
+[06:09] biasanya kan dia langsung ngprint atau
+[06:11] melakukan perhitungan atau segala macam.
+[06:13] Nah, kalau di sini dia di dalam if-nya
+[06:15] ada if-nya lagi seperti itu,
+[06:17] Teman-teman. Oke, itu untuk multi eh
+[06:21] nested conditional yang ada di dalam
+[06:23] bahasa pemrograman Python.
+[06:26] Cara bacanya tadi kita sudah bahas ya,
+[06:28] Teman-teman ya. Kondisi satu dan juga
+[06:31] kondisi dua. Dan ini ada notice nih, ada
+[06:34] warning. Jangan lupa ketika kita membuat
+[06:37] sebuah ear itu dia akan ada
+[06:42] coindentasi ya, indentation yang harus
+[06:45] kita letakkan secara tepat. Nih
+[06:47] contohnya di sini kondisi pertama apakah
+[06:52] dia punya tiket itu kan dia harus ada
+[06:54] tab-nya ya, indentation-nya dulu atau
+[06:57] spasi empat kali. Nah, kalau misalnya
+[07:00] kita tambahin if lagi di dalamnya, maka
+[07:03] di bawahnya itu kita perlu tambahkan
+[07:06] indentation juga. Harusnya ketika kita
+[07:08] mengetik if
+[07:10] kita enter dia akan langsung auto
+[07:12] indentation juga atau kalau misalnya dia
+[07:14] indentation-nya hilang bisa kita spasi
+[07:16] empat kali. Yang penting perintahnya
+[07:18] jangan sampai mereka semua ada di dalam
+[07:23] ee satu garis yang sama gitu ya. Jadi
+[07:25] if-nya semuanya ee rata. Kalau if-nya
+[07:28] sama rata seperti ini semua, maka dia
+[07:31] dianggap bukan nested conditional, tapi
+[07:32] if biasa gitu, Teman-teman, ya. Jadi,
+[07:35] jangan sampai kita eh salah atau kurang
+[07:38] menambahkan indentation.
+[07:41] Sekarang contoh lain, nested condition
+[07:45] di dalam sebuah game. Misalnya kita mau
+[07:49] ee menambahkan sebuah level bonus gitu
+[07:52] ya. Jadi ee supaya kita bisa
+[07:55] nambahin ee koinnya atau uangnya gitu
+[07:58] ya.
+[07:59] Dan di sini kita kalau mau masuk level
+[08:02] bonus, kita kasih kondisi jika ee pemain
+[08:07] sudah menyelesaikan level 1 dan pemain
+[08:11] punya minimal 100 koin. Jadi untuk masuk
+[08:14] ke level bonus dia sudah menyelesaikan
+[08:16] level 1 dan pemain punya minimal 100
+[08:19] koin. Nah, nested condition-nya seperti
+[08:22] ini. Pertama, as always, kita harus
+[08:25] tambahkan dulu, kita deklarasikan dulu
+[08:29] sebuah variabel, ya. Eh, variabelnya
+[08:31] yang pertama di sini apakah levelnya
+[08:34] sudah komplit? Kalau sudah, kita tulis
+[08:37] di sini true, kalau belum kita tulis
+[08:38] false. Baru kita tambahkan variabel yang
+[08:40] akan mengecek koinnya. Apakah koinnya ee
+[08:44] lebih dari 100 apa enggak, nanti kita
+[08:46] cek, ya. Nah, di sini kita masuk ke
+[08:49] condition yang pertama. Apakah levelnya
+[08:51] sudah komplit? Kalau misalnya salah,
+[08:53] misalnya di sini anggap aja false ya
+[08:55] yang di sini. Kalau misalnya dia
+[08:58] levelnya belum complete, maka dia akan
+[09:00] langsung menjalankan else-nya. Dia akan
+[09:03] ng-print selesaikan level terlebih
+[09:05] dahulu. Tapi kalau misalnya dia benar,
+[09:09] since kita nulis di sini benar, maka di
+[09:11] sini dia akan langsung mengecek kondisi
+[09:14] yang kedua. dia ngecek kondisi keduanya
+[09:17] apakah koinnya lebih dari 100. Apakah
+[09:21] 120? Ini kan koinnya tadi 120 ya. Apakah
+[09:24] 120 lebih dari 100? Oh iya. Maka dia
+[09:28] akan langsung ee ngprint masuk ke level
+[09:31] bonus. Dia akan bisa langsung masuk.
+[09:33] Tapi misalnya di sini kita koinnya
+[09:34] anggap aja masih 20. Kita cek di sini
+[09:38] apakah koinnya apakah 20 lebih dari 100?
+[09:42] Tidak. Oh. Maka dia akan langsung
+[09:43] menjalankan el. koin belum cukup, maka
+[09:47] programnya dia tidak bisa masuk ke level
+[09:49] bonus. Jadi, itulah contoh dari
+[09:53] nestedate condition. Untuk
+[09:57] eh next condition ini ada beberapa
+[10:01] masalah. Nah, masalahnya
+[10:03] apa? Masalahnya ini ketika kita
+[10:07] menggunakan nested condition terlalu
+[10:10] banyak, kadang dia sama masalahnya
+[10:13] seperti multiple conditional yang
+[10:15] sebelumnya. Dia akan menjorok ke kanan,
+[10:18] ke kanan dan ke kanan terus-menerus gitu
+[10:20] ya. Jadi programnya terlalu panjang.
+[10:23] Nah, untuk me
+[10:27] membantu kita gitu ya membaca program
+[10:30] yang punya nested condition yang eh ada
+[10:33] banyak gitu ya eh condition-nya, kita
+[10:36] perlu menggunakan yang namanya logical
+[10:39] operators. Tapi sebelum kita ke logical
+[10:42] operators, silakan kerjakan latihan
+[10:46] conditionals berikut ini.
+[10:52] Baik, Teman-teman. Sebelumnya kita telah
+[10:54] membahas tentang ifal.

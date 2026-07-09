@@ -1,0 +1,409 @@
+[00:00] belum dijelas seperti yang sudah
+[00:01] dijelaskan sebelumnya, nestedate
+[00:03] condition itu bisa membuat program kita
+[00:05] more complicated dengan if yang
+[00:07] bercabang, bercabang, bercabang, dan
+[00:09] bercabang ya, yang membuat program kita
+[00:11] eh jadi panjang ke kanan gitu ya. Nah,
+[00:15] supaya nest eh nested condition tadi
+[00:18] tidak terlalu panjang itu kita bisa
+[00:20] menggunakan trik yang kedua yaitu
+[00:22] menggunakan logical operator atau
+[00:24] operator logika. Nah, kita bahas yuk,
+[00:27] Teman-teman. Nah, untuk logical operator
+[00:31] itu di dalam Python diimplementasikan
+[00:34] dengan tiga ini. N, or, sama not. N itu
+[00:40] artinya dan or tidak. Eh, sori. N itu
+[00:46] artinya, or itu artinya dan, ornya atau
+[00:51] dan not itu artinya tidak, ya,
+[00:52] Teman-teman. Nah, tiga ini disebut
+[00:54] dengan logical operator. Untuk
+[00:56] pengertiannya sendiri, logical operator
+[00:59] itu membantu program membuat keputusan
+[01:02] atau condition, ya, membuat kondisi yang
+[01:04] jauh lebih kompleks. Jadi, sebelumnya
+[01:06] kalau kita lihat condition yang
+[01:08] sebelumnya kan if kita bisa login dengan
+[01:12] true kita, apakah dia terverifikasi,
+[01:14] apakah balance-nya ee apakah uangnya
+[01:17] lebih banyak dari harganya. Ini kalau
+[01:19] misalnya kita mau membeli sebuah item
+[01:21] gitu ya. Nah, ini kan ada tiga kondisi
+[01:23] yang harus benar semua gitu ya. Ee
+[01:26] loginnya harus sudah benar, apakah dia
+[01:29] sudah terverifikasi email gitu misalnya.
+[01:31] Dan juga balance-nya lebih besar dari
+[01:34] sama dengan eh harga yang mau dibeli
+[01:36] gitu tadi. Nah, itu kita bisa
+[01:39] menggunakan logical operators ini dalam
+[01:42] satu baris instead of kita nulis dia ke
+[01:44] tiga baris yang berbeda. Nah, kita bahas
+[01:48] yuk satu-satu. Dimulai dari operator N.
+[01:51] Nah, atau dan digunakan kalau kita mau
+[01:56] kondisinya semuanya benar gitu ya.
+[02:00] Misalnya contohnya ketika kita mau
+[02:04] mengikuti sebuah lomba. Nah, ketika kita
+[02:07] mau mengikuti semua lomba, ada tiga
+[02:10] persyaratan yang harus kita ikutin. Yang
+[02:13] pertama,
+[02:15] peserta kita sebagai peserta harus sudah
+[02:17] mendaftar dan kita harus sudah membayar
+[02:21] uang pendaftaran dan juga kita harus
+[02:26] sudah mengumpulkan karya yang mau kita
+[02:28] lombakan, gitu ya. Jadi ada tiga
+[02:31] persyaratan dan semuanya harus sudah
+[02:34] diikutin atau sudah harus di e benar
+[02:37] kondisinya gitu ya. Kalau salah satu aja
+[02:40] belum, maka kita tidak bisa ikut
+[02:42] kondisinya itu ya tadi teman-teman ya.
+[02:44] Jadi kalau misalnya kita punya sebuah
+[02:46] kondisi dan dia itu harus benar semua,
+[02:49] berarti kita bisa menggunakan operator
+[02:52] dan gitu ya. Sudah mendaftar, sudah
+[02:55] membayar, sama sudah mengumpulkan
+[02:56] karyanya gitu. Contoh bahasa Python-nya
+[03:00] seperti ini. Nah, seperti biasa kita
+[03:03] deklarasikan dulu eh variabelnya. Tiga
+[03:08] variabel di atasnya. Yang pertama apakah
+[03:10] dia sudah mendaftar? Apakah dia sudah
+[03:12] membayar? Apakah dia sudah submit
+[03:16] project-nya gitu ya. Kondisinya. Nah,
+[03:19] kondisinya itu kita tidak perlu lagi ya
+[03:21] mengetik seperti nestedate condition
+[03:24] yang sebelumnya. if registered titik du
+[03:27] if paid titik du if submitted titik du
+[03:30] enggak instead of itu kita bisa
+[03:32] menggunakan done atau gitu ya dalam
+[03:36] bahasa pemogan Python dan dia harus
+[03:38] lower case semua ya nih if registered
+[03:42] equals true. Jadi kalau misal ini ee
+[03:45] tulisan ininya ya. Kalau misalnya
+[03:47] teman-teman masih bingung yang seperti
+[03:48] ini dia tulisan sebenarnya if registered
+[03:54] sama eh registered sama dengan true dan
+[03:59] n ya berarti n paid equals equal equals
+[04:04] true
+[04:06] and submitted
+[04:09] equals equals true gitu ya. Karena kan
+[04:12] eh dalam kondisi ketika kita membuat
+[04:15] conditional kita harus menggunakan
+[04:16] operator comparison ya. Nah, kalau
+[04:19] misalnya tadi kalau misalnya nilainya
+[04:21] true atau false aja itu kita bisa
+[04:23] langsung menuliskannya seperti ini ya,
+[04:25] Teman-teman. Nah,
+[04:27] itu
+[04:29] ee di sini if registered-nya benar
+[04:34] dan
+[04:36] paid-nya juga benar dan submittednya
+[04:38] juga benar, maka di sini kita bisa
+[04:41] langsung lihat. Berarti kalau misalnya
+[04:44] benar semua kita langsung nge-print, oh
+[04:46] berarti dia boleh ikut lomba. Tapi kalau
+[04:49] misalnya salah satu aja yang ada yang
+[04:51] salah misalnya registered-nya dia di
+[04:53] sini kita tulis false maka kita langsung
+[04:56] ee tulis belum bisa ikut lomba. Karena
+[04:59] gimana dia mau ikut lomba kalau dia
+[05:00] belum bayar atau belum mendaftar atau
+[05:02] belum mengumpulkan apa yang mau dinilai
+[05:04] atau dilombakan gitu ya. Nah, jadi untuk
+[05:07] N itu dia menggantikan eh next if kalau
+[05:12] misalnya dia harus benar semua seperti
+[05:14] itu. Nah, mungkin untuk ee menggali
+[05:18] lebih lanjut pemahaman teman-teman
+[05:20] tentang logic n itu teman-teman boleh
+[05:23] mengerjakan kuis berikut ini.
+[05:28] Nah, teman-teman telah menyelesaikan
+[05:31] pemahaman latihan soal tentang M.
+[05:34] Setelah n logical operator yang kedua
+[05:37] itu ada yang namanya or yang bahasa
+[05:40] Indonesianya artinya atau ya or ini
+[05:43] berbeda dengan n kebalikan dari n or
+[05:47] digunakan kalau kita mau cukup salah
+[05:52] satu kondisi aja yang benar maka dia
+[05:55] sudah bisa jalan gitu kondisinya ya.
+[05:57] Jadi kalau contohnya deh kita langsung
+[05:59] ke contoh. Misalnya kita mau login ke
+[06:01] Instagram. Kalau misalnya kita mau login
+[06:04] ke Instagram kan kita bisa menggunakan
+[06:06] email atau kita bisa menggunakan
+[06:09] username Instagram kita atau kita bisa
+[06:13] menggunakan nomor HP yang sudah
+[06:14] terdaftar. Jadi sebenarnya kita enggak
+[06:16] harus ee login menggunakan email user
+[06:19] dan nomor HP ya. Kecuali kita pada saat
+[06:21] ee sign in atau apa mendaftar gitu ya.
+[06:24] Tapi kalau misalnya login karena kita
+[06:25] sebelumnya sudah mendaftarkan tiga hal
+[06:27] tersebut, kita bisa memilih nih salah
+[06:29] satu aja kalau mau login bisa
+[06:31] menggunakan email or username kita or
+[06:35] phone number kita. Jadi enggak harus
+[06:37] semuanya, salah satu aja sudah cukup.
+[06:39] Contoh implementasinya dalam bahasa
+[06:41] pemrograman Python nih, as usual as
+[06:45] always, kita perlu menambahkan eh
+[06:49] ini nih variabel ya. kita perlu
+[06:51] mendeklarasikan variabel yang nanti akan
+[06:54] dijadikan condition-nya yang pertama
+[06:56] gini ya. Nah, di sini ada use email, use
+[07:01] username, sama use phone. Untuk eh use
+[07:04] case ini kita mau menggunakan username
+[07:06] gitu ya. Usernya eh masuk loginnya
+[07:09] menggunakan username. Maka di sini kita
+[07:13] tinggal masukin nih kondisinya. If use
+[07:16] email
+[07:18] yang use email ini apa? Oh, use
+[07:20] email-nya false. Nah, programnya enggak
+[07:22] akan langsung stop karena di sampingnya
+[07:24] itu ada OR. Kecuali di sini kita
+[07:27] pakainya N. Kalauya dia pakai N,
+[07:29] programnya akan langsung stop. Dia akan
+[07:31] langsung pindah ke nah since kita
+[07:34] pakainya or, programnya enggak akan stop
+[07:36] walaupun use email yang kondisi yang
+[07:38] pertama itu salah.
+[07:40] Use emailnya false, baru dia akan ngecek
+[07:42] yang kedua. use username-nya true. Wah,
+[07:45] kalau use username-nya true, maka dia
+[07:47] akan langsung print login. Jadi, dia
+[07:49] enggak membaca sampai selesai. Yang
+[07:51] penting dia udah ada salah satu aja ya,
+[07:53] ada yang eh true, maka dia akan langsung
+[07:56] menjalankan ini. Beda dengan yang N yang
+[07:59] sebelumnya ya. Kalau N yang sebelumnya
+[08:01] kalau ada satu aja ini misalnya di sini
+[08:05] N if use email sama true, oh berarti dia
+[08:09] akan langsung ngprint nih di sini gitu
+[08:11] ya, Teman-teman ya. Jadi semuanya harus
+[08:13] benar kalau misalnya menggunakan N. Tapi
+[08:16] kalau misalnya salah satu aja kita bisa
+[08:17] menggunakan logic operators yang namanya
+[08:21] word. Kalau misalnya semua apa itu
+[08:24] namanya? Semuanya salah gimana? Use
+[08:26] email salah, username salah, font salah.
+[08:29] Ya udah berarti di sini dia akan
+[08:31] langsung menjalankan else gitu ya.
+[08:33] Karena yang ini kan hanya perintah yang
+[08:37] ini hanya muncul ketika kita ee
+[08:40] kondisinya terpenuhi. atau benar semua.
+[08:43] Oke, itu untuk logic operator OR.
+[08:47] Teman-teman bisa melakukan latihan
+[08:49] berikut ini untuk memahami lebih lanjut
+[08:52] tentang logika OR.
+[08:57] Oke, Teman-teman kita sudah membahas.
+[09:01] Nah, ada logical operator yang ketiga
+[09:03] namanya not. Nah, note ini dia digunakan
+[09:06] untuk membalikkan nilai sebuah kondisi.
+[09:08] Ingat ya, membalikkan nilai sebuah
+[09:10] kondisi. Nah, contohnya not ini dia
+[09:13] selain di ee gunakan dalam kondisi, kita
+[09:16] bisa gunakan dia juga dalam sebuah
+[09:17] variabel. Nah, membalikkan nilai itu
+[09:19] maksudnya ini kalau misalnya ada
+[09:21] variabel yang nilainya true, maka dia
+[09:23] akan balik menjadi sebuah false ketika
+[09:25] kita masukkan dia node ini ke dalam
+[09:27] kondisi atau kita bisa implementasikan
+[09:29] langsung di dalam baris di Python ini,
+[09:32] ya. Coba kita buka Google Colab.
+[09:35] Kemudian di Google Colab ini kita
+[09:36] membuat sebuah variabel namanya is
+[09:39] raining.
+[09:41] Raining. Nah, misalnya sekarang tidak
+[09:44] hujan nih, tidak hujan. Maka di sini
+[09:46] kita tulis variabelnya nilainya false.
+[09:48] Ketika kita print
+[09:53] sprint string sekarang
+[10:01] apakah hujan?
+[10:03] Apakah
+[10:04] hujan atau mungkin kita bikin yang
+[10:07] simpel aja dulu ya. Kita ngecek dulu
+[10:09] nilainya is raining ini apa. Oh, is
+[10:11] raining ini harusnya jawabannya false
+[10:14] ya. Kita cek, kita run. Nah, ini ya.
+[10:17] Karena kita di sini nulisnya false.
+[10:19] Gimana kalau misalnya kita tambahkan not
+[10:21] di depannya?
+[10:23] not ising. Kalau kita tambahkan not di
+[10:26] depannya, maka dia akan mengubah menjadi
+[10:29] true. Karena not ini fungsinya adalah
+[10:33] membalikkan sebuah nilai yang awal
+[10:35] false, dia akan menjadikan true. Dan
+[10:38] biasanya
+[10:40] variabel eh logical operator node ini
+[10:43] digunakan untuk membalikan nilai dari di
+[10:45] dalam sebuah condition. Misalnya kalau
+[10:48] kita mau membuat sebuah program yang
+[10:50] menampilkan kalau belum hujan kita ee
+[10:53] bisa bermain di luar gitu. Kita mau
+[10:54] menampilkan teks bisa bermain di luar.
+[10:57] Nah, di sini kita tulis is raining sama
+[11:00] dengan false. If not is raining, kita
+[11:04] print eh boleh bermain di luar. Oke,
+[11:06] kita coba copy, kita tambahkan ke dalam
+[11:08] Google Colab. Nah, di sini ketika kita
+[11:11] run bermain di luar ya, padahal di sini
+[11:15] false. Nah, sebelumnya kan kita kalau
+[11:18] misalnya mau pakai eh is raining doang,
+[11:21] kalau kita mau nambahkan variabel doang,
+[11:23] is raining doang, ini kan dia eh harus
+[11:26] true ya nilainya ya. Jadi dia harus sama
+[11:28] dengan sama dengan true baru dia boleh
+[11:30] menjalankan yang di bawahnya ini gitu
+[11:32] ya. Tapi ketika kita menggunakan ini ee
+[11:35] ketika kita menggunakan sama dengan sama
+[11:37] dengan itu kan kayak ribet gitu ya.
+[11:40] Makanya ee kita hapuskan kalau misalnya
+[11:44] dia true dia bisa kayak gini aja dia
+[11:46] bisa gitu ya. Nah, tapi kalau misalnya
+[11:49] kita kasih dia is raining ini aja ya,
+[11:52] misalnya nilainya di sini false, terus
+[11:53] itu kita mau ngecek apakah is raining
+[11:55] true, maka di sini dia programnya enggak
+[11:58] jalankan apa-apa karena is raining-nya
+[12:00] false. Nah, untuk mengcat supaya dia
+[12:03] untuk mengubah programnya supaya dia
+[12:06] bisa menjalankan perintah ini tapi kita
+[12:08] enggak mau nulis ribut-ribut sama dengan
+[12:09] sama dengan, maka di sini kita tambahin
+[12:11] aja not gitu. Jadi yang ini kan dia
+[12:15] ngecek apakah true. Nah, di sini dia
+[12:17] mengecek apakah false. Kalau benar false
+[12:20] maka dia akan menjalankan ini. Coba kita
+[12:22] cek. Nah, seperti itu. Jadi ee
+[12:24] kesimpulannya kalau kita menggunakan not
+[12:27] di dalam sebuah kondisi, ya kan di dalam
+[12:30] sebuah eh condition mm di sininya itu
+[12:34] dia membalik gitu. Jadi kita enggak
+[12:36] perlu dologi tulis sama dengan sama
+[12:37] dengan. Nah, oke kita balik lagi untuk
+[12:41] dalam ee untuk logical operator itu kita
+[12:43] bisa menggabungkan sekaligus tiga
+[12:45] operator tadi. Misalnya nih kita sedang
+[12:49] kursus atau sedang di sekolah. Ketika
+[12:53] kita bisa naik atau belajar di kelas di
+[12:55] semester berikutnya ada tiga kondisi
+[12:58] yang harus lengkap. misalnya nilainya
+[13:01] harus minimal 75 dan sudah menyelesaikan
+[13:05] tugas-tugasnya
+[13:07] dan tidak sedang masa remedial. Misalnya
+[13:10] udah udah ujian akhir final eh final
+[13:13] exam tapi remedial. Nah, kalau remedial
+[13:15] dia enggak boleh ikut kelas selanjutnya
+[13:17] itu ya. Kita bikin eh kondisinya seperti
+[13:20] itu. First thing first as usual kita
+[13:22] bikin tiga variabelnya ya. Variabel yang
+[13:25] nanti akan dicompare menjadi sebuah
+[13:28] condition. ee ee di sininya ya, di sini
+[13:32] nilainya minimal 75. Misalnya kita mau
+[13:34] bikin skornya lebih dari 75, terus itu
+[13:37] kita bikin apakah dia sudah
+[13:38] menyelesaikan semua tugas, kita bilang
+[13:40] di sini true. Nah, apakah dia sedang
+[13:42] remedial? Kita bilang di sini false.
+[13:45] Nah, bahasa programnya dalam Python-nya
+[13:48] itu seperti ini nih tampilannya.
+[13:51] Ada if skor lebih 75 tapi dia kita tidak
+[13:55] turunin ke bawah gitu ya. Kalau next
+[13:57] condition kan sisanya kita taruh di
+[13:59] bawah ya, di dalamnya sini. Nah, kalau
+[14:01] ketika kita menggunakan logical operator
+[14:03] itu kita tulis aja nih N karena kan kita
+[14:06] selain nilainya lebih di atas atau sama
+[14:08] dengan 75, dia harus sudah mengerjakan
+[14:10] semua tugasnya dan dia sedang tidak
+[14:13] remedial gitu kan. Ini kalau misalnya
+[14:16] kita enggak mau pakai not remedial,
+[14:18] berarti kita harus remedial sama dengan
+[14:20] sama dengan false. Nah, itu kan capek.
+[14:22] Berarti kita tulis aja and not remedial.
+[14:26] Berarti di sini dia kalau eh di sini
+[14:29] false maka dia akan menjalankan ini
+[14:32] gitu. Nah, ee cara membacanya berarti
+[14:37] dia di sini mengecek dulu nih apakah
+[14:39] skornya lebih dari 75. True. Skornya
+[14:43] sama dengan 75. true. Terus dia ngelihat
+[14:46] lagi and apakah task-nya udah selesai.
+[14:49] Tadi kan kalau kita lihat variabelnya eh
+[14:53] task-nya dan juga ya true ya, maka di
+[14:55] sini nilainya true juga. Apakah dia not
+[14:58] remedial? Not remedialnya true juga
+[15:00] karena apa? Tadi kan remedial nilainya
+[15:02] false, kita menggunakan not dia akan
+[15:04] menjadi true. Karena tiga-tiganya true
+[15:06] maka semua syaratnya benar. Nah, karena
+[15:10] kita nah karena kita tadi menggunakan N
+[15:12] operator logical N di sini, maka kalau
+[15:15] ada salah satu aja ada yang salah, maka
+[15:17] dia akan langsung menjalankan else-nya
+[15:19] belum boleh ikut kelas lanjutan. Tapi
+[15:21] kalau misalnya ada salah satu aja yang
+[15:23] kalau kita menggunakan OR misalnya
+[15:25] antara skornya 80 atau dia sudah ee dia
+[15:31] tidak sedang remedial, maka dia boleh
+[15:32] ikut kelas selanjutnya gitu ya.
+[15:35] Nah, untuk
+[15:38] operator logika dia itu memiliki
+[15:40] prioritas untuk membacanya. Nah,
+[15:43] urutannya prioritas membacanya pertama
+[15:45] dia akan mengecek not dulu. Jadi apapun
+[15:48] yang nilainya not dia akan ubah menjadi
+[15:51] eh kebalikannya. Misalnya kalau nilainya
+[15:53] false dia akan ngubah jadi true. Kalau
+[15:55] misalnya nilainya true dia akan ubah
+[15:56] dulu jadi false. Gitu. Setelah dia
+[15:59] ngecek note, maka dia akan ngecek lagi
+[16:01] yang yang akan pertama kali dicek gitu
+[16:03] setelah not itu dia n yang kedua berarti
+[16:06] ya. Yang kedua dia akan ngecek N-nya
+[16:08] dulu. Jadi yang dijalankan yang
+[16:09] dicompare itu yang ada N-nya dulu.
+[16:11] Setelah N baru dia akan ngecek OR-nya
+[16:14] karena ee apa itu namanya? N itu
+[16:18] keduanya harus benar gitu ya. Misalnya
+[16:20] nih di sini ada kondisi
+[16:22] true or false and false. Nah, kalau
+[16:28] seperti ini maka dia akan ngecek yang n
+[16:30] dulu. Karena di sini enggak ada not ya.
+[16:31] Berarti dia akan ngecek yang pertama
+[16:32] yang false dulu. Jadi di sini false dia
+[16:35] cek pertama false sama false. Kalau
+[16:38] keduanya false berarti kan nilainya akan
+[16:40] false ya. Berarti di sini nilainya
+[16:42] false. Berarti sekarang kita cek true or
+[16:46] false. Nah, kalau misalnya variabel or
+[16:48] itu tadi kan kalau salah satunya aja ada
+[16:51] yang true, maka dia nilainya akan true,
+[16:53] maka hasil akhirnya akan menghasilkan
+[16:55] true.
+[16:57] Oke. Nah, untuk ee membuat programnya
+[17:02] itu tidak complicated, tidak
+[17:03] membingungkan, kita ee ketika
+[17:06] menggunakan logical operator, usahakan
+[17:08] untuk menggunakan tanda kurung supaya ee
+[17:12] program itu tahu mana duluan yang harus
+[17:14] di-compare gitu. Misalnya kita ada nilai
+[17:16] OR duluan yang harus di ee harus dicek,
+[17:19] berarti kita gunakan dia kurung sebagai
+[17:21] prioritas. Nah, di sini ada misalnya
+[17:26] skornya lebih dari 75 dan task dan or
+[17:29] atau punya dia punya bonus nih misalnya
+[17:31] contohnya kasusnya nilainya harus 75 dan
+[17:34] tugasnya harus sudah semua nilai atau
+[17:36] kalau misalnya skornya mm
+[17:40] tidak 75 sama tasnya belum selesai semua
+[17:43] tapi dia bonusnya misalnya ikut
+[17:45] olimpiade maka dia tetap lolos begitu.
+[17:49] Nah, ini kalau kita menggunakan tanda
+[17:51] kurung berarti dia akan mengecek end
+[17:52] dulu walaupun dalam Python tuh
+[17:54] sebenarnya dia sudah mengecek end dulu
+[17:57] gitu. Itu untuk ee apa itu namanya?
+[18:00] Memberikan prioritas yang mana yang
+[18:02] harus dikerjakan terlebih dahulu oleh
+[18:05] Pak itu tadi. Oke, untuk logical
+[18:09] operator e seperti itu dulu
+[18:11] penjelasannya. Silakan ee kerjakan kuis
+[18:15] dan latihan ee berikut ini.

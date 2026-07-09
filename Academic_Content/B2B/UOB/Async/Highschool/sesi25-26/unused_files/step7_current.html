@@ -1,0 +1,114 @@
+        <section class="step-panel" id="step-7" hidden>
+          <div class="video-frame" data-video-step="7">
+            <div id="youtube-player-7"></div>
+            <button class="video-center-play" type="button" data-step="7" aria-label="Putar video">▶</button>
+            <div class="video-controls" aria-label="Kontrol video 7">
+              <button class="video-control-button video-play" type="button" data-step="7" aria-label="Putar video">▶</button>
+              <input class="video-seek" type="range" data-step="7" min="0" max="100" value="0" step="0.1" aria-label="Posisi video">
+              <span class="video-time" data-step="7">0:00 / 0:00</span>
+              <button class="video-control-button video-mute" type="button" data-step="7" aria-label="Matikan suara">🔊</button>
+              <button class="video-control-button video-fullscreen" type="button" data-step="7" aria-label="Tampilkan layar penuh">⛶</button>
+            </div>
+          </div>
+          
+          <div class="lesson-reading">
+            <header class="reading-header">
+              <div>
+                <p class="label">Mandatory Assignment</p>
+                <h3>Smart Budget &amp; Risk Planner</h3>
+                <p>Buat program Python yang merencanakan pembagian uang, mengevaluasi satu barang, menentukan level risiko, lalu memberikan rekomendasi yang disertai alasan.</p>
+              </div>
+              <span class="reading-badge">Tugas akhir</span>
+            </header>
+
+            <article class="reading-section">
+              <h4>Alur pengerjaan yang disarankan</h4>
+              <div class="assignment-steps">
+                <div class="assignment-step">
+                  <strong>Simpan data</strong>
+                  <p>Buat seluruh variable uang, budget, barang, kategori, harga, dan level risiko.</p>
+                </div>
+                <div class="assignment-step">
+                  <strong>Hitung budget</strong>
+                  <p>Hitung <code>total_budget</code> dan <code>remaining_money</code>.</p>
+                </div>
+                <div class="assignment-step">
+                  <strong>Cek keamanan budget</strong>
+                  <p>Gunakan <code>if</code>, <code>elif</code>, dan <code>else</code> untuk menilai budget.</p>
+                </div>
+                <div class="assignment-step">
+                  <strong>Evaluasi barang</strong>
+                  <p>Tentukan apakah barang termasuk kebutuhan atau keinginan dan cek kecukupan uang.</p>
+                </div>
+                <div class="assignment-step">
+                  <strong>Tentukan risiko</strong>
+                  <p>Gunakan nested condition dan logical operator untuk memilih Low, Medium, atau High.</p>
+                </div>
+                <div class="assignment-step">
+                  <strong>Tampilkan keputusan</strong>
+                  <p>Cetak rekomendasi akhir, alasan logis, dan sisa uang setelah keputusan.</p>
+                </div>
+              </div>
+            </article>
+
+            <article class="reading-section">
+              <h4>Variable dan konsep yang wajib ada</h4>
+              <table class="comparison-table">
+                <thead><tr><th>Bagian</th><th>Ketentuan</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>Variable budget</strong></td><td><code>total_money</code>, <code>food_budget</code>, <code>transport_budget</code>, <code>school_budget</code>, <code>saving_budget</code></td></tr>
+                  <tr><td><strong>Variable barang</strong></td><td><code>item</code>, <code>category</code>, <code>price</code>, dan <code>risk_level</code></td></tr>
+                  <tr><td><strong>Percabangan</strong></td><td>Harus memakai <code>if</code>, <code>elif</code>, dan <code>else</code></td></tr>
+                  <tr><td><strong>Logika lanjutan</strong></td><td>Harus memiliki nested condition dan minimal satu dari <code>and</code>, <code>or</code>, atau <code>not</code></td></tr>
+                </tbody>
+              </table>
+            </article>
+
+            <details class="reading-details" open>
+              <summary>Checklist sebelum submit</summary>
+              <div class="reading-details-content">
+                <ul>
+                  <li>Program menghitung total budget dan sisa uang.</li>
+                  <li>Program memberi status budget aman, pas, atau terlalu besar.</li>
+                  <li>Program mengevaluasi minimal satu kebutuhan atau keinginan.</li>
+                  <li>Program menentukan risiko <code>Low</code>, <code>Medium</code>, atau <code>High</code>.</li>
+                  <li>Program menampilkan rekomendasi akhir dan alasan yang sesuai dengan data.</li>
+                  <li>Kode berhasil dijalankan tanpa error pada console.</li>
+                </ul>
+              </div>
+            </details>
+
+            <!-- Python IDE -->
+            <div class="ide-container" style="background-color: #282c34; border-radius: 12px; padding: 20px; color: white; border: 4px solid var(--black); margin-bottom: 40px; box-shadow: 6px 6px 0px var(--black);">
+              <h3 style="margin-top: 0; color: var(--yellow); font-family: 'Fredoka', sans-serif;">Tulis dan uji programmu</h3>
+              <textarea id="python-ide-7" spellcheck="false" style="width: 100%; height: 420px; background-color: #1e1e1e; color: #d4d4d4; font-family: 'Courier New', Courier, monospace; font-size: 16px; padding: 15px; border-radius: 8px; border: 1px solid #444; margin-bottom: 15px; resize: vertical;"># 1. Data uang dan budget
+total_money = 100000
+food_budget = 30000
+transport_budget = 20000
+school_budget = 25000
+saving_budget = 15000
+
+# 2. Hitung total budget dan sisa uang
+total_budget = food_budget + transport_budget + school_budget + saving_budget
+remaining_money = total_money - total_budget
+
+# 3. Data barang yang akan dievaluasi
+item = "buku tulis"
+category = "kebutuhan"
+price = 15000
+risk_level = ""
+
+# Lanjutkan programmu:
+# - cek keamanan budget
+# - tentukan risk_level
+# - tampilkan rekomendasi dan alasan
+</textarea>
+              <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                <button onclick="runAssignmentCode()" style="background-color: var(--green); color: var(--black); font-weight: bold; padding: 12px 24px; border-radius: 8px; border: 2px solid var(--black); cursor: pointer; font-family: 'Fredoka', sans-serif; box-shadow: 3px 3px 0px var(--black);">▶ Jalankan Kode</button>
+                <button onclick="submitAssignmentCode()" style="background-color: var(--blue); color: var(--white); font-weight: bold; padding: 12px 24px; border-radius: 8px; border: 2px solid var(--black); cursor: pointer; font-family: 'Fredoka', sans-serif; box-shadow: 3px 3px 0px var(--black);">📥 Submit Tugas</button>
+              </div>
+              <h4 style="margin-bottom: 5px; font-family: 'Fredoka', sans-serif;">Console Output:</h4>
+              <div id="ide-output-7" style="background-color: black; padding: 15px; border-radius: 8px; min-height: 100px; font-family: 'Courier New', Courier, monospace; white-space: pre-wrap; font-size: 14px; border: 1px solid #444;"></div>
+            </div>
+          </div>
+        </section>

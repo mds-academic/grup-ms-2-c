@@ -1,0 +1,32 @@
+ data-title="DEBUGGING" data-subtitle="Mini Project">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Mini Project: Debugging Program Belanja 🛍️🕵️‍♂️</h2>
+                        <div class="slide-text">
+                            <p>Temukan dan perbaiki semua bug dari program belanja berikut agar menghasilkan output yang benar:</p>
+                            <div style="text-align: right; margin-bottom: -15px; position: relative; z-index: 20;">
+                                <button onclick="copyShoppingBugCode()" class="btn-action-custom" style="padding: 5px 15px; font-size: 14px; background-color: var(--yellow); color: var(--black);">Salin Kode Awal 📋</button>
+                            </div>
+                            <div class="code-block" style="font-size: 13px; max-height: 250px; overflow-y: auto;">
+def get_total(price, quantity):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return price + quantity<br><br>
+def get_discount(total, member):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if member:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return total * 10<br>
+&nbsp;&nbsp;&nbsp;&nbsp;else:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 0<br><br>
+def get_final_price(total, discount):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return discount - total
+                            </div>
+                            <ul style="margin-top: 15px; font-size: 16px;">
+                                <li><strong>Target Bug 1:</strong> Total belanja harus dikali (<code>*</code>), bukan ditambah (<code>+</code>).</li>
+                                <li><strong>Target Bug 2:</strong> Nilai diskon member 10% harus dikali <code>0.1</code>, bukan <code>10</code>.</li>
+                                <li><strong>Target Bug 3:</strong> Harga akhir didapatkan dari <code>total - discount</code>, bukan sebaliknya.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 47: Jawaban Mini Project -->
+            

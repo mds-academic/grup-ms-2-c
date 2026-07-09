@@ -1,0 +1,42 @@
+ data-title="INPUT VALIDATION" data-subtitle="Sanitasi vs Validasi">
+                <div class="content-card">
+                    <div class="inner-content">
+                        <h2 class="slide-title">Sanitasi dan Validasi itu Berbeda! ⚖️</h2>
+                        <div class="slide-text">
+                            <p style="font-size: 18px; margin-bottom: 15px;">Ayo bedakan aksi membersihkan dengan aksi menguji keamanan data:</p>
+                            
+                            <div style="display: flex; gap: 20px; font-size: 16px; margin-bottom: 20px;">
+                                <div style="flex: 1; border: 3px solid var(--black); border-radius: 12px; padding: 15px; background-color: #FFF9C4;">
+                                    <span class="badge-sanitasi">Sanitasi (Membersihkan)</span>
+                                    <p style="margin-top: 10px; font-size: 15px;">Mengubah format data agar seragam dan bersih. Contoh: <code>.strip()</code>, <code>.lower()</code>.</p>
+                                </div>
+                                <div style="flex: 1; border: 3px solid var(--black); border-radius: 12px; padding: 15px; background-color: #E0F7FA;">
+                                    <span class="badge-validasi">Validasi (Mengecek)</span>
+                                    <p style="margin-top: 10px; font-size: 15px;">Menguji apakah data boleh digunakan. Contoh: <code>if amount <= 0:</code>.</p>
+                                </div>
+                            </div>
+
+                            <!-- Interactive Quiz -->
+                            <div style="border-top: 3px dashed var(--black); padding-top: 15px;">
+                                <h3 style="font-size: 18px; margin-bottom: 10px; text-align: left;">🧩 Kuis Kilat: Manakah yang termasuk tindakan VALIDASI?</h3>
+                                <div class="quiz-option" onclick="checkQuiz(1, this)">
+                                    <span>Mengubah input "PENGELUARAN" menjadi "pengeluaran"</span>
+                                    <span style="font-size: 14px; opacity: 0.7;">(Sanitasi)</span>
+                                </div>
+                                <div class="quiz-option" onclick="checkQuiz(2, this)">
+                                    <span>Memastikan nominal tidak boleh negatif (lebih kecil atau sama dengan 0)</span>
+                                    <span style="font-size: 14px; opacity: 0.7;">(Pengecekan Aturan)</span>
+                                </div>
+                                <div class="quiz-option" onclick="checkQuiz(3, this)">
+                                    <span>Membuang spasi kosong di depan dan belakang kata</span>
+                                    <span style="font-size: 14px; opacity: 0.7;">(Sanitasi)</span>
+                                </div>
+                                <div id="quiz-feedback" style="display: none; margin-top: 15px; padding: 12px; border: 3px solid var(--black); border-radius: 8px; font-weight: bold; font-size: 16px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 11: Validasi Input Kosong -->
+            

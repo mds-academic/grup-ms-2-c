@@ -1,0 +1,850 @@
+[00:00] Nah, Teman-teman kita sudah belajar
+[00:02] mengenai basic dari bahasa pemrograman
+[00:04] Python. Sekarang mari kita terapkan
+[00:07] pemahaman kita tentang Python ke dalam
+[00:10] financial literacy. Mari kita perhatikan
+[00:12] slide berikut ini.
+[00:15] Sebelum kita ke financial literacy, coba
+[00:18] kita review kembali pemahaman kita
+[00:20] tentang bahasa peman Python, terutama
+[00:23] tentang condition. kita sudah belajar
+[00:25] dan kita sudah memahami bersama bahwa
+[00:28] program bisa mengambil keputusan dan
+[00:30] keputusan itu kalau kita menggunakan
+[00:32] bahasa pemrograman Python
+[00:34] direpresentasikan dengan if, elif, dan
+[00:36] juga else. Nah, konsep itu tadi bisa
+[00:40] kita terapkan untuk mengambil keputusan
+[00:43] ketika kita mau menggunakan uang.
+[00:45] misalnya apakah barang yang mau kita
+[00:48] beli ini, yang mau kita spending ini
+[00:50] sedang dibutuhkan
+[00:52] atau apakah uang aku sekarang cukup
+[00:55] untuk membeli barang tersebut?
+[00:58] Kemudian apakah aku masih punya sisa
+[01:00] budget uang untuk membeli barang lain?
+[01:04] Nah, itu ada beberapa pertanyaan lainnya
+[01:07] yang bisa kita terapkan dan tanyakan
+[01:09] sebelum kita mengambil keputusan untuk
+[01:12] membeli sesuatu. Nah, sebelumnya kita
+[01:15] bahas dulu yuk apa itu financial
+[01:17] literacy. Financial literacy adalah
+[01:19] sebuah kemampuan kita dalam memahami dan
+[01:23] mengatur uang dengan bijak. Nah,
+[01:26] financial literacy itu bukan berarti
+[01:28] kita tidak dapat membeli barang yang
+[01:30] kita suka, ya. Tapi financial literacy
+[01:33] ini membantu kita untuk belajar untuk
+[01:35] bertanya dulu, seenggaknya bertanya
+[01:37] kepada diri sendiri ee sebelum kita
+[01:40] membeli suatu barang. Nah,
+[01:42] pertanyaan-pertanyaan apa sih yang kita
+[01:43] bisa tanyakan? Nah,
+[01:44] pertanyaan-pertanyaannya di sini ada
+[01:46] beberapa contohnya seperti yang sudah
+[01:47] pernah disebutkan ya. Apakah kita
+[01:49] benar-benar perlu barang itu sekarang?
+[01:52] Apakah uangnya cukup untuk membeli
+[01:53] barang tersebut atau apa ada kebutuhan
+[01:56] lain yang lebih penting atau urgen untuk
+[01:58] sebelum kita ee membeli barang tersebut?
+[02:01] Nah, pertanyaan-pertanyaan tersebut
+[02:04] kalau di coding itu disebut juga dengan
+[02:06] condition.
+[02:08] Nah,
+[02:10] sekarang dalam financial literasi ada
+[02:13] sesuatu yang namanya kebutuhan versus
+[02:16] keinginan atau needs versus wants dan
+[02:20] bagaimana kita mengimplementasikan
+[02:23] conditional ke conditional bahasa peman
+[02:26] Python ke dalam needs versus on ini tadi
+[02:29] ya. Nah, sebelumnya kita bahas dulu yuk
+[02:31] apa sih kebutuhan itu? kebutuhan itu
+[02:34] adalah sesuatu yang penting untuk kita
+[02:37] ee bertahan hidup, untuk kita belajar
+[02:39] atau menjalankan aktivitas kita
+[02:41] sehari-hari. Nah, ada beberapa contoh
+[02:44] kebutuhan yang ee sudah Kakak di sini.
+[02:47] Ada makanan, ada air, ada transportasi.
+[02:51] Yuk, kita lis yuk kira-kira apaagi ya
+[02:53] kebutuhan selain yang disebutkan yang
+[02:55] ada di sini.
+[02:57] Nah, setelah kita memahami apa itu
+[02:59] kebutuhan, sekarang kita pahami juga yuk
+[03:02] apa sih itu keinginan. Nah, keinginan
+[03:04] itu adalah sesuatu yang kita suka, yang
+[03:07] kita mau, tapi belum tentu harus banget
+[03:10] kok dibeli untuk sekarang. Ada beberapa
+[03:13] contoh nih, misalnya snack atau HP baru,
+[03:18] games ee atau gantungan kunci atau
+[03:22] stiker dan yang masih banyak lainnya.
+[03:25] keinginan itu boleh dibeli, tapi
+[03:27] sebaiknya setelah semua kebutuhan utama
+[03:30] kita untuk bertahan hidup itu telah
+[03:32] terpenuhi. Nah, coba yuk kita listkan
+[03:35] lagi apa sih keinginan kamu yang kamu
+[03:37] mau? Boleh tuliskan di sini ya.
+[03:43] Nah, analoginya seperti ini.
+[03:46] Bayangkan kamu mempunyai uang Rp50.000
+[03:49] tapi Rp50.000 ini kamu perlu membeli
+[03:52] beberapa hal. Yang pertama, kamu butuh
+[03:55] buku tulis Rp15.000, tapi kamu juga
+[03:58] butuh makan siang Rp20.000.
+[04:01] Kemudian kita mau membeli stiker
+[04:04] Rp10.000 sama minuman Rp15.000. Nah,
+[04:09] kalau uang kita terbatas, kalau Rp50.000
+[04:11] ya cukup terbatas ya, Teman-teman. Nah,
+[04:13] kita harus milih nih dari semua list
+[04:16] yang kita mau beli ini mana sih yang
+[04:18] harus dibeli terlebih dahulu sama mana
+[04:21] yang bisa kita tunda. Nah, di sinilah
+[04:25] menulis inilah memilih inilah yang
+[04:27] disebut dengan ee membedakan kebutuhan
+[04:31] versus keinginan.
+[04:35] Nah, setelah kita putuskan mana e untuk
+[04:38] membantu kita memutuskan gitu ya. ee
+[04:40] kalau misalnya kita sudah memutuskan
+[04:42] tapi masih tetap bingung gitu. Nah, kita
+[04:44] bisa menuliskan bahasa pemrograman
+[04:46] Python-nya nih. Misalnya kita dalam
+[04:50] kehidupan nyata
+[04:52] ada beberapa barang yang merupakan
+[04:54] kebutuhan, maka kita perlu prioritaskan
+[04:57] dia. Tapi ada juga beberapa barang yang
+[04:59] ternyata cuman keinginan kita aja. Maka
+[05:03] kita harus cek dulu nih apakah uang sisa
+[05:06] kita cukup untuk membeli barang yang
+[05:08] kita inginkan tadi. Kalau uangnya tidak
+[05:10] cukup, maka kita perlu menunda dulu
+[05:12] membeli ee barang tersebut. Nah, contoh
+[05:15] bahasa Python-nya kita bisa lihat nih di
+[05:17] sini
+[05:20] dalam Python kita bisa membuat eh
+[05:24] menggunakan e conditional if ya. Nah,
+[05:27] conditional if-nya di sini kita
+[05:29] menggunakan eh metode eh multiple eh
+[05:34] multi ya, yang di mana kondisinya enggak
+[05:36] hanya satu tapi ada beberapa kondisi.
+[05:39] Nah, seperti yang kita lihat di sini,
+[05:40] kondisi yang pertama ada
+[05:43] kategori. Jadi, kita mengkategorikan
+[05:46] dulu apakah ini sebuah kebutuhan atau
+[05:48] keinginan. Kalau dia kebutuhan, maka
+[05:51] kita prioritaskan dalam membelinya. Tapi
+[05:53] kalau ternyata barang yang kita mau itu
+[05:56] hanya keinginan, maka kita harus cek
+[05:58] dulu budgetnya.
+[06:00] Ee terus itu ada kadang barang yang
+[06:02] belum kita kategorikan, maka programnya
+[06:04] akan ngecek, eh ini belum jelas nih,
+[06:06] belum ada kategorinya. Maka kita harus
+[06:09] kategorikan dulu supaya kita bisa
+[06:11] tentukan apakah ini needs atau wants.
+[06:15] Lanjut
+[06:18] contohnya ya. Kalau tadi kan bahas ee
+[06:20] apa itu namanya? Kode intinya ya. Nah,
+[06:23] seperti biasa sebelum kita menulis ee
+[06:26] menggunakan Python, kita perlu ee
+[06:29] mendeklarasikan dulu variabelnya. Apa
+[06:32] nih yang mau kita ee yang mau kita
+[06:34] kategorikan? Misalnya di sini kita punya
+[06:37] item buku tulis. Nah, ternyata buku
+[06:40] tulis ini kita tulis sebagai sebuah
+[06:42] kebutuhan karena kita sekolah
+[06:44] membutuhkan buku. Nah, di sini seperti
+[06:47] biasa Python akan mengecek nih apakah
+[06:50] buku tulis ini sebuah kebutuhan. Nah,
+[06:52] dia ngecek nih apa jika kategorinya sama
+[06:55] dengan sama dengan kebutuhan. Nah,
+[06:56] kebetulan kategorinya kebutuhan nih.
+[06:59] Maka dia akan mencetak tulisan item.
+[07:01] Berarti ee dia akan memanggil variabel
+[07:03] item ya. Yang di sini buku tulis adalah
+[07:06] kebutuhan prioritaskan untuk dibeli.
+[07:09] Jadi simpelnya seperti itu ya
+[07:11] teman-teman ya.
+[07:13] Untuk buku tulis karena kita tulis dia
+[07:15] kebutuhan maka dia akan menampilkan buku
+[07:18] tulis adalah kebutuhan gitu ya. Jadi dia
+[07:20] ee kondisi satu terpenuhi maka dia akan
+[07:23] menuliskannya seperti itu. Nah ee selain
+[07:27] kita bisa ee selain kita menuliskan item
+[07:32] dan kategorinya, kita juga bisa loh
+[07:34] menaruh apa sih ee harganya berapa buku
+[07:37] tulis itu dan juga uang kita ada berapa
+[07:40] gitu tadi ya. Nah, untuk membuat program
+[07:43] realistis kita bisa tambahkan itu ya.
+[07:45] Selain dia eh kategorinya apakah uangnya
+[07:49] cukup? Nah, bentuk python-nya cukup
+[07:52] complicated nih. Kita bahas satu-satu
+[07:55] ya. Nah, pertama first thing first kita
+[07:57] tetap membutuhkan
+[08:00] variabel untuk menyimpan ee yang untuk
+[08:03] menyimpan ee itemnya, harganya, dan
+[08:07] seterusnya yang nanti akan dibandingkan
+[08:09] dan akan dijadikan sebagai sebuah
+[08:11] condition di percabangan if-nya. Nah, di
+[08:15] sini kita lihat buku tulis itu adalah
+[08:17] sebuah kebutuhan dan kebetulan harganya
+[08:20] buku tulis itu Rp15.000 dan uang yang
+[08:22] kita punya itu adalah Rp50.000. Nah,
+[08:25] kondisi yang kita bangun di sini adalah
+[08:27] kalau kategorinya kebutuhan dan uang
+[08:31] kita itu lebih banyak lebih besar
+[08:34] dibandingkan harganya. Lebih besar atau
+[08:36] sama dengan ee harganya, maka kita ee
+[08:40] bikin programnya. Oh, ini kebutuhan nih.
+[08:43] Berarti kita butuh banget. Dan kebetulan
+[08:45] uang kita lebih nih. Uang kita cukup
+[08:48] untuk membeli. Lebih atau cukup gitu ya
+[08:50] untuk membeli. Maka kita karena
+[08:51] kebutuhan kita harus beli. Kondisi kedua
+[08:54] nih, kalau dia kebutuhan tapi uangnya
+[08:59] kurang untuk membeli umone kurang dari
+[09:02] harganya, price-nya, maka kita print.
+[09:05] Oh, uangnya belum cukup. Coba kita cari
+[09:07] yang lebih murah. Kenapa kita cari yang
+[09:08] lebih murah? Karena ini kebutuhan nih,
+[09:10] ya kan? berarti kita harus beli dong.
+[09:12] Berarti kita harus cari yang lebih murah
+[09:14] supaya ee uangnya ee bisa lebih dari
+[09:17] atau sama dengan harga ee itemnya. Atau
+[09:22] misalnya ternyata kategorinya ini hanya
+[09:23] keinginan dan kebetulan uangnya lebih
+[09:26] uang kita lebih banyak dari ee harganya,
+[09:29] lebih besar dari harganya, maka kita
+[09:32] bisa tulis boleh beli tapi pastikan
+[09:34] kebutuhan kita sudah aman. Nah, kalau
+[09:37] yang lain kondisinya misalnya, oh
+[09:39] ternyata ini kategorinya cuman keinginan
+[09:42] tapi uangnya kurang dari harganya. Ya
+[09:46] udah kita tunda dulu pembeliannya sampai
+[09:47] uang kita cukup. Nah, itu implementasi
+[09:51] sederhana needs wants ke dalam bahasa
+[09:55] pemeraman Python. ini tadi ya kita sudah
+[09:58] bahas ada ee di sini ada dua ya, ada dua
+[10:03] kondisi yang kita gunakan ee ada dua
+[10:05] kondisi yang pertama dia ngecek dulu
+[10:07] apakah dia kebutuhan dan nih ada kata
+[10:10] kuncinya ada logical eh operatornya
+[10:13] menggunakan N ya berarti kalau kita
+[10:14] menggunakan N dia di sebelah kiri harus
+[10:17] true sebelah kanan juga harus true.
+[10:19] Kalau misalnya dua-duanya true dia
+[10:22] kebutuhan dan uangnya cukup maka kita
+[10:24] bisa beli gitu ya. ee membeli ee barang
+[10:27] itu tadi gitu. Kalau barang adalah
+[10:30] keinginan dan uang cukup boleh beli tapi
+[10:32] harus berhati-hati ya seperti yang tadi
+[10:34] dijelaskan.
+[10:36] Oke kita lanjut.
+[10:39] Nah untuk membuat dia jadi lebih apa ya?
+[10:42] Kalau tadi kan kita ee mendeklarasikan
+[10:44] sebuah variabel ya di sini ya. Oh
+[10:46] itemnya apa, kategorinya apa, harganya
+[10:49] berapa, terus ee harga ee uang kita
+[10:53] berapa. Nah, supaya dia lebih interaktif
+[10:56] dan user tuh ngerasa, "Wah, ini kayaknya
+[10:58] programnya bagus, kita bisa menggunakan
+[11:00] input." Nah, di sini kita tambahkan
+[11:03] input karena kita memasukkan nama,
+[11:05] barang dan kategorinya itu. Eh, kalau
+[11:08] input kan dia ee tipe data yang
+[11:11] dihasilkan adalah string ya. Jadi, di
+[11:13] sini langsung input user akan memasukkan
+[11:16] apa nih e item sama kategorinya. Nah,
+[11:18] sedangkan untuk price sama kan kalau
+[11:21] price sama ini dia eh tipe data yang
+[11:24] kita butuhkan adalah integer. Maka kita
+[11:26] harus menggunakan
+[11:28] conversion dulu data type-nya. Karena
+[11:31] input itu tipe datanya string, kita ubah
+[11:33] menjadi integer supaya nanti kita bisa
+[11:35] hitung nih uang kita ee apa tuh dan kita
+[11:38] bandingkan antara uang kita sama harga
+[11:41] item yang mau kita beli seperti itu.
+[11:44] Oke. Ee sisanya sama ya, Teman-teman. ee
+[11:48] apa itu namanya? Sisanya sama untuk
+[11:49] logika pemrogramannya logika sama, terus
+[11:53] itu printnya juga sama. Mungkin printnya
+[11:54] kita tambahkan item yang mau dibeli apa
+[11:57] sama item yang ee kategorinya apa gitu
+[12:00] ya. Kurang lebih seperti itu. Nah,
+[12:03] kenapa sih program ini berguna? Ya,
+[12:05] mungkin teman-teman ada ee
+[12:09] pengin banget membeli sesuatu tapi kayak
+[12:11] bingung banget nih kira-kira butuh
+[12:13] banget apa enggak banget nih ee enggak
+[12:15] butuh banget nih gitu. Kita bisa
+[12:17] menggunakan program ini. Terus ini kita
+[12:19] bisa ngecek ternyata uangku cukup
+[12:20] enggak. Oh, ternyata uangku enggak cukup
+[12:23] gitu. Jadi dari pertanyaan-pertanyaan
+[12:25] tadi kita bisa menjawab, "Oh, ternyata
+[12:27] uangku enggak cukup." Oh, ternyata
+[12:28] barang ini cuman keinginan aku aja.
+[12:31] seperti itu. Nah, coba teman-teman ee
+[12:35] tuliskan bahasa pemroonggaman Python-nya
+[12:37] tadi. Kemudian kalian masukkan nama
+[12:40] barangnya dan kategorinya.
+[12:43] Buat variabelnya. Terus itu tentukan
+[12:45] apakah dia ee ini kebutuhan atau
+[12:49] keinginan. coba diimplementasikan
+[12:51] berikut ini.
+[13:05] Nah, setelah kita mengetahui tentang
+[13:09] needs versus one, sekarang kita harus
+[13:11] membahas tentang budgeting dan
+[13:14] perencanaan pengeluaran.
+[13:16] Oke, sebelum ee kita lanjut, coba kita
+[13:20] cek di sini. Nah, ada yang tahu apa itu
+[13:22] budgeting? Budgeting adalah sebuah
+[13:25] rencana dalam menggunakan uang yang kita
+[13:28] punya. Tujuan kita melakukan budgeting
+[13:31] adalah supaya kita sadar nih, oh uang
+[13:34] yang kita punya kita harus belikan untuk
+[13:37] hal A, hal B, hal C, dan seterusnya.
+[13:39] Misalnya kita punya budget, kita punya
+[13:42] uang sebesar Rp100.000 nih. Nah, dalam
+[13:45] Rp100.000 R.000 ini kita perlu membagi
+[13:48] dia misalnya kebutuhan kita itu kita
+[13:51] butuh makan, kita butuh membeli alat ee
+[13:54] sekolah, butuh transportasi, terus itu
+[13:56] kita butuh menabung juga gitu ya kalau
+[13:58] misalnya ee kita ee pengin sesuatu gitu.
+[14:03] Nah, ini budgeting ini dia ee fungsinya
+[14:07] membagi gitu ya, membagi. Dan kita juga
+[14:09] bisa tahu dengan budgeting ini Rp100.000
+[14:11] Ibu ini uangnya kita bagi ee kita
+[14:13] gunakan untuk apa aja nih gitu ya. Nah,
+[14:16] itulah ee budgeting di dalam financial.
+[14:20] Nah, anggap aja budgeting itu seperti
+[14:22] membagi ke dalam sebuah kotak. Anggap
+[14:24] aja uang yang kamu punya Rp100.000 itu
+[14:27] tadi sebagai sebuah kotak yang besar.
+[14:29] Nah, kotak yang besar itu tadi kita
+[14:31] potong-potong, kita pisah-pisah menjadi
+[14:34] sebuah kotak, beberapa kotak kecil gitu
+[14:37] ya. Jadi Rp100.000 tadi kalau misalnya
+[14:39] makanan Rp40.000. transportasi Rp2.000.
+[14:43] Nah, dalam Python kotak-kotak
+[14:45] penyimpanan itu tadi itu disebutnya
+[14:47] variabel. Nah, mungkin untuk me-refresh
+[14:50] materi eh me-refresh pemahaman
+[14:52] Teman-teman tentang variabel. Jadi,
+[14:54] variabel itu adalah tempat untuk
+[14:56] menyimpan data ya, Teman-teman. Nah,
+[14:58] kita sudah menggunakan variabel itu ee
+[15:01] variabel itu dari awal tadi ya untuk
+[15:04] menyimpan misalnya uang kita berapa,
+[15:06] budget kita berapa, dan segala macam.
+[15:08] Nah, ini ya contohnya ee kita bisa lihat
+[15:11] di sini artinya program sedang menyimpan
+[15:15] nilai uang ke beberapa nama variabel
+[15:17] gitu ya. Kurang lebih seperti itu.
+[15:20] Nah, ee ini ada beberapa contoh ee kalau
+[15:23] misalnya kita ee mau budgeting ke dan
+[15:26] kita mau masukin budgetingnya itu ke
+[15:28] dalam bahasa pemrograman Python. Ini ada
+[15:30] beberapa contohnya nih kayak oh ee
+[15:33] variabel total money ini dia variabel
+[15:35] yang menyimpan jumlah uang utama kita.
+[15:38] Kemudian kita bagi-bagi lagi ee apa tuh
+[15:42] namanya? Variabel utama. Kita bikin
+[15:44] variabel-variabel kecil yang menyimpan
+[15:46] nilai uang yang lebih kecil dari total
+[15:49] uang kita tadi nih ya. Kayak food budget
+[15:52] Rp40.000 dan seterusnya dan seterusnya.
+[15:54] Nah, setelah kita ee
+[15:58] simpan ke dalam sebuah variabel
+[16:00] nilai-nilai tadi, kita bisa tuh
+[16:02] menghitung atau menjumlahkan,
+[16:03] mentotalkan berapa sih budget yang sudah
+[16:06] kita ee pisah-pisah tadi. Nah, tadi kan
+[16:08] kita budgeting, kita set oh misalnya
+[16:12] untuk makanan kita Rp40.000, kalau
+[16:14] transport Rp20.000 dan seterusnya dan
+[16:15] seterusnya itu kita bisa jumlahkan dia
+[16:18] semua dan kita simpan lagi dia ke dalam
+[16:20] sebuah variabel. Di sini kakak simpannya
+[16:24] ke dalam variabel total budget, maka
+[16:26] nanti programnya akan menghitung berapa
+[16:28] sih hasil 40.000 + Rp2.000 + R.000 +
+[16:33] Rp15.000. Nah, kalau ini ternyata total
+[16:36] budgetnya setelah dihitung Rp100.000
+[16:39] gitu ya. Ternyata budget yang kita ee
+[16:43] bagi itu sama dengan total uang yang
+[16:45] kita punya. Nah, untuk itu untuk
+[16:49] mengecek gini ya, kan kita tadi ee
+[16:51] budgeting itu membagi ee uang yang kita
+[16:54] punya ke dalam beberapa kategori gitu
+[16:56] ya, beberapa kebutuhan kita. Nah, untuk
+[16:59] mengecek apakah dia ee budgetnya ini
+[17:02] aman apa tidak, apakah ee ternyata kita
+[17:05] melakukan budgeting, apakah ini uangnya
+[17:07] cukup atau kita kelebihan nih
+[17:09] nge-budgetingnya. Misalnya ee kita
+[17:11] uangnya punya Rp100.000, Ibu, tapi
+[17:13] setelah kita total di budgetingnya itu
+[17:16] ternyata totalnya 110. Nah, itu kan
+[17:18] berarti kita harus programnya harus bisa
+[17:20] menampilkan kan apakah budget yang kita
+[17:22] punya aman atau melebihi uang yang
+[17:24] dimiliki. Nah, untuk kasus itu kita
+[17:27] tinggal tambahin aja. Kita bisa
+[17:29] menambahkan
+[17:30] eh condition if total budget lebih dari
+[17:35] atau sama dengan total money, maka
+[17:37] budgetnya aman. Kalau misalnya enggak
+[17:40] aman ya berarti ini ya budgetnya
+[17:42] melebihi uang yang dimiliki. Berarti
+[17:44] variabel-variabel yang kita ee tulis
+[17:46] tadi sebelumnya itu harus kita adjust
+[17:49] lagi supaya dia ee budgetnya bisa
+[17:52] menjadi aman.
+[17:54] Oke, selanjutnya
+[17:57] kita cek nih kalau budgetnya lebih besar
+[18:00] ya berarti kita bisa ee ini kalau
+[18:02] contohnya budgetnya kelebihan gitu ya,
+[18:05] programnya akan menampilkan budgetnya
+[18:07] lebih gitu. Karena 50 + 30 + 30
+[18:11] + 30.000 aja udah ee Rp0.000 + Rp50.000
+[18:15] + Rp2.000 wah kebanyakan ya uangnya
+[18:17] kebanyakan gitu. Nah, kita juga bisa
+[18:21] menghitung sisa uang gitu. Jadi kita
+[18:23] sudah menghitung kan total yang budget
+[18:25] kita berapa yang kita budgetin. Misalnya
+[18:28] uang kita Rp10.000, budget yang kita
+[18:30] budgetin nih setelah dihitung ternyata
+[18:33] Rp90.000 nih ya kan uang kita Rp100.000,
+[18:35] budgeting kita Rp10.000. Nah, kita bisa
+[18:38] menghitung sisa uang kita berapa sih.
+[18:40] Tinggal kita kurangin aja. Total uang
+[18:42] yang kita punya ini kan Rp100.000. Terus
+[18:45] itu total budget yang sudah kita
+[18:46] tambahin tadi berapa? dan dia bisa ee
+[18:49] menampilkan nih,
+[18:51] oh ternyata budget kita Rp95.000 dan
+[18:54] sisa uangnya ternyata R 5.000 saja
+[18:58] seperti itu. Nah, selain itu untuk
+[19:02] membuat dia programnya lebih berwarna
+[19:05] lagi, untuk membuat programnya bisa
+[19:07] menampilkan ee
+[19:10] print-nya ya mungkin kondisinya kalau
+[19:12] ini kan ee total uangnya berapa, sisa
+[19:15] uangnya berapa gitu kan. atau kalau kita
+[19:17] pakai if tadi budgetnya aman atau tidak.
+[19:19] Nah, kita bisa tambahin condition yang
+[19:23] lebih banyak lagi nih, Teman-teman.
+[19:24] Misalnya kalau budgetnya lebih dari
+[19:27] total uang, wah budgetnya terlalu besar
+[19:29] ya kan?
+[19:31] Ee berarti kita terlalu apa? Ee
+[19:33] overbudgeting nih, gitu kan ya. Harusnya
+[19:37] misalnya budget yang kita eh budget yang
+[19:39] kita buat itu misalnya Rp10.000,
+[19:42] uang kita cuman Rp90.000. Nah, kan
+[19:44] budgetnya terlalu besar. berarti harus
+[19:45] ada adjusting. Nah, kemudian kalau sisa
+[19:49] uangnya nol gitu ya, jadi kita
+[19:51] ngebudgetinnya Rp100.000 untuk 1 bulan
+[19:54] gitu ya. Dan uang kita Rp100.000
+[19:56] totalnya. Kalau misalnya dia sisa
+[19:58] uangnya 100 cuman nol gitu ya, maka
+[20:01] budgetnya pas. Kita tampilin, oh
+[20:03] budgetnya pas nih, tidak ada sisa uang.
+[20:05] Atau kita bisa tulis, "Wah, kamu
+[20:07] kayaknya budgetingnya terlalu banyak."
+[20:09] gitu gitu ya. Kalau misalnya pengin
+[20:11] menyisihkan uang gitu, menyisihkan
+[20:13] budget untuk ditabung. gh ya. Nah, atau
+[20:16] kita sisalah ee remaining money-nya itu
+[20:20] lebih dari nol gitu. Misalnya kayak ee
+[20:23] ternyata setelah dikurangin misalnya
+[20:25] total uangnya Rp100.000 tapi
+[20:28] budgetingnya Rp90.000. Oh, berarti kan
+[20:30] lebih dari nol ya, berarti budgetnya
+[20:31] aman masih ada sisa uang. Atau kalau
+[20:33] misalnya salah kita bisa cek ulang
+[20:35] budgetnya. Itu ya contoh condition yang
+[20:37] bisa kita gunakan dalam bahasa
+[20:40] menggunakan bahasa pemrograman Python.
+[20:43] Nah, ini juga kita bisa ee buat dalam ee
+[20:48] skenario ketika kita mau belanja gitu
+[20:50] ya. Kalau kita punya uang Rp100.000
+[20:52] terus kebutuhan kita mau belanja apa
+[20:54] aja. Terus kita cek dulu nih apakah yang
+[20:56] mau kita beli ini overbudgeting atau
+[20:59] budgetnya pas atau budgetnya lebih gitu
+[21:03] ya. Ee gitu ya, sisa uangnya lebih gitu
+[21:05] ya. Nah, ini kita bisa terapkan dengan
+[21:08] eh condition ini belum ada condition ya
+[21:11] dengan menggunakan program ini gitu ya.
+[21:13] Ini versi simpelnya dan kita bisa ee
+[21:16] tambahkan lagi condition-nya supaya
+[21:18] programnya bisa lebih berguna lagi gitu
+[21:20] ya untuk menampilkan oh kalau uangnya
+[21:22] lebih, kalau uangnya kurang atau uangnya
+[21:25] ee habis gitu.
+[21:28] Oke, ini contohnya tadi kita bisa
+[21:31] implementasikan juga. Nah, dari ee
+[21:35] hasil-hasil tadi itu hasil kita
+[21:37] mengurangi, hasil kita menjumlahkan
+[21:40] itu biasanya disebut juga dengan data.
+[21:43] Nah, program kita program itu dia
+[21:47] membuat keputusan itu berdasarkan data.
+[21:49] Jadi, misalnya data yang kalau misalnya
+[21:52] kita ngambil contoh yang tadi ya, e
+[21:53] pembelian barang itu data yang kita
+[21:56] pakai itu ada nama barang, harga
+[21:58] barangnya, kategorinya, jumlah uang,
+[22:00] sisa budgetan, dan seterusnya. Kalau
+[22:02] datanya berubah, maka keputusan
+[22:04] programnya juga berubah. Misalnya
+[22:07] harganya 50, uang kita Rp50.000, kita
+[22:09] mau membeli A, B, C, gitu ya. Nah, dari
+[22:12] hal-hal yang kita beli tadi kan dia
+[22:14] mempengaruhi keputusannya ini
+[22:17] mempengaruhi condition-nya ini ee
+[22:19] mempengaruhi hasil dari condition-nya
+[22:20] itu tadi. Kalau uang kita lebih terus
+[22:23] harga barangnya ee lebih mahal dari uang
+[22:25] yang kita punya gitu ya, berarti kan
+[22:27] hasilnya akan wah uangnya ee harusnya
+[22:30] kayaknya harus ditunda dulu belinya
+[22:31] karena uangnya belum cukup. Atau mungkin
+[22:33] misalnya uang kita lebih nih Rp50.000
+[22:35] tapi harga barangnya Rp10.000 aja. Wah
+[22:37] berarti kita bisa beli nih gitu. Nah itu
+[22:40] ya. Jadi berdasarkan data-data yang kita
+[22:42] punya, data uang kita berapa, harga
+[22:44] barangnya itu mempengaruh mempengaruhi
+[22:48] hasil akhir dari program yang kita buat.
+[22:52] Nah, dan program itu dia bisa ee
+[22:56] berdasarkan data dia bisa
+[22:57] merekomendasikan gitu ya. Tadi yang kita
+[22:59] buat kondisikannya tadi lebih baik
+[23:00] ditunda atau kita beli sekarang atau ee
+[23:03] pastikan udah ee cukup uangnya dan
+[23:05] seterusnya dan seterusnya.
+[23:21] Oke, Teman-teman. Sekarang kita akan
+[23:23] membahas materi tentang risiko financial
+[23:27] atau financial risk dan bagaimana kita
+[23:29] mengimplementasikan nested condition ke
+[23:31] dalam eh financial literacy yang akan
+[23:35] kita pelajari. Oke, sekarang apa sih
+[23:39] financial risk itu atau risiko
+[23:40] finansial? Risiko finansial adalah
+[23:43] kemungkinan uang kita, kemungkinan uang
+[23:45] kita berkurang, habis atau tidak
+[23:47] menghasilkan sesuai harapan. Jadi,
+[23:49] risiko finansial itu contoh sederhananya
+[23:53] kalau kita nyimpan uang di tempat aman,
+[23:55] maka resikonya akan kecil. Nah, berarti
+[23:57] kan finansial itu kan keuangan kita ya.
+[23:59] kita menyimpan uang di mana kalau
+[24:01] misalnya kita nyimpan di tempat aman
+[24:03] seperti bank, maka resiko hilang atau
+[24:06] resiko uangnya rusak itu sangat kecil
+[24:08] gitu ya. Atau contoh lainnya kalau kita
+[24:11] memakai uang gitu ya, kita ee melakukan
+[24:14] financing misalnya melakuk ee membeli
+[24:17] sesuatu gitu ya yang hasilnya belum tak
+[24:20] belum tentu pasti gitu maka risikonya
+[24:23] akan lebih besar. Nah, sebelum kita
+[24:25] melakukan ee purchasing atau melakukan
+[24:29] hal-hal yang berbau dengan ee yang
+[24:30] berkaitan dengan finansial kita itu kita
+[24:33] harus bertanya dulu apakah keputusan ini
+[24:35] aman? Jadi, kita harus mengukur ee
+[24:38] resiko dari keputusan finansial yang
+[24:41] akan kita buat. Apakah kita aman? Apakah
+[24:43] ada kita kemungkinan rugi? Apakah ini
+[24:45] sesuai dengan ee harapan kita nantinya
+[24:47] dan seterusnya. Nah, resiko finansial
+[24:50] itu memiliki beberapa level kesulitan,
+[24:52] ya. Jadi bayangkan kita kalau bermain
+[24:55] game ada tiga levelah, ada easy, ada
+[24:57] normal, sama ada hard. Kalau resiko
+[24:59] finansial, resiko keuangan itu kita
+[25:03] punya tiga level juga. Yang pertama ada
+[25:05] low risk, medium risk, dan juga high
+[25:08] risk. Kita bahas satu-satu ya. Nah, low
+[25:11] risk itu artinya resikonya rendah.
+[25:13] Berarti dia ee kegiatan finansial yang
+[25:17] kita lakukan itu biasanya aman, tapi
+[25:19] hasilnya juga tidak terlalu besar, gitu.
+[25:21] Misalnya ketika kita menabung itu kan
+[25:23] lebih aman gitu ya, uang yang kita punya
+[25:25] kita simpan ee ya hasilnya enggak
+[25:28] terlalu besar karena kan kita
+[25:29] menyisihkan uang tadi. Nah, ee
+[25:34] menabung ke dalam bank walaupun uangnya
+[25:38] kecil tapi resikonya juga rendah ya,
+[25:40] enggak mungkin hilang dan tidak mungkin
+[25:42] ee rusak uangnya. Terus itu ee kita
+[25:45] membeli barang yang benar-benar
+[25:46] dibutuhkan atau membuat dana cadangan
+[25:48] dan seterusnya. Nah, low risk financing
+[25:51] ini cocok untuk uang yang tidak boleh
+[25:53] hilang atau uang yang akan dipakai dalam
+[25:56] ee jangka waktu yang dekat. Nah, untuk
+[25:58] medium risk itu artinya eh resikonya itu
+[26:01] sedang. berarti resikonya masih bisa
+[26:04] dipertimbangkan. Tapi kita perlu
+[26:05] berhati-hati lagi dalam melakukan
+[26:07] financial ee itu tadi misalnya kita mau
+[26:10] membeli barang untuk dijual lagi atau
+[26:13] kita mau ee
+[26:16] mencoba untuk
+[26:19] berdagang atau membuka usaha kecil dan
+[26:22] seterusnya. Jadi ketika kita mau
+[26:25] melakukan sesuatu ee yang memiliki
+[26:28] financial risk yang medium itu kita
+[26:31] perlu sudah punya rencana yang matang
+[26:33] sama sisa uang yang ee aman. M sisa uang
+[26:39] yang nanti bisa menopang kita ketika ee
+[26:42] rencana tadi gagal atau tidak memenuhi
+[26:44] ekspektasi kita gitu ya, Teman-teman.
+[26:46] Nah, kalau high risk berarti dia
+[26:48] kemungkinannya
+[26:50] untung bisa, tapi kemungkinan ruginya
+[26:52] juga lebih besar gitu ya. Jadi dia bisa
+[26:54] untung tapi ruginya bisa lebih besar
+[26:57] gitu ya. Misalnya kita membeli barang
+[26:59] mahal yang belum tentu berguna gitu kan.
+[27:01] Beli barangnya mahal terus itu ya kalau
+[27:04] barangnya rusak kan kita rugi benar ya.
+[27:06] Nah, terus itu kita mengeluarkan modal
+[27:09] untuk ee misalnya ikut
+[27:12] tes atau ikut ee bootcampot gitu. Tapi
+[27:16] kita enggak punya plan nih setelah kita
+[27:18] ikut bootcamp ini kita mau apakan hasil
+[27:21] sertifikatnya gitu. Misalnya ikut
+[27:22] bootcamp bahasa Inggris tapi enggak
+[27:24] punya rencana, oh misal untuk kuliah ke
+[27:26] luar negeri atau untuk bekerja. Nah, itu
+[27:28] kan ee uangnya sia-sia dikeluarkan gitu
+[27:31] ya. Jadi kita perlu dipikirkan sangat
+[27:33] hati-hati dalam ee mengeluarkan uang
+[27:36] dengan high risk tadi. Nah, untuk
+[27:39] menilai risiko itu tadi kita bisa
+[27:41] menanyakan beberapa pertanyaan. Apakah
+[27:43] uang ini untuk kebutuhan penting? Apakah
+[27:46] uangnya terlalu besar? Dan apakah kita
+[27:48] punya rencana cadangan dan seterusnya.
+[27:50] Semakin banyak jawaban yang membuat kita
+[27:52] ragu, semakin tinggi risikonya, maka
+[27:54] sebaikbaiknya kita hindari dulu. Nah,
+[27:57] ini ada contohnya. Kalau misalnya kita
+[27:59] beli buku uang ee buku sekolah, beli
+[28:03] buku sekolah yang harganya Rp25.000 tapi
+[28:05] uang kita Rp100.000, wah ternyata uang
+[28:06] kita masih bersisa banyak kan. Dan
+[28:08] kebetulan ee buku sekolah itu sebuah
+[28:11] kebutuhan, maka ee membeli buku sekolah
+[28:13] itu low rista kita ee membeli bahan
+[28:17] untuk jualan Rp60.000 tapi uang kita
+[28:19] Rp100.000. Nah, ini peluangnya ee ya
+[28:24] kemungkinan besar bisa untung kalau
+[28:26] misalnya dagangan kita laku. Tapi kan
+[28:28] belum pasti ya ee belum tentu orang suka
+[28:30] dengan jualan kita gitu ya. Makanya
+[28:32] resikonya medium atau kalau resikonya
+[28:36] yang ha itu
+[28:38] kita punya uangnya R95.000. Ee uang kita
+[28:40] Rp100.000 terus kita beli sesuatu
+[28:43] R90.000 misalnya kita beli jaket yang
+[28:46] sedang tren gitu ya. Nah, uang kita
+[28:48] habis dan bersisa R5.000.
+[28:50] hanya untuk
+[28:53] apa ya memenuhi keinginan yang kita mau
+[28:55] gitu tadi ya. Nah, ini berarti ee
+[28:57] resikonya high atau tinggi. Nah, kita
+[29:01] bisa mengimplementasikan resiko-resiko
+[29:03] tadi ke dalam bahasa pemrograman Python
+[29:06] ya. Ee di sini kita bisa implementasikan
+[29:10] dia. Kita simpan dulu dia ke dalam ee
+[29:12] apa itu namanya? Sebuah variabel. Terus
+[29:14] variabelnya kita bisa tambahkan
+[29:16] conditionnya. Nah, untuk financial risk
+[29:19] ini karena ada beberapa
+[29:20] pertanyaan-pertanyaan tadi, kita bisa
+[29:22] mengimplementasikan nested condition
+[29:24] yang sebelumnya kita sudah pelajarin.
+[29:26] Misalnya kalau misalnya kategori barang
+[29:28] yang kita punya itu sebuah kebutuhan,
+[29:31] dia akan cek apakah uang kita lebih atau
+[29:34] sama dengan ee lebih dari harga barang
+[29:37] yang mau kita beli, gitu ya. Kalau
+[29:39] misalnya uang kita tuh lebih dari
+[29:41] harganya, maka oh risikonya low sama oh
+[29:45] barang ini sebuah kebutuhan dan uang
+[29:47] kita cukup. Tapi gimana kalau uang kita
+[29:48] lebih ee kurang dari harganya gitu ya,
+[29:51] maka oh resikonya medium, barang ini
+[29:54] kebutuhan tapi uangnya belum cukup gitu.
+[29:56] Jadi kita bisa ee mengukur gitu ya, kita
+[29:59] bisa membuat program yang mengukur oh
+[30:01] ini apakah sebuah ee financial eh
+[30:06] risknya itu apakah dia medium, low atau
+[30:09] high. Ini ya ee kondisinya ada banyak ee
+[30:13] yang bisa kita ee gunakan gitu ya. Ini
+[30:16] kalau misalnya barang kategorinya bukan
+[30:18] kebutuhan berarti e wants ya keinginan.
+[30:21] Kalau keinginannya harganya lebih besar
+[30:24] dari separuh uang kita gitu. Misalnya
+[30:26] harga ee
+[30:28] kita mau membeli sweater tadi Rp95.000,
+[30:31] terus itu kita hitung nih uang kita
+[30:33] Rp100.000.
+[30:35] Nah, kita cek nih separuhnya uang kita
+[30:37] misalkan kan tadi Rp100.000 kalau kita
+[30:39] hitung setengahnya kan Rp50.000. Apa
+[30:42] R95.000 lebih besar dari Rp50.000 tadi
+[30:46] berarti resikonya high gitu ya. ee
+[30:49] karena barang harga barangnya terlalu
+[30:50] besar untuk melakukan keinginan. Nah,
+[30:52] ini kenapa ee mengukur ee setengah dari
+[30:56] uang kita ya? Karena kalau misalnya kita
+[30:58] anggap aja kalau misalnya kita bisa
+[31:00] membeli barang itu dua kali gitu ya,
+[31:02] berarti ee kalau kita beli satu kita
+[31:05] enggak terlalu rugi gitu ya. Ee misalnya
+[31:07] harga barangnya Rp50.000, uang kita
+[31:09] Rp100.000 ee Rp150.000. Nah, berarti kan
+[31:12] kalau misalnya barang itu tadi ee apa
+[31:15] ya? Kalau barang itu tadi rusak atau
+[31:18] hilang itu kita masih punya uang
+[31:20] Rp100.000 gitu. Kita bisa beli lagi
+[31:21] kalau kita butuh banget gitu ya. Nah,
+[31:24] itu bisa kita implementasikan dengan
+[31:26] nested conditional tadi. Nah, itu kita
+[31:29] bisa eh lihat ya. Pertama dia akan
+[31:32] ngecek conditionnya, condition-nya
+[31:34] apakah dia eh kategorinya kebutuhan atau
+[31:37] needs gitu. Kalau kebutuhan dia akan
+[31:39] menjalankan A else itu berarti kalau ee
+[31:42] dia ini kebetulan kalau kondisinya ada
+[31:45] dua aja ya kebutuhan needs sama once.
+[31:47] Kalau ada kebutuhan yang lain berarti di
+[31:48] sini pakai else if atau el if kategori
+[31:51] sama dengan sama dengan needs. Sama yang
+[31:53] paling bawah nanti else gitu ya
+[31:54] teman-teman. Nah eh di sini ada contoh
+[31:57] lain yang kita bisa terapin. Misalnya
+[32:00] kalau sisa uangnya kurang dari R.000
+[32:03] maka resikonya high gitu ya. Kalau
+[32:06] misalnya ini sebuah needs, tapi uangnya
+[32:09] sisa uangnya itu kurang dari R.000
+[32:11] misalnya Rp9.000, R8.000, wah ini
+[32:14] ternyata harganya terlalu mahal nih,
+[32:16] gitu ya. Maka kita bisa ee menentukan
+[32:19] program bisa menampilkan oh resikonya
+[32:21] high atau resikonya medium atau
+[32:22] resikonya low dan seterusnya dan
+[32:24] seterusnya. Oke. Terus itu kita ee dalam
+[32:28] program kita selain kita bisa memasukkan
+[32:30] ee beberapa kategori-kategori tadi ya,
+[32:33] kayak misalnya uang kita berapa, harga
+[32:35] barangnya, sama kategorinya atau nama
+[32:37] item yang mau kita beli, itu kita bisa
+[32:39] tambahkan sebuah ee variabel baru yang
+[32:42] dia nanti mengecek nih apakah dia kita
+[32:44] punya sebuah plan untuk membelinya itu
+[32:47] tadi gitu. Misalnya nih kalau kita lihat
+[32:49] di sini ee ini merupakan sebuah
+[32:52] keinginan gitu ya. Terus itu dia
+[32:54] risikonya high. Tapi ternyata kita
+[32:57] memiliki plan. Oh, barang ini akan
+[32:59] digunakan untuk eh dijual kembali dan
+[33:02] seterusnya dan seterusnya. Berarti kan
+[33:03] kita punya plan gitu ya. Kita tahu
+[33:05] perkiraan biayanya berapa sama target
+[33:07] hasilnya berapa. Berarti intinya kita
+[33:09] sudah punya plan. Kalau kita punya plan,
+[33:12] maka ee kita bisa meloloskan barang
+[33:15] tersebut gitu ya. Misalnya kayak oh kita
+[33:17] punya plan kok enggak apa-apa. Maka, mm
+[33:21] misalnya nih contohnya kalau misalnya
+[33:22] kategorinya usaha gitu ya. Untuk usaha
+[33:25] misalnya tadi ada keinginan on sama ada
+[33:28] satu lagi kategorinya usaha. Nah, kita
+[33:30] cek nih kalau usahanya punya plan ya
+[33:31] udah kita cek kondisinya. Tapi kalau eh
+[33:34] dia enggak punya plan ya has plannya
+[33:36] sama dengan false, dia akan weh
+[33:38] risikonya high nih karena belum ada
+[33:39] rencana yang jelas. Jadi kita enggak
+[33:41] perlu spending money yang berlebihan.
+[33:43] Kurang lebih seperti itu untuk financial
+[33:46] ris itu tadi ya, Teman-teman. Kenapa
+[33:49] alasan itu penting? Karena supaya kita
+[33:52] tahu nih ee
+[33:56] supaya kita tahu dan programnya bisa
+[33:57] merekomendasikan
+[33:59] ee berdasarkan data yang kita punya gitu
+[34:01] ya. Nah, dalam financial literacy
+[34:04] keputusan itu harus kita bisa jelasin
+[34:06] nih. Oh, kalau misalnya kita mau membeli
+[34:07] sesuatu resikonya segini. Terus itu ee
+[34:11] alasannya karena uang kita lebih dari ee
+[34:14] harga barang yang akan dibeli dan
+[34:16] seterusnya dan seterusnya. Jadi dalam
+[34:18] financial planning, financial literasi
+[34:20] itu kita enggak boleh mendebak-mendebak,
+[34:23] kita harus berdasarkan data yang kita
+[34:24] punya gitu ya, Teman-teman ya. Nah, ini
+[34:27] ee ada beberapa contoh. Kalau misalnya
+[34:30] kita uang kita Rp100.000,
+[34:32] harganya Rp80.000 dan ternyata dia cuman
+[34:34] keinginan gitu ya. Nah, kita ee program
+[34:38] yang kita buat ternyata mengutputkan,
+[34:41] mengasih tahu, "Oh, risikonya tinggi
+[34:43] banget nih. Karena lebih baik kita tunda
+[34:45] dulu karena uangnya terlalu sedikit."
+[34:47] Nah, keputusan yang program buat ini
+[34:50] kenapa dia masih ngasihnya resikonya
+[34:53] high? Karena sisa uangnya Rp20.000. Nih
+[34:55] kan ini cuman keinginan. Gimana nanti
+[34:57] kalau misalnya ada kebutuhan-kebutuhan,
+[34:58] misal kita harus beli makan, harus ee
+[35:01] jalan gitu ya, tapi uang kita sisa
+[35:03] Rp20.000. Sedangkan makan kita perlu
+[35:05] R.000. Nah, ini kan resikonya high kalau
+[35:07] misalnya kita mau membeli barang
+[35:08] tersebut. Jadi, seperti itu untuk ee
+[35:12] implementasi data untuk ee menganalisis
+[35:16] kebutuhan sama wants ya. Nah, ini
+[35:19] teman-teman bisa mengerjakan mini
+[35:21] activity berikut ini.
+[35:38] Nah, Teman-teman kita telah membahas
+[35:40] beberapa materi tentang financial
+[35:42] literacy tadi untuk ee membuat
+[35:45] teman-teman
+[35:47] lebih paham lagi tentang beberapa materi
+[35:50] financial literacy. Sekarang coba buat
+[35:53] tugas yang nanti akan dihitung sebagai
+[35:55] kehadiran teman-teman dalam mengikuti
+[35:57] sesi ini. Jadi, kita ee harus membuat
+[36:01] program smart budgeting dan ris planner.
+[36:04] Di sini ada beberapa ee kondisi-kondisi
+[36:06] yang teman-teman harus ee punya dalam
+[36:09] programnya. Kita coba cek sama-sama ya.
+[36:11] Di sini ada menyimpan jumlah uang, dia
+[36:14] bisa mengecek level resiko, terus bisa
+[36:16] memberikan rekomendasi dan alasan logis
+[36:18] lainnya. Kemudian harus ada
+[36:21] variabel-variabelnya,
+[36:23] kondisinya harus ada ini. Terus itu
+[36:25] minimal harus menggunakan satu logical
+[36:28] operator.
+[36:31] Nah, untuk ee supaya programnya dianggap
+[36:35] selesai atau benar ini ada beberapa
+[36:37] kriteria yang teman-teman wajib ee harus
+[36:40] ada gitu ya. Punya variabel, menentukan
+[36:43] risiko, dan menentukan rekomendasi akhir
+[36:45] dan seterusnya dan seterusnya.
+[36:48] Oke, itu tadi materi tentang financial
+[36:50] literacy. Ee semoga teman-teman bisa
+[36:53] paham. Sampai jumpa di penjelasan
+[36:56] selanjutnya.

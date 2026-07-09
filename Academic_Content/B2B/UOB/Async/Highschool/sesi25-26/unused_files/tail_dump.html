@@ -1,0 +1,60 @@
+            
+            if (currentQIndex >= shuffledQ.length) {
+                qText.innerText = "Hebat! Kamu sudah menjawab semua pertanyaan! 🎉";
+                btnTrue.style.display = 'none';
+                btnFalse.style.display = 'none';
+                btnNext.style.display = 'none';
+                feedback.style.display = 'none';
+                return;
+            }
+            
+            qText.innerText = `Soal ${currentQIndex + 1}/4:\n${shuffledQ[currentQIndex].q}`;
+            btnTrue.style.display = 'block';
+            btnFalse.style.display = 'block';
+            feedback.style.display = 'none';
+            btnNext.style.display = 'none';
+            
+            btnTrue.disabled = false;
+            btnFalse.disabled = false;
+            btnTrue.style.opacity = '1';
+            btnFalse.style.opacity = '1';
+        }
+
+        function checkQuizAnswer(isTrueBtn) {
+            const correct = shuffledQ[currentQIndex].ans;
+            const isCorrect = (isTrueBtn === correct);
+            
+            const feedback = document.getElementById('quiz-feedback');
+            feedback.style.display = 'block';
+            if (isCorrect) {
+                feedback.innerText = "✅ BENAR! Pintar sekali!";
+                feedback.style.backgroundColor = "#00E676";
+                feedback.style.color = "var(--black)";
+            } else {
+                feedback.innerText = "❌ SALAH! Ayo coba lagi di pertanyaan selanjutnya.";
+                feedback.style.backgroundColor = "#FF0055";
+                feedback.style.color = "white";
+            }
+
+            document.getElementById('quiz-btn-true').disabled = true;
+            document.getElementById('quiz-btn-false').disabled = true;
+            document.getElementById('quiz-btn-true').style.opacity = '0.5';
+            document.getElementById('quiz-btn-false').style.opacity = '0.5';
+
+            document.getElementById('btn-next-quiz').style.display = 'inline-block';
+        }
+
+        const btnTrueEl = document.getElementById('quiz-btn-true');
+        const btnFalseEl = document.getElementById('quiz-btn-false');
+        const btnNextQuizEl = document.getElementById('btn-next-quiz');
+        if(btnTrueEl) btnTrueEl.addEventListener('click', () => checkQuizAnswer(true));
+        if(btnFalseEl) btnFalseEl.addEventListener('click', () => checkQuizAnswer(false));
+        if(btnNextQuizEl) btnNextQuizEl.addEventListener('click', () => {
+            currentQIndex++;
+            showQuizQuestion();
+        });
+
+        window.addEventListener('load', initQuiz);
+    </script>
+</body>
+</html>

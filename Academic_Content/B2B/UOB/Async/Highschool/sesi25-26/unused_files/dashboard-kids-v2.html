@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FFF8EE">
+  <title>Misi Conditional - Kalananti & UOB</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #092764;
+      --blue: #0b78f6;
+      --cyan: #43d7ff;
+      --yellow: #FFE500;
+      --pink: #FF0055;
+      --green: #00E676;
+      --orange: #FF8C42;
+      --cream: #FFF8EE;
+      --cream-dark: #F5ECDD;
+      --ink: #1A1A1A;
+      --muted: #6B6B6B;
+      --border: #1A1A1A;
+      --white: #FFFFFF;
+      --thick: 3px;
+      --shadow: 5px 5px 0px #1A1A1A;
+      --shadow-sm: 3px 3px 0px #1A1A1A;
+      --r: 16px;
+      --r-sm: 12px;
+      --r-xs: 8px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      min-height: 100vh;
+      background: var(--cream);
+      color: var(--ink);
+      font-family: "Nunito", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button { font: inherit; cursor: pointer; }
+    button:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+
+    /* ═══ FLOATING PLANETS ═══ */
+    .planet {
+      position: fixed; z-index: 0; pointer-events: none;
+      opacity: 0.12; filter: grayscale(30%);
+    }
+    .planet-1 { width: 180px; top: 60px; left: -50px; }
+    .planet-2 { width: 140px; right: -40px; bottom: 80px; }
+
+    /* ═══ PAGE SHELL ═══ */
+    .page { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; padding: 20px 24px 60px; }
+
+    /* ═══ TOPBAR ═══ */
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 0 24px;
+    }
+    .logos { display: flex; align-items: center; gap: 14px; }
+    .logos img { display: block; height: 32px; object-fit: contain; }
+    .rg-logo { filter: none; }
+    .uob-logo { height: 44px; }
+
+    .profile {
+      display: flex; align-items: center; gap: 10px;
+      padding: 6px 14px 6px 6px;
+      border: var(--thick) solid var(--border);
+      border-radius: 999px;
+      background: var(--white);
+      box-shadow: var(--shadow-sm);
+    }
+    .profile-pic {
+      width: 34px; height: 34px;
+      border: 2px solid var(--ink);
+      border-radius: 50%;
+      background: #c9eaff url("https://api.dicebear.com/7.x/avataaars/svg?seed=Budi") center/cover;
+    }
+    .profile-name { font-family: "Fredoka", sans-serif; font-weight: 600; font-size: 0.88rem; line-height: 1.1; }
+    .profile-sub { font-size: 0.68rem; color: var(--muted); }
+
+    /* ═══ MISSION BANNER ═══ */
+    .banner {
+      display: flex; align-items: center; justify-content: space-between; gap: 20px;
+      padding: 22px 28px;
+      border: var(--thick) solid var(--border);
+      border-radius: var(--r);
+      background: var(--navy);
+      color: var(--white);
+      box-shadow: var(--shadow);
+    }
+    .banner h1 {
+      font-family: "Fredoka", sans-serif;
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      line-height: 1.1;
+    }
+    .banner-sub { margin-top: 4px; font-size: 0.85rem; color: rgba(255,255,255,0.7); }
+    .banner-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex-shrink: 0; }
+    .progress-chip {
+      padding: 6px 14px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-radius: 999px;
+      font-family: "Fredoka", sans-serif;
+      font-size: 0.82rem; font-weight: 600;
+    }
+    .progress-bar-wrap { width: 160px; height: 10px; border-radius: 999px; background: rgba(255,255,255,0.2); overflow: hidden; }
+    .progress-bar-fill { height: 100%; border-radius: inherit; background: var(--yellow); transition: width 300ms ease; }
+
+    /* ═══ TAB NAV ═══ */
+    .tabs-scroll {
+      margin-top: 18px;
+      overflow-x: auto; scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .tabs-scroll::-webkit-scrollbar { display: none; }
+    .tabs {
+      display: flex; gap: 6px;
+      min-width: max-content;
+    }
+    .lesson-tab {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 16px;
+      border: var(--thick) solid var(--border);
+      border-radius: var(--r-sm);
+      background: var(--white);
+      box-shadow: 2px 2px 0 var(--border);
+      font-family: "Fredoka", sans-serif;
+      font-size: 0.82rem; font-weight: 600;
+      white-space: nowrap;
+      transition: transform 80ms ease, box-shadow 80ms ease;
+    }
+    .lesson-tab:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 3px 3px 0 var(--border);
+    }
+    .lesson-tab:active {
+      transform: translate(2px, 2px);
+      box-shadow: 0 0 0 var(--border);
+    }
+    .lesson-tab.active {
+      background: var(--yellow);
+      transform: translate(2px, 2px);
+      box-shadow: 0 0 0 var(--border);
+    }
+    .tab-num {
+      display: grid; place-items: center;
+      width: 28px; height: 28px;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      background: var(--cream);
+      font-size: 0.78rem; font-weight: 700;
+    }
+    .lesson-tab.active .tab-num { background: var(--white); }
+
+    /* ═══ MAIN CONTENT AREA ═══ */
+    .main {
+      margin-top: 18px;
+      border: var(--thick) solid var(--border);
+      border-radius: var(--r);
+      background: var(--white);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .content-header {
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+      padding: 22px 26px;
+      border-bottom: var(--thick) solid var(--border);
+      background: var(--cream);
+    }
+    .content-kicker {
+      font-family: "Fredoka", sans-serif;
+      font-size: 0.72rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--blue);
+    }
+    .content-title {
+      margin-top: 2px;
+      font-family: "Fredoka", sans-serif;
+      font-size: clamp(1.3rem, 3vw, 1.9rem);
+      line-height: 1.15;
+    }
+    .dur-tag {
+      flex-shrink: 0;
+      padding: 6px 12px;
+      border: 2px solid var(--border);
+      border-radius: 999px;
+      background: var(--yellow);
+      font-family: "Fredoka", sans-serif;
+      font-size: 0.72rem; font-weight: 700;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .content-body { padding: 26px; }
+
+    .step-panel[hidden] { display: none; }
+
+    /* ═══ VIDEO ═══ */
+    .vid-window {
+      border: var(--thick) solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      background: var(--ink);
+    }
+    .vid-titlebar {
+      display: flex; align-items: center; gap: 6px;
+      padding: 8px 14px;
+      background: var(--navy);
+    }
+    .vid-dot { width: 10px; height: 10px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.3); }
+    .vid-dot:nth-child(1) { background: #FF5F56; border-color: #E0443E; }
+    .vid-dot:nth-child(2) { background: #FFBD2E; border-color: #DEA123; }
+    .vid-dot:nth-child(3) { background: #27C93F; border-color: #1AAB29; }
+    .vid-titlebar span {
+      margin-left: 8px; color: rgba(255,255,255,0.5);
+      font-size: 0.72rem; font-weight: 700;
+    }
+
+    .video-frame {
+      position: relative; width: 100%; aspect-ratio: 16/9;
+      background: #0a0a1a;
+    }
+    .video-frame::before {
+      content: "Memuat video...";
+      position: absolute; inset: 0; z-index: 1;
+      display: grid; place-items: center;
+      color: rgba(255,255,255,0.5);
+      font-family: "Fredoka", sans-serif; font-size: 0.9rem;
+    }
+    .video-frame.player-ready::before { display: none; }
+    .video-frame.player-error::before {
+      content: "Video gagal dimuat. Periksa koneksi atau pemblokir konten browser.";
+      padding: 30px; color: #fff; text-align: center;
+    }
+    .video-frame iframe, .video-frame > div:first-child {
+      position: absolute; inset: 0; width: 100%; height: 100%; border: 0;
+    }
+    .video-frame iframe { pointer-events: none; }
+
+    .video-center-play {
+      position: absolute; top: 50%; left: 50%; z-index: 3;
+      width: 72px; height: 56px;
+      display: grid; place-items: center;
+      color: var(--ink);
+      border: var(--thick) solid var(--border);
+      border-radius: var(--r-sm);
+      background: var(--yellow);
+      box-shadow: var(--shadow);
+      font-size: 1.6rem;
+      transform: translate(-50%, -50%);
+      transition: transform 80ms ease, box-shadow 80ms ease;
+    }
+    .video-center-play:hover {
+      transform: translate(calc(-50% - 1px), calc(-50% - 1px));
+      box-shadow: 6px 6px 0 var(--border);
+    }
+    .video-center-play:active {
+      transform: translate(calc(-50% + 2px), calc(-50% + 2px));
+      box-shadow: 0 0 0 var(--border);
+    }
+    .video-center-play.is-playing { display: none; }
+
+    .video-controls {
+      display: grid; grid-template-columns: auto 1fr auto auto auto;
+      align-items: center; gap: 8px;
+      padding: 10px 14px;
+      background: var(--navy);
+      color: #fff;
+    }
+    .vc-btn {
+      width: 34px; height: 34px;
+      display: grid; place-items: center;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-radius: var(--r-xs);
+      background: transparent;
+      color: #fff;
+      cursor: pointer;
+      transition: background 100ms;
+    }
+    .vc-btn:hover { background: rgba(255,255,255,0.15); }
+    .video-seek { width: 100%; accent-color: var(--yellow); cursor: pointer; }
+    .video-time { font-size: 0.72rem; font-weight: 800; font-family: "SFMono-Regular", Consolas, monospace; min-width: 80px; text-align: center; }
+
+    .video-frame:fullscreen, .video-frame:-webkit-full-screen { width: 100%; height: 100%; aspect-ratio: auto; border-radius: 0; }
+
+    /* ═══ BOOKMARKS ═══ */
+    .bookmarks-container { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 16px; }
+    .bookmark-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 12px;
+      border: 2px solid var(--border);
+      border-radius: var(--r-xs);
+      background: var(--cream);
+      font-family: "Fredoka", sans-serif; font-size: 0.78rem; font-weight: 600;
+      box-shadow: 2px 2px 0 var(--border);
+      transition: transform 80ms, box-shadow 80ms;
+    }
+    .bookmark-btn:hover { transform: translate(-1px,-1px); box-shadow: 3px 3px 0 var(--border); }
+    .bookmark-btn:active { transform: translate(1px,1px); box-shadow: 0 0 0 var(--border); }
+    .bookmark-time {
+      padding: 1px 5px;
+      border-radius: 4px;
+      background: var(--blue); color: #fff;
+      font-family: "SFMono-Regular", Consolas, monospace; font-size: 0.68rem; font-weight: 700;
+    }
+
+    /* ═══ INFO STRIPS ═══ */
+    .strips { display: flex; flex-direction: column; gap: 12px; margin-top: 22px; }
+
+    .strip {
+      display: flex; gap: 0;
+      border: var(--thick) solid var(--border);
+      border-radius: var(--r-sm);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .strip-accent {
+      width: 8px; flex-shrink: 0;
+    }
+    .strip-accent.blue { background: var(--blue); }
+    .strip-accent.yellow { background: var(--yellow); }
+    .strip-accent.green { background: var(--green); }
+    .strip-accent.pink { background: var(--pink); }
+    .strip-accent.cyan { background: var(--cyan); }
+    .strip-accent.orange { background: var(--orange); }
+
+    .strip-body { padding: 16px 20px; flex: 1; }
+    .strip-title {
+      margin-bottom: 8px;
+      font-family: "Fredoka", sans-serif; font-size: 1.05rem; font-weight: 700;
+    }
+    .strip-body ul, .strip-body ol { padding-left: 20px; }
+    .strip-body li { margin-bottom: 6px; font-size: 0.88rem; line-height: 1.5; color: var(--muted); }
+    .strip-body li strong { color: var(--ink); }
+    .strip-body p { font-size: 0.88rem; line-height: 1.55; color: var(--muted); }
+    .strip-body p + p { margin-top: 8px; }
+
+    code {
+      padding: 1px 5px;
+      border-radius: 4px;
+      background: #FFE5EF; color: #B80050;
+      font-family: "SFMono-Regular", Consolas, monospace; font-size: 0.84em;
+    }
+
+    .code-box {
+      margin: 12px 0; padding: 14px 16px;
+      border: 2px solid var(--border);
+      border-radius: var(--r-xs);
+      background: #1E1E2E; color: #CDD6F4;
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 0.82rem; line-height: 1.6;
+      overflow-x: auto; white-space: pre;
+      box-shadow: var(--shadow-sm);
+    }
+    .code-box .kw { color: #F38BA8; font-weight: 700; }
+    .code-box .str { color: #A6E3A1; }
+    .code-box .cmt { color: #6C7086; font-style: italic; }
+    .code-box .fn { color: #89B4FA; }
+
+    .tip-box {
+      margin-top: 10px; padding: 10px 14px;
+      border: 2px solid var(--border);
+      border-left: 6px solid var(--yellow);
+      border-radius: var(--r-xs);
+      background: #FFF9DD;
+      font-size: 0.82rem; line-height: 1.5; color: #5C4B00;
+    }
+
+    /* ═══ CONCEPT CHIPS ═══ */
+    .chips { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+    .chip {
+      flex: 1 1 200px;
+      padding: 14px 16px;
+      border: var(--thick) solid var(--border);
+      border-radius: var(--r-sm);
+      background: var(--cream);
+      box-shadow: var(--shadow-sm);
+    }
+    .chip-letter {
+      display: inline-grid; place-items: center;
+      width: 28px; height: 28px;
+      margin-bottom: 8px;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      background: var(--blue); color: #fff;
+      font-family: "Fredoka", sans-serif; font-size: 0.78rem; font-weight: 700;
+    }
+    .chip h4 { font-family: "Fredoka", sans-serif; font-size: 0.92rem; margin-bottom: 4px; }
+    .chip p { font-size: 0.82rem; color: var(--muted); line-height: 1.45; }
+
+    /* ═══ COMPARISON TABLE ═══ */
+    .cmp-table {
+      width: 100%; margin-top: 12px;
+      border-collapse: separate; border-spacing: 0;
+      border: 2px solid var(--border);
+      border-radius: var(--r-xs);
+      overflow: hidden; font-size: 0.82rem;
+    }
+    .cmp-table th, .cmp-table td {
+      padding: 8px 12px; text-align: left; vertical-align: top;
+      border-right: 2px solid var(--border);
+      border-bottom: 2px solid var(--border);
+    }
+    .cmp-table th { background: var(--navy); color: #fff; font-family: "Fredoka", sans-serif; }
+    .cmp-table tr:last-child td { border-bottom: 0; }
+    .cmp-table th:last-child, .cmp-table td:last-child { border-right: 0; }
+
+    /* ═══ COLLAPSIBLE ═══ */
+    .fold {
+      border: 2px solid var(--border);
+      border-radius: var(--r-sm);
+      overflow: hidden;
+      margin-top: 12px;
+      box-shadow: var(--shadow-sm);
+    }
+    .fold summary {
+      padding: 12px 16px;
+      background: var(--cream);
+      font-family: "Fredoka", sans-serif; font-weight: 700;
+      cursor: pointer;
+      list-style: none;
+    }
+    .fold summary::before { content: "▸ "; }
+    .fold[open] summary::before { content: "▾ "; }
+    .fold[open] summary { border-bottom: 2px solid var(--border); }
+    .fold-inner { padding: 14px 16px; }
+
+    /* ═══ READING HEADER ═══ */
+    .read-header {
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+      padding: 20px 22px;
+      border: var(--thick) solid var(--border);
+      border-radius: var(--r-sm);
+      background: var(--navy); color: #fff;
+      box-shadow: var(--shadow);
+    }
+    .read-header .label { color: var(--yellow); font-size: 0.68rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
+    .read-header h3 { font-family: "Fredoka", sans-serif; font-size: clamp(1.15rem,3vw,1.55rem); line-height: 1.15; }
+    .read-header p { margin-top: 4px; color: rgba(255,255,255,0.65); font-size: 0.84rem; line-height: 1.45; }
+    .read-badge {
+      flex-shrink: 0; padding: 5px 10px;
+      border: 2px solid var(--border);
+      border-radius: 999px;
+      background: var(--yellow); color: var(--ink);
+      font-family: "Fredoka", sans-serif; font-size: 0.7rem; font-weight: 700;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .reading-section { margin-top: 14px; }
+
+    /* ═══ NAV BUTTONS ═══ */
+    .nav-row {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      margin-top: 26px; padding-top: 18px;
+      border-top: var(--thick) solid var(--border);
+    }
+    .nav-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 10px 20px;
+      border: var(--thick) solid var(--border);
+      border-radius: var(--r-sm);
+      font-family: "Fredoka", sans-serif; font-weight: 700;
+      box-shadow: var(--shadow-sm);
+      transition: transform 80ms, box-shadow 80ms;
+    }
+    .nav-btn:hover:not(:disabled) { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--border); }
+    .nav-btn:active:not(:disabled) { transform: translate(2px,2px); box-shadow: 0 0 0 var(--border); }
+    .nav-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+    .nav-btn.prev { background: var(--white); color: var(--ink); }
+    .nav-btn.next { background: var(--blue); color: #fff; }
+
+    /* ═══ FOOTER ═══ */
+    .foot { padding: 20px 0; text-align: center; font-size: 0.68rem; color: var(--muted); }
+
+    /* ═══ QUIZ OVERLAY ═══ */
+    .quiz-overlay {
+      position: fixed; inset: 0; z-index: 1000;
+      display: none; justify-content: center; align-items: center;
+      padding: 24px;
+      background: rgba(26,26,26,0.8);
+    }
+    .quiz-overlay.open { display: flex; animation: fade-in 150ms ease; }
+
+    .quiz-dialog {
+      width: 100%; max-width: 820px; max-height: 90vh;
+      overflow-y: auto; scrollbar-width: thin;
+      border: var(--thick) solid var(--border);
+      border-radius: var(--r);
+      background: var(--white);
+      box-shadow: 8px 8px 0 var(--border);
+      animation: pop-in 200ms ease;
+    }
+    .quiz-top {
+      display: flex; align-items: center; gap: 14px;
+      padding: 18px 22px;
+      border-bottom: var(--thick) solid var(--border);
+      background: var(--yellow);
+    }
+    .quiz-icon {
+      width: 44px; height: 44px;
+      display: grid; place-items: center;
+      border: var(--thick) solid var(--border);
+      border-radius: var(--r-sm);
+      background: var(--white);
+      font-size: 1.4rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .quiz-top-text .quiz-kicker { font-size: 0.65rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--navy); }
+    .quiz-top h2 { font-family: "Fredoka", sans-serif; font-size: clamp(1.2rem,3.5vw,1.7rem); line-height: 1.1; }
+
+    .quiz-body { padding: 20px 22px 24px; }
+
+    .quiz-tag { display: none; }
+    .quiz-helper { display: none; }
+
+    .quiz-progress { display: flex; gap: 4px; margin-bottom: 14px; }
+    .quiz-dot { flex: 1; height: 8px; border: 2px solid var(--border); border-radius: 4px; background: var(--cream); }
+    .quiz-dot.active, .quiz-dot.done { background: var(--blue); }
+
+    .quiz-question {
+      min-height: 80px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 16px; padding: 18px 20px;
+      border: var(--thick) solid var(--border);
+      border-radius: var(--r-sm);
+      background: var(--cream);
+      box-shadow: var(--shadow-sm);
+      font-family: "Fredoka", sans-serif;
+      font-size: clamp(1rem, 3vw, 1.25rem); font-weight: 600;
+      line-height: 1.4; text-align: center; white-space: pre-wrap;
+    }
+    .answer-row { display: flex; gap: 10px; justify-content: center; margin-bottom: 14px; }
+    .answer-button {
+      min-width: 140px; padding: 12px 24px;
+      border: var(--thick) solid var(--border);
+      border-radius: var(--r-sm);
+      font-family: "Fredoka", sans-serif; font-size: 1rem; font-weight: 700;
+      box-shadow: var(--shadow-sm);
+      transition: transform 80ms, box-shadow 80ms;
+    }
+    .answer-button:hover:not(:disabled) { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--border); }
+    .answer-button:active:not(:disabled) { transform: translate(2px,2px); box-shadow: 0 0 0 var(--border); }
+    .answer-button:disabled { opacity: 0.5; cursor: default; }
+    .answer-button.true { background: #D5FFE5; color: #075B38; }
+    .answer-button.false { background: #FFE5EF; color: #9D174D; }
+
+    .quiz-feedback {
+      display: none; margin-top: 14px; padding: 12px 14px;
+      border: var(--thick) solid var(--border);
+      border-radius: var(--r-xs);
+      font-size: 0.88rem; font-weight: 700; line-height: 1.5; text-align: left;
+    }
+    .quiz-feedback.correct { display: block; background: #D5FFE5; color: #075B38; }
+    .quiz-feedback.wrong { display: block; background: #FFE5EF; color: #9D174D; }
+
+    .quiz-actions { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+
+    .quiz-next {
+      display: none; padding: 10px 20px;
+      border: var(--thick) solid var(--border);
+      border-radius: var(--r-sm);
+      background: var(--blue); color: #fff;
+      font-family: "Fredoka", sans-serif; font-weight: 700;
+      box-shadow: var(--shadow-sm);
+      transition: transform 80ms, box-shadow 80ms;
+    }
+    .quiz-next.visible { display: block; }
+    .quiz-next:hover:not(:disabled) { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--border); }
+
+    .quiz-review {
+      display: none; padding: 10px 16px;
+      border: var(--thick) solid var(--border);
+      border-radius: var(--r-sm);
+      background: var(--cream); color: var(--ink);
+      font-family: "Fredoka", sans-serif; font-weight: 700;
+      box-shadow: var(--shadow-sm);
+      transition: transform 80ms, box-shadow 80ms;
+    }
+    .quiz-review.visible { display: inline-flex; align-items: center; gap: 6px; }
+    .quiz-review:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--border); }
+
+    /* Slide title & text inside custom quiz HTML */
+    .slide-title {
+      display: inline-block; margin-bottom: 16px; padding: 8px 14px;
+      border: var(--thick) solid var(--border);
+      border-radius: var(--r-sm);
+      background: var(--yellow);
+      box-shadow: var(--shadow-sm);
+      font-family: "Fredoka", sans-serif; font-size: clamp(1.1rem,3vw,1.4rem); font-weight: 700;
+    }
+    .slide-text { font-size: 1rem; font-weight: 600; line-height: 1.6; text-align: left; }
+    .slide-text p { margin-bottom: 12px; }
+    .slide-text ul { padding-left: 24px; margin-bottom: 12px; }
+    .slide-text li { margin-bottom: 8px; }
+
+    .quote-box {
+      background: var(--yellow); border: var(--thick) solid var(--border);
+      padding: 16px 24px; border-radius: var(--r-sm); margin: 20px 0;
+      font-weight: 700; font-size: 1.2rem;
+      box-shadow: var(--shadow);
+    }
+    .code-block {
+      margin: 12px 0 16px; padding: 16px 18px; overflow-x: auto;
+      color: #CDD6F4; border: 2px solid var(--border);
+      border-radius: var(--r-xs); background: #1E1E2E;
+      box-shadow: var(--shadow-sm);
+      font-family: "Consolas","Courier New",monospace; font-size: 0.88rem; line-height: 1.55; text-align: left;
+    }
+    .keyword { color: #F38BA8; font-weight: bold; }
+    .string { color: #A6E3A1; font-weight: bold; }
+    .function { color: #89B4FA; font-weight: bold; }
+    .operator { color: #F9E2AF; font-weight: bold; }
+
+    @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes pop-in { from { opacity: 0; transform: scale(0.95) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+
+    .quiz-return {
+      position: fixed; z-index: 950; right: 20px; bottom: 20px;
+      display: none; max-width: 300px; padding: 14px;
+      border: var(--thick) solid var(--border);
+      border-radius: var(--r-sm);
+      background: var(--white);
+      box-shadow: var(--shadow);
+    }
+    .quiz-return.visible { display: block; animation: pop-in 200ms ease; }
+    .quiz-return p { margin-bottom: 10px; font-size: 0.8rem; line-height: 1.4; }
+    .quiz-return button {
+      width: 100%; padding: 8px 12px;
+      border: 2px solid var(--border);
+      border-radius: var(--r-xs);
+      background: var(--yellow);
+      font-family: "Fredoka", sans-serif; font-weight: 700;
+      box-shadow: 2px 2px 0 var(--border);
+    }
+
+    .completion-toast {
+      position: fixed; z-index: 1200; right: 20px; bottom: 20px;
+      max-width: 340px; display: none; padding: 16px 20px;
+      border: var(--thick) solid var(--border);
+      border-radius: var(--r-sm);
+      background: var(--green); color: var(--ink);
+      box-shadow: var(--shadow);
+      font-family: "Fredoka", sans-serif; font-weight: 700;
+    }
+    .completion-toast.show { display: block; animation: pop-in 200ms ease; }
+
+    /* ═══ RESPONSIVE ═══ */
+    @media (max-width: 700px) {
+      .page { padding: 12px 14px 40px; }
+      .banner { flex-direction: column; padding: 18px 20px; }
+      .banner-right { align-items: flex-start; }
+      .progress-bar-wrap { width: 100%; }
+      .content-header { flex-direction: column; padding: 16px 18px; }
+      .content-body { padding: 18px; }
+      .chips { flex-direction: column; }
+      .chip { flex: none; }
+      .read-header { flex-direction: column; padding: 16px 18px; }
+      .nav-row { flex-direction: column; }
+      .nav-btn { width: 100%; justify-content: center; }
+      .answer-row { flex-direction: column; }
+      .answer-button { width: 100%; min-width: 0; }
+      .quiz-top { flex-direction: column; gap: 8px; }
+      .quiz-dialog { border-radius: var(--r-sm); }
+      .quiz-body { padding: 16px 14px; }
+      .quiz-actions { flex-direction: column; align-items: stretch; }
+      .quiz-actions button { width: 100%; }
+      .quiz-return { right: 10px; bottom: 10px; left: 10px; max-width: none; }
+      .profile > div:last-child { display: none; }
+      .planet { display: none; }
+      .vid-titlebar span { display: none; }
+      .video-time { display: none; }
+      .video-controls { grid-template-columns: auto 1fr auto auto; gap: 6px; padding: 8px 10px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <img class="planet planet-1" src="./Buku Panduan UOB My Digital Space (1) copy.png" alt="">
+  <img class="planet planet-2" src="./Buku Panduan UOB My Digital Space (1) copy 2.png" alt="">
+
+  <div class="page">
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="logos">
+        <img class="rg-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Ruangguru_logo.svg/3840px-Ruangguru_logo.svg.png" alt="Ruangguru">
+        <img class="uob-logo" src="https://roboguru-forum-cdn.ruangguru.com//image/56bc7464-d6ce-45c8-92ca-dcb4f2ab87ed.png" alt="UOB">
+      </div>
+      <div class="profile" aria-label="Profil siswa">
+        <div class="profile-pic" aria-hidden="true"></div>
+        <div>
+          <div class="profile-name">Siswa Kalananti</div>
+          <div class="profile-sub">Siap lanjut belajar</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- BANNER -->
+    <section class="banner">
+      <div>
+        <h1>Misi: Kuasai Conditional</h1>
+        <p class="banner-sub">Pelajari cara program mengambil keputusan dengan if, else, dan elif.</p>
+      </div>
+      <div class="banner-right">
+        <span class="progress-chip" id="progressText">1 dari 7</span>
+        <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill" style="width:14.3%"></div></div>
+      </div>
+    </section>
+
+    <!-- TABS -->
+    <div class="tabs-scroll">
+      <nav class="tabs" aria-label="Daftar video">
+        <button class="lesson-tab active" type="button" data-step="1" aria-current="step"><span class="tab-num">1</span> Kenalan Conditional</button>
+        <button class="lesson-tab" type="button" data-step="2"><span class="tab-num">2</span> Conditional di Python</button>
+        <button class="lesson-tab" type="button" data-step="3"><span class="tab-num">3</span> Multi Branch</button>
+        <button class="lesson-tab" type="button" data-step="4"><span class="tab-num">4</span> Nested</button>
+        <button class="lesson-tab" type="button" data-step="5"><span class="tab-num">5</span> Logical Operator</button>
+        <button class="lesson-tab" type="button" data-step="6"><span class="tab-num">6</span> Financial Literacy</button>
+        <button class="lesson-tab" type="button" data-step="7"><span class="tab-num">7</span> Assignment</button>
+      </nav>
+    </div>
+
+    <!-- MAIN -->
+    <main class="main">
+      <div class="content-header">
+        <div>
+          <p class="content-kicker" id="lessonKicker">Checkpoint 01 · Mulai di sini</p>
+          <h2 class="content-title" id="lessonTitle">Bagaimana Program Bisa Memilih?</h2>
+        </div>
+        <span class="dur-tag" id="durationPill">Video 1 · Konsep dasar</span>
+      </div>
+      <div class="content-body">
+
+        <!-- ╔═══ STEP 1 ═══╗ -->
+        <section class="step-panel" id="step-1">
+          <div class="vid-window">
+            <div class="vid-titlebar"><span class="vid-dot"></span><span class="vid-dot"></span><span class="vid-dot"></span><span>video-1.py</span></div>
+            <div class="video-frame" data-video-step="1">
+              <div id="youtube-player-1"></div>
+              <button class="video-center-play" type="button" data-step="1" aria-label="Putar video">▶</button>
+              <div class="video-controls">
+                <button class="vc-btn video-play" type="button" data-step="1" aria-label="Putar video">▶</button>
+                <input class="video-seek" type="range" data-step="1" min="0" max="100" value="0" step="0.1" aria-label="Posisi video">
+                <span class="video-time" data-step="1">0:00 / 0:00</span>
+                <button class="vc-btn video-mute" type="button" data-step="1" aria-label="Matikan suara">🔊</button>
+                <button class="vc-btn video-fullscreen" type="button" data-step="1" aria-label="Layar penuh">⛶</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="strips">
+            <div class="strip">
+              <div class="strip-accent blue"></div>
+              <div class="strip-body">
+                <h3 class="strip-title">Bekal yang kamu dapat</h3>
+                <ul>
+                  <li><strong>Program bisa memilih.</strong> Alur kode tidak selalu lurus; program dapat memilih aksi berdasarkan kondisi.</li>
+                  <li><strong>Mirip keputusan sehari-hari.</strong> Jika hujan, kita membawa payung. Komputer memakai pola berpikir serupa.</li>
+                  <li><strong>Hasil kondisi hanya dua.</strong> Sebuah kondisi akan bernilai <em>True</em> atau <em>False</em>.</li>
+                  <li><strong>Kondisi adalah penjaga.</strong> Perintah dijalankan hanya saat syarat yang ditentukan terpenuhi.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="strip">
+              <div class="strip-accent yellow"></div>
+              <div class="strip-body">
+                <h3 class="strip-title">Ingat rumusnya</h3>
+                <p><strong>Jika kondisi benar, jalankan aksi.</strong> Coba cari contoh keputusan bersyarat yang kamu lakukan hari ini.</p>
+                <div class="code-box"><span class="kw">if</span> hujan:
+    bawa(<span class="str">"payung"</span>)</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="reading-section">
+            <div class="read-header">
+              <div><p class="label">Materi Bacaan 01</p><h3>Conditional: cara program mengambil keputusan</h3><p>Baca bagian ini setelah menonton video untuk mengulang konsep kondisi, hasil True atau False, dan hubungan antara syarat dengan aksi.</p></div>
+              <span class="read-badge">Dasar konsep</span>
+            </div>
+
+            <div class="chips">
+              <div class="chip"><span class="chip-letter">A</span><h4>Program tidak selalu berjalan lurus</h4><p>Conditional membuat program memilih aksi yang berbeda berdasarkan keadaan atau data yang sedang diperiksa.</p></div>
+              <div class="chip"><span class="chip-letter">B</span><h4>Kondisi adalah sebuah pertanyaan</h4><p>Contohnya: "Apakah hujan?", "Apakah umur minimal 17?", atau "Apakah koin sudah 100?".</p></div>
+              <div class="chip"><span class="chip-letter">C</span><h4>Jawabannya hanya dua</h4><p>Setiap kondisi menghasilkan <code>True</code> saat syarat terpenuhi atau <code>False</code> saat syarat tidak terpenuhi.</p></div>
+            </div>
+
+            <div class="strip" style="margin-top:14px">
+              <div class="strip-accent green"></div>
+              <div class="strip-body">
+                <h3 class="strip-title">Dari keputusan sehari-hari ke kode</h3>
+                <ul><li>Jika hujan, bawa payung.</li><li>Jika baterai hampir habis, isi daya.</li><li>Jika pemain mendapat apel, tambah nyawa.</li></ul>
+                <div class="code-box"><span class="cmt"># Komputer mengecek syarat sebelum menjalankan aksi</span>
+hujan = <span class="kw">True</span>
+
+<span class="kw">if</span> hujan:
+    <span class="fn">print</span>(<span class="str">"Bawa payung"</span>)</div>
+                <div class="tip-box"><strong>Intinya:</strong> kondisi bekerja seperti penjaga pintu kastil. Aksi di dalam blok hanya boleh berjalan ketika syaratnya benar.</div>
+              </div>
+            </div>
+
+            <div class="strip" style="margin-top:14px">
+              <div class="strip-accent cyan"></div>
+              <div class="strip-body">
+                <h3 class="strip-title">Analogi Penjaga Pintu 🏰</h3>
+                <p>Bayangkan <code>if</code> adalah seorang penjaga pintu gerbang:</p>
+                <ul>
+                  <li><strong>Syarat / Kondisi</strong> = Apakah kamu punya kuncinya?</li>
+                  <li><code>True</code> = Kamu punya kunci! Pintu dibuka.</li>
+                  <li><code>False</code> = Kamu tidak punya kunci! Penjaga diam saja dan kamu tidak bisa masuk.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ╔═══ STEP 2 ═══╗ -->
+        <section class="step-panel" id="step-2" hidden>
+          <div class="vid-window">
+            <div class="vid-titlebar"><span class="vid-dot"></span><span class="vid-dot"></span><span class="vid-dot"></span><span>video-2.py</span></div>
+            <div class="video-frame" data-video-step="2">
+              <div id="youtube-player-2"></div>
+              <button class="video-center-play" type="button" data-step="2" aria-label="Putar video">▶</button>
+              <div class="video-controls"><button class="vc-btn video-play" type="button" data-step="2" aria-label="Putar video">▶</button><input class="video-seek" type="range" data-step="2" min="0" max="100" value="0" step="0.1"><span class="video-time" data-step="2">0:00 / 0:00</span><button class="vc-btn video-mute" type="button" data-step="2">🔊</button><button class="vc-btn video-fullscreen" type="button" data-step="2">⛶</button></div>
+            </div>
+          </div>
+          <div class="strips">
+            <div class="strip"><div class="strip-accent blue"></div><div class="strip-body"><h3 class="strip-title">Bekal yang kamu dapat</h3><ul><li><strong><code>if</code> untuk kondisi utama.</strong> Isi blok dijalankan hanya ketika kondisi bernilai <em>True</em>.</li><li><strong><code>else</code> untuk pilihan lainnya.</strong> Bagian ini berjalan ketika kondisi pada <code>if</code> tidak terpenuhi.</li><li><strong>Indentasi menandai isi cabang.</strong> Perintah yang menjorok berada di dalam blok <code>if</code> atau <code>else</code>.</li><li><strong>Operator perbandingan membentuk kondisi.</strong> Gunakan <code>==</code>, <code>!=</code>, <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, atau <code>&lt;=</code>.</li></ul></div></div>
+            <div class="strip"><div class="strip-accent pink"></div><div class="strip-body"><h3 class="strip-title">Peringatan Kuis Kejutan! 🤫</h3><p>Di tengah-tengah video nanti, akan muncul kuis kejutan untuk mengecek pemahamanmu. Tonton sampai selesai ya!</p></div></div>
+          </div>
+          <div class="reading-section">
+            <div class="read-header"><div><p class="label">Materi Bacaan 02</p><h3>Menulis <code>if</code> dan <code>else</code> di Python</h3><p>Pelajari bentuk kode, cara membaca kondisi, fungsi indentasi, dan bagaimana Python memilih satu dari dua jalan.</p></div><span class="read-badge">Sintaks Python</span></div>
+            <div class="chips">
+              <div class="chip"><span class="chip-letter">1</span><h4><code>if</code></h4><p>Memeriksa kondisi utama. Blok di bawahnya hanya dijalankan jika kondisi bernilai <code>True</code>.</p></div>
+              <div class="chip"><span class="chip-letter">2</span><h4><code>else</code></h4><p>Menjadi pilihan lain saat kondisi pada <code>if</code> bernilai <code>False</code>.</p></div>
+              <div class="chip"><span class="chip-letter">3</span><h4>Indentasi</h4><p>Spasi menjorok menandai perintah yang termasuk di dalam cabang <code>if</code> atau <code>else</code>.</p></div>
+            </div>
+            <div class="strip" style="margin-top:14px"><div class="strip-accent cyan"></div><div class="strip-body"><h3 class="strip-title">Analogi Dua Jalan 🛣️</h3><p>Jika <code>if</code> hanya punya satu pintu, maka <code>if-else</code> adalah persimpangan jalan.</p><ul><li><strong>Jalan pertama (<code>if</code>)</strong> diambil jika syarat terpenuhi.</li><li><strong>Jalan kedua (<code>else</code>)</strong> otomatis diambil jika syarat pertama gagal.</li></ul></div></div>
+            <div class="strip" style="margin-top:14px"><div class="strip-accent green"></div><div class="strip-body"><h3 class="strip-title">Contoh dua jalan keputusan</h3><div class="code-box">age = 15
+
+<span class="kw">if</span> age &gt;= 17:
+    <span class="fn">print</span>(<span class="str">"Boleh membuat KTP"</span>)
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="str">"Belum boleh membuat KTP"</span>)</div><div class="tip-box">Python hanya menjalankan <strong>satu cabang</strong>. Karena <code>15 &gt;= 17</code> bernilai False, program menjalankan blok <code>else</code>.</div></div></div>
+            <details class="fold"><summary>Operator perbandingan yang sering dipakai</summary><div class="fold-inner"><table class="cmp-table"><thead><tr><th>Operator</th><th>Arti</th><th>Contoh</th></tr></thead><tbody><tr><td><code>==</code></td><td>Sama dengan</td><td><code>answer == "A"</code></td></tr><tr><td><code>!=</code></td><td>Tidak sama dengan</td><td><code>status != "off"</code></td></tr><tr><td><code>&gt;</code> / <code>&lt;</code></td><td>Lebih besar / lebih kecil</td><td><code>score &gt; 75</code></td></tr><tr><td><code>&gt;=</code> / <code>&lt;=</code></td><td>Minimal / maksimal</td><td><code>age &gt;= 17</code></td></tr></tbody></table></div></details>
+          </div>
+        </section>
+
+        <!-- ╔═══ STEP 3 ═══╗ -->
+        <section class="step-panel" id="step-3" hidden>
+          <div class="vid-window"><div class="vid-titlebar"><span class="vid-dot"></span><span class="vid-dot"></span><span class="vid-dot"></span><span>video-3.py</span></div><div class="video-frame" data-video-step="3"><div id="youtube-player-3"></div><button class="video-center-play" type="button" data-step="3" aria-label="Putar video">▶</button><div class="video-controls"><button class="vc-btn video-play" type="button" data-step="3">▶</button><input class="video-seek" type="range" data-step="3" min="0" max="100" value="0" step="0.1"><span class="video-time" data-step="3">0:00 / 0:00</span><button class="vc-btn video-mute" type="button" data-step="3">🔊</button><button class="vc-btn video-fullscreen" type="button" data-step="3">⛶</button></div></div></div>
+          <div class="strips">
+            <div class="strip"><div class="strip-accent blue"></div><div class="strip-body"><h3 class="strip-title">Bekal yang kamu dapat</h3><ul><li><strong><code>elif</code> menambah cabang.</strong> Gunakan ketika keputusan memiliki lebih dari dua kemungkinan.</li><li><strong>Python membaca dari atas.</strong> Cabang pertama yang bernilai True dijalankan, sisanya dilewati.</li><li><strong>Urutan kondisi menentukan hasil.</strong> Letakkan syarat paling tinggi atau paling spesifik lebih dahulu.</li></ul></div></div>
+            <div class="strip"><div class="strip-accent pink"></div><div class="strip-body"><h3 class="strip-title">Peringatan Kuis Kejutan! 🤫</h3><p>Di tengah-tengah video nanti, akan muncul kuis kejutan!</p></div></div>
+          </div>
+          <div class="reading-section">
+            <div class="read-header"><div><p class="label">Materi Bacaan 03</p><h3>Multi-branch dengan <code>if</code>, <code>elif</code>, dan <code>else</code></h3><p>Multi-branch dipakai ketika program harus memilih satu hasil dari banyak kategori.</p></div><span class="read-badge">Banyak pilihan</span></div>
+            <div class="chips">
+              <div class="chip"><span class="chip-letter">1</span><h4>Mulai dengan <code>if</code></h4><p>Cabang pertama memeriksa kondisi yang paling penting atau paling spesifik.</p></div>
+              <div class="chip"><span class="chip-letter">2</span><h4>Lanjutkan dengan <code>elif</code></h4><p>Setiap <code>elif</code> hanya diperiksa jika semua kondisi sebelumnya salah.</p></div>
+              <div class="chip"><span class="chip-letter">3</span><h4>Akhiri dengan <code>else</code></h4><p><code>else</code> menangani semua nilai yang tidak cocok dengan cabang sebelumnya.</p></div>
+            </div>
+            <div class="strip" style="margin-top:14px"><div class="strip-accent cyan"></div><div class="strip-body"><h3 class="strip-title">Pohon Keputusan 🌲</h3><p>Bayangkan <code>elif</code> sebagai cabang-cabang pohon. Mulai dari batang utama (<code>if</code>), lalu tambahkan sebanyak apa pun cabang dengan <code>elif</code>. Jika tidak ada yang cocok, semuanya jatuh ke tanah (<code>else</code>).</p></div></div>
+            <div class="strip" style="margin-top:14px"><div class="strip-accent green"></div><div class="strip-body"><h3 class="strip-title">Contoh kategori nilai</h3><div class="code-box">score = 82
+
+<span class="kw">if</span> score &gt;= 90:
+    <span class="fn">print</span>(<span class="str">"Sangat Baik"</span>)
+<span class="kw">elif</span> score &gt;= 75:
+    <span class="fn">print</span>(<span class="str">"Baik"</span>)
+<span class="kw">elif</span> score &gt;= 60:
+    <span class="fn">print</span>(<span class="str">"Cukup"</span>)
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="str">"Perlu latihan lagi"</span>)</div><div class="tip-box">Hasilnya adalah <strong>Baik</strong>. Nilai 82 gagal pada syarat pertama, berhasil pada syarat kedua, lalu Python berhenti.</div></div></div>
+            <div class="strip" style="margin-top:14px"><div class="strip-accent orange"></div><div class="strip-body"><h3 class="strip-title">Mini Project: Smart Checker 👨‍🎓</h3><div class="code-box">score = 82
+task_done = <span class="kw">True</span>
+
+<span class="kw">if not</span> task_done:
+    <span class="fn">print</span>(<span class="str">"Selesaikan tugas dulu"</span>)
+<span class="kw">elif</span> score &gt;= 85:
+    <span class="fn">print</span>(<span class="str">"Siap ikut kelas advance"</span>)
+<span class="kw">elif</span> score &gt;= 70:
+    <span class="fn">print</span>(<span class="str">"Lanjut latihan berikutnya"</span>)
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="str">"Perlu belajar ulang"</span>)</div></div></div>
+            <details class="fold"><summary>Kesalahan umum: kondisi terlalu umum ditaruh di atas</summary><div class="fold-inner"><p>Jika <code>score &gt;= 60</code> ditaruh paling atas, nilai 95 langsung masuk ke kategori "Cukup". Susun rentang dari batas tertinggi ke terendah.</p></div></details>
+          </div>
+        </section>
+
+        <!-- ╔═══ STEP 4 ═══╗ -->
+        <section class="step-panel" id="step-4" hidden>
+          <div class="vid-window"><div class="vid-titlebar"><span class="vid-dot"></span><span class="vid-dot"></span><span class="vid-dot"></span><span>video-4.py</span></div><div class="video-frame" data-video-step="4"><div id="youtube-player-4"></div><button class="video-center-play" type="button" data-step="4" aria-label="Putar video">▶</button><div class="video-controls"><button class="vc-btn video-play" type="button" data-step="4">▶</button><input class="video-seek" type="range" data-step="4" min="0" max="100" value="0" step="0.1"><span class="video-time" data-step="4">0:00 / 0:00</span><button class="vc-btn video-mute" type="button" data-step="4">🔊</button><button class="vc-btn video-fullscreen" type="button" data-step="4">⛶</button></div></div></div>
+          <div class="strips">
+            <div class="strip"><div class="strip-accent pink"></div><div class="strip-body"><h3 class="strip-title">Peringatan Kuis Kejutan! 🤫</h3><p>Di tengah-tengah video nanti, akan muncul kuis kejutan!</p></div></div>
+          </div>
+          <div class="reading-section">
+            <div class="read-header"><div><p class="label">Materi Bacaan 04</p><h3>Nested condition: pengecekan bertahap</h3><p>Nested condition adalah kondisi di dalam kondisi. Pemeriksaan kedua baru dilakukan setelah pemeriksaan pertama berhasil.</p></div><span class="read-badge">Kondisi bersarang</span></div>
+            <div class="chips">
+              <div class="chip"><span class="chip-letter">A</span><h4>Tahap pertama</h4><p>Periksa syarat utama, misalnya apakah pengguna punya tiket atau sudah login.</p></div>
+              <div class="chip"><span class="chip-letter">B</span><h4>Tahap kedua</h4><p>Jika syarat utama terpenuhi, periksa syarat lanjutan seperti umur, role, atau jumlah koin.</p></div>
+              <div class="chip"><span class="chip-letter">C</span><h4>Aksi berbeda per tahap</h4><p>Nested cocok ketika tiap kegagalan perlu pesan atau tindakan yang berbeda.</p></div>
+            </div>
+            <div class="strip" style="margin-top:14px"><div class="strip-accent cyan"></div><div class="strip-body"><h3 class="strip-title">Analogi Masuk Bioskop 🏢</h3><p>Bayangkan kamu sedang pergi menonton bioskop:</p><ul><li><strong>Pintu Pertama:</strong> Penjaga mengecek tiket masuk.</li><li><strong>Pintu Kedua:</strong> Petugas mengecek umurmu untuk rating film.</li></ul><p>Kamu tidak akan diperiksa di pintu kedua jika tidak lolos pintu pertama!</p></div></div>
+            <div class="strip" style="margin-top:14px"><div class="strip-accent green"></div><div class="strip-body"><h3 class="strip-title">Contoh pemeriksaan tiket dan umur</h3><div class="code-box">has_ticket = <span class="kw">True</span>
+age = 16
+
+<span class="kw">if</span> has_ticket:
+    <span class="kw">if</span> age &gt;= 13:
+        <span class="fn">print</span>(<span class="str">"Boleh masuk studio"</span>)
+    <span class="kw">else</span>:
+        <span class="fn">print</span>(<span class="str">"Umur belum cukup"</span>)
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="str">"Harus punya tiket dulu"</span>)</div><div class="tip-box">Perhatikan indentasinya. <code>if age</code> berada di dalam <code>if has_ticket</code>, sehingga umur hanya diperiksa ketika pengguna sudah memiliki tiket.</div></div></div>
+            <details class="fold"><summary>Kapan nested condition sebaiknya dipakai?</summary><div class="fold-inner"><ul><li>Ketika proses harus berlangsung berurutan.</li><li>Ketika setiap tahap memiliki pesan kegagalan berbeda.</li><li>Ketika kondisi kedua tidak relevan sebelum kondisi pertama terpenuhi.</li></ul><div class="tip-box">Hindari terlalu banyak tingkat nested karena kode akan makin menjorok dan sulit dibaca.</div></div></details>
+          </div>
+        </section>
+
+        <!-- ╔═══ STEP 5 ═══╗ -->
+        <section class="step-panel" id="step-5" hidden>
+          <div class="vid-window"><div class="vid-titlebar"><span class="vid-dot"></span><span class="vid-dot"></span><span class="vid-dot"></span><span>video-5.py</span></div><div class="video-frame" data-video-step="5"><div id="youtube-player-5"></div><button class="video-center-play" type="button" data-step="5" aria-label="Putar video">▶</button><div class="video-controls"><button class="vc-btn video-play" type="button" data-step="5">▶</button><input class="video-seek" type="range" data-step="5" min="0" max="100" value="0" step="0.1"><span class="video-time" data-step="5">0:00 / 0:00</span><button class="vc-btn video-mute" type="button" data-step="5">🔊</button><button class="vc-btn video-fullscreen" type="button" data-step="5">⛶</button></div></div></div>
+          <div class="strips"><div class="strip"><div class="strip-accent pink"></div><div class="strip-body"><h3 class="strip-title">Peringatan Kuis Kejutan! 🤫</h3><p>Di tengah-tengah video nanti, akan muncul kuis kejutan!</p></div></div></div>
+          <div class="reading-section">
+            <div class="read-header"><div><p class="label">Materi Bacaan 05</p><h3>Menggabungkan kondisi dengan logical operators</h3><p><code>and</code>, <code>or</code>, dan <code>not</code> membantu mengecek beberapa syarat dalam satu ekspresi.</p></div><span class="read-badge">Logika kombinasi</span></div>
+            <div class="chips">
+              <div class="chip"><span class="chip-letter">&amp;</span><h4><code>and</code>: semua harus benar</h4><p>True hanya jika setiap kondisi bernilai True.</p></div>
+              <div class="chip"><span class="chip-letter">∨</span><h4><code>or</code>: salah satu cukup</h4><p>True jika minimal satu kondisi bernilai True.</p></div>
+              <div class="chip"><span class="chip-letter">¬</span><h4><code>not</code>: membalik nilai</h4><p><code>not True</code> menjadi False dan <code>not False</code> menjadi True.</p></div>
+            </div>
+            <div class="strip" style="margin-top:14px"><div class="strip-accent green"></div><div class="strip-body"><h3 class="strip-title">Contoh Sistem Diskon Toko 🏷️</h3><div class="code-box">total = 120000
+is_member = <span class="kw">True</span>
+has_coupon = <span class="kw">False</span>
+
+<span class="kw">if</span> (total &gt;= 100000 <span class="kw">and</span> is_member) <span class="kw">or</span> has_coupon:
+    <span class="fn">print</span>(<span class="str">"Mendapat diskon"</span>)
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="str">"Tidak mendapat diskon"</span>)</div><div class="tip-box">Tanda kurung <code>()</code> penting agar prioritas logika jelas!</div></div></div>
+            <div class="strip" style="margin-top:14px"><div class="strip-accent blue"></div><div class="strip-body"><h3 class="strip-title">Contoh kondisi kompleks</h3><div class="code-box">score = 80
+task_done = <span class="kw">True</span>
+remedial = <span class="kw">False</span>
+
+<span class="kw">if</span> score &gt;= 75 <span class="kw">and</span> task_done <span class="kw">and not</span> remedial:
+    <span class="fn">print</span>(<span class="str">"Semua syarat terpenuhi"</span>)</div></div></div>
+            <div class="strip" style="margin-top:14px"><div class="strip-accent orange"></div><div class="strip-body"><h3 class="strip-title">Nested atau logical operator?</h3><table class="cmp-table"><thead><tr><th>Pilih</th><th>Ketika</th><th>Contoh</th></tr></thead><tbody><tr><td><strong>Nested</strong></td><td>Pengecekan bertahap, tiap tahap punya aksi berbeda.</td><td>Login dulu, lalu cek role.</td></tr><tr><td><strong>Logical operator</strong></td><td>Beberapa syarat diperiksa sekaligus untuk satu aksi.</td><td>Sudah daftar <code>and</code> sudah bayar.</td></tr></tbody></table><div class="code-box"><span class="cmt"># Tanda kurung memperjelas prioritas</span>
+<span class="kw">if</span> password_ok <span class="kw">and</span> (is_admin <span class="kw">or</span> is_premium):
+    <span class="fn">print</span>(<span class="str">"Akses diterima"</span>)</div></div></div>
+          </div>
+        </section>
+
+        <!-- ╔═══ STEP 6 ═══╗ -->
+        <section class="step-panel" id="step-6" hidden>
+          <div class="vid-window"><div class="vid-titlebar"><span class="vid-dot"></span><span class="vid-dot"></span><span class="vid-dot"></span><span>video-6.py</span></div><div class="video-frame" data-video-step="6"><div id="youtube-player-6"></div><button class="video-center-play" type="button" data-step="6" aria-label="Putar video">▶</button><div class="video-controls"><button class="vc-btn video-play" type="button" data-step="6">▶</button><input class="video-seek" type="range" data-step="6" min="0" max="100" value="0" step="0.1"><span class="video-time" data-step="6">0:00 / 0:00</span><button class="vc-btn video-mute" type="button" data-step="6">🔊</button><button class="vc-btn video-fullscreen" type="button" data-step="6">⛶</button></div></div></div>
+          <div class="strips"><div class="strip"><div class="strip-accent pink"></div><div class="strip-body"><h3 class="strip-title">Peringatan Kuis Kejutan! 🤫</h3><p>Di tengah-tengah video nanti, akan muncul kuis kejutan!</p></div></div></div>
+          <div class="reading-section">
+            <div class="read-header"><div><p class="label">Materi Bacaan 06</p><h3>Financial literacy dengan Python</h3><p>Gunakan data, conditional, logical operator, dan nested condition untuk membedakan kebutuhan, menyusun budget, serta menilai risiko.</p></div><span class="read-badge">Aplikasi nyata</span></div>
+            <div class="chips">
+              <div class="chip"><span class="chip-letter">1</span><h4>Kebutuhan</h4><p>Penting untuk hidup, belajar, atau aktivitas utama. Contoh: makanan, transportasi, buku.</p></div>
+              <div class="chip"><span class="chip-letter">2</span><h4>Keinginan</h4><p>Disukai tapi bisa ditunda. Contoh: skin game, stiker, minuman tambahan.</p></div>
+              <div class="chip"><span class="chip-letter">3</span><h4>Keputusan berdasarkan data</h4><p>Program mempertimbangkan kategori, harga, jumlah uang, dan rencana pengguna.</p></div>
+            </div>
+            <div class="strip" style="margin-top:14px"><div class="strip-accent yellow"></div><div class="strip-body"><h3 class="strip-title">Analogi Uang Rp 50.000 ⚖️</h3><div class="code-box">category = <span class="str">"kebutuhan"</span>
+price = 15000
+money = 50000
+
+<span class="kw">if</span> category == <span class="str">"kebutuhan"</span> <span class="kw">and</span> money &gt;= price:
+    <span class="fn">print</span>(<span class="str">"Prioritaskan pembelian!"</span>)
+<span class="kw">elif</span> category == <span class="str">"keinginan"</span> <span class="kw">and</span> money &gt;= price:
+    <span class="fn">print</span>(<span class="str">"Boleh beli, tapi cek kebutuhan utama"</span>)
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="str">"Uang belum cukup"</span>)</div></div></div>
+            <div class="strip" style="margin-top:14px"><div class="strip-accent green"></div><div class="strip-body"><h3 class="strip-title">Langkah membuat budget</h3><ol><li>Simpan jumlah uang yang tersedia.</li><li>Bagi anggaran ke kategori makan, transportasi, sekolah, tabungan.</li><li>Hitung <code>total_budget</code> dan <code>remaining_money</code>.</li><li>Gunakan conditional untuk menentukan apakah budget aman, pas, atau terlalu besar.</li></ol><div class="code-box">total_money = 100000
+food = 40000
+transport = 20000
+school = 25000
+saving = 10000
+
+total_budget = food + transport + school + saving
+remaining = total_money - total_budget
+
+<span class="kw">if</span> total_budget &gt; total_money:
+    <span class="fn">print</span>(<span class="str">"Budget terlalu besar"</span>)
+<span class="kw">elif</span> remaining == 0:
+    <span class="fn">print</span>(<span class="str">"Budget pas, tidak ada sisa"</span>)
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="str">"Budget aman, masih ada sisa"</span>)</div></div></div>
+            <div class="strip" style="margin-top:14px"><div class="strip-accent orange"></div><div class="strip-body"><h3 class="strip-title">Menilai level risiko</h3><table class="cmp-table"><thead><tr><th>Level</th><th>Ciri utama</th><th>Contoh</th></tr></thead><tbody><tr><td><strong>Low</strong></td><td>Kebutuhan penting, uang cukup, ada cadangan.</td><td>Beli buku Rp25.000 dari Rp100.000.</td></tr><tr><td><strong>Medium</strong></td><td>Masih bisa dipertimbangkan, manfaat belum pasti.</td><td>Modal project kecil.</td></tr><tr><td><strong>High</strong></td><td>Menghabiskan hampir semua uang untuk keinginan.</td><td>Pakai Rp95.000 untuk barang tren.</td></tr></tbody></table><div class="tip-box">Semakin lengkap data yang diperiksa, semakin masuk akal rekomendasi program.</div></div></div>
+            <details class="fold"><summary>Contoh nested condition untuk rekomendasi risiko</summary><div class="fold-inner"><div class="code-box">remaining_money = money - price
+
+<span class="kw">if</span> category == <span class="str">"kebutuhan"</span>:
+    <span class="kw">if</span> money &gt;= price:
+        risk_level = <span class="str">"Low"</span>
+    <span class="kw">else</span>:
+        risk_level = <span class="str">"Medium"</span>
+<span class="kw">else</span>:
+    <span class="kw">if</span> money &lt; price <span class="kw">or</span> remaining_money &lt; 10000:
+        risk_level = <span class="str">"High"</span>
+    <span class="kw">elif</span> price &gt; money * 0.5:
+        risk_level = <span class="str">"Medium"</span>
+    <span class="kw">else</span>:
+        risk_level = <span class="str">"Low"</span></div></div></details>
+          </div>
+        </section>
+
+        <!-- ╔═══ STEP 7 ═══╗ -->
+        <section class="step-panel" id="step-7" hidden>
+          <div class="vid-window"><div class="vid-titlebar"><span class="vid-dot"></span><span class="vid-dot"></span><span class="vid-dot"></span><span>tugas-akhir.py</span></div><div class="video-frame" data-video-step="7"><div id="youtube-player-7"></div><button class="video-center-play" type="button" data-step="7" aria-label="Putar video">▶</button><div class="video-controls"><button class="vc-btn video-play" type="button" data-step="7">▶</button><input class="video-seek" type="range" data-step="7" min="0" max="100" value="0" step="0.1"><span class="video-time" data-step="7">0:00 / 0:00</span><button class="vc-btn video-mute" type="button" data-step="7">🔊</button><button class="vc-btn video-fullscreen" type="button" data-step="7">⛶</button></div></div></div>
+          <div class="reading-section">
+            <iframe src="assignment_slides.html" style="width:100%;height:600px;border:3px solid var(--border);border-radius:var(--r-sm);margin-top:15px;margin-bottom:30px;box-shadow:var(--shadow);" title="Instruksi Tugas Akhir"></iframe>
+            <div style="background:#1E1E2E;border:3px solid var(--border);border-radius:var(--r);padding:22px;color:white;margin-bottom:40px;box-shadow:var(--shadow);">
+              <h3 style="margin-top:0;color:var(--yellow);font-family:'Fredoka',sans-serif;">Tulis dan uji programmu</h3>
+              <textarea id="python-ide-7" spellcheck="false" style="width:100%;height:420px;background:#1e1e1e;color:#d4d4d4;font-family:'Courier New',Courier,monospace;font-size:16px;padding:15px;border-radius:10px;border:2px solid #444;margin-bottom:15px;resize:vertical;"># 1. Data uang dan budget
+total_money = 100000
+food_budget = 30000
+transport_budget = 20000
+school_budget = 25000
+saving_budget = 15000
+
+# 2. Hitung total budget dan sisa uang
+total_budget = food_budget + transport_budget + school_budget + saving_budget
+remaining_money = total_money - total_budget
+
+# 3. Data barang yang akan dievaluasi
+item = "buku tulis"
+category = "kebutuhan"
+price = 15000
+risk_level = ""
+
+# Lanjutkan programmu:
+# - cek keamanan budget
+# - tentukan risk_level
+# - tampilkan rekomendasi dan alasan
+</textarea>
+              <div style="display:flex;gap:10px;margin-bottom:15px;">
+                <button onclick="runAssignmentCode()" style="background:var(--green);color:var(--ink);font-weight:bold;padding:12px 24px;border-radius:10px;border:3px solid var(--border);font-family:'Fredoka',sans-serif;box-shadow:var(--shadow-sm);">▶ Jalankan Kode</button>
+                <button onclick="submitAssignmentCode()" style="background:var(--blue);color:#fff;font-weight:bold;padding:12px 24px;border-radius:10px;border:3px solid var(--border);font-family:'Fredoka',sans-serif;box-shadow:var(--shadow-sm);">📥 Submit Tugas</button>
+              </div>
+              <h4 style="margin-bottom:5px;font-family:'Fredoka',sans-serif;">Console Output:</h4>
+              <div id="ide-output-7" style="background:black;padding:15px;border-radius:10px;min-height:100px;font-family:'Courier New',Courier,monospace;white-space:pre-wrap;font-size:14px;border:2px solid #333;"></div>
+            </div>
+          </div>
+        </section>
+
+        <div class="nav-row">
+          <button class="nav-btn prev" id="prevButton" type="button" disabled><span aria-hidden="true">←</span> Sebelumnya</button>
+          <button class="nav-btn next" id="nextButton" type="button" disabled>Lanjut ke video 2 <span aria-hidden="true">→</span></button>
+        </div>
+      </div>
+    </main>
+
+    <footer class="foot">Copyright © 2025 PT Ruang Raya Indonesia. Materi tidak boleh disebarluaskan tanpa izin.</footer>
+  </div>
+
+  <!-- Quiz overlay -->
+  <div class="quiz-overlay" id="quizOverlay" role="dialog" aria-modal="true" aria-labelledby="quizTitle">
+    <div class="quiz-dialog">
+      <div class="quiz-top">
+        <span class="quiz-icon" aria-hidden="true">?</span>
+        <div class="quiz-top-text">
+          <p class="quiz-kicker">Checkpoint pemahaman</p>
+          <h2 id="quizTitle">Mini Quiz Waktu!</h2>
+        </div>
+      </div>
+      <div class="quiz-body">
+        <div class="quiz-progress" id="quizProgress" aria-label="Progres kuis"></div>
+        <div class="quiz-question" id="quizQuestion">Memuat pertanyaan...</div>
+        <div class="answer-row" id="answerRow">
+          <button class="answer-button true" type="button" data-answer="true">TRUE</button>
+          <button class="answer-button false" type="button" data-answer="false">FALSE</button>
+        </div>
+        <div class="quiz-feedback" id="quizFeedback" role="status"></div>
+        <div class="quiz-actions">
+          <button class="quiz-review" type="button" id="quizReview">↺ Ulangi 30 detik video</button>
+          <button class="quiz-next" type="button" id="quizNext">Soal berikutnya →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="quiz-return" id="quizReturn" role="status">
+    <p>Sudah cukup mengulang materinya? Kamu bisa kembali ke checkpoint kapan saja.</p>
+    <button type="button" id="quizReturnButton">Kembali ke kuis sekarang →</button>
+  </div>
+
+  <div class="completion-toast" id="completionToast" role="status">
+    ✅ Misi selesai. Kamu sudah mempelajari conditional, logical operator, dan penerapannya dalam perencanaan keuangan.
+  </div>
+
+  <!-- ═══ JAVASCRIPT ═══ -->
+  <script async src="https://www.youtube.com/iframe_api"></script>
+  <script>
+    const courseData = {
+      1: { kicker:"Checkpoint 01 · Mulai di sini", title:"Bagaimana Program Bisa Memilih?", duration:"Video 1 · Konsep dasar", videoId:"MLgrQoRo2oo", bookmarks:[{time:0,label:"Pengenalan Conditional"},{time:47,label:"Analogi Kehidupan Nyata"},{time:95,label:"Analogi Game"}], quizzes:[] },
+      2: { kicker:"Checkpoint 02 · Saatnya praktik", title:"Menulis Conditional di Python", duration:"Video 2 · Praktik kode", videoId:"-hYK440Vlr8", bookmarks:[{time:0,label:"If dan Else di Python"},{time:207,label:"Praktek Kode"},{time:415,label:"Operator Perbandingan"}],
+        quizzes: [
+          { time:300, shown:false, resume:true, resumeTime:306,
+            questions: [
+              { question:"Syarat dalam pemrograman yang bernilai benar disebut dengan True.", answer:true, explanation:"Benar. True berarti kondisi tersebut terpenuhi." },
+              { question:"Keputusan dalam pemrograman mirip seperti kita memilih tindakan di kehidupan nyata berdasarkan suatu syarat.", answer:true, explanation:"Benar. Keduanya memakai pola: jika syarat terpenuhi, lakukan aksi." },
+              { question:"Komputer akan tetap menjalankan perintah di dalam 'if' walaupun syaratnya bernilai False.", answer:false, explanation:"Salah. Jika syarat bernilai False, perintah di dalam blok if akan dilewati." },
+              { question:"Dalam membuat syarat (kondisi), kita tidak bisa membandingkan angka.", answer:false, explanation:"Salah. Kita bisa menggunakan operator perbandingan seperti >, <, ==, dll pada angka." }
+            ]
+          },
+          { time:617, shown:false, resume:true, resumeTime:620,
+            questions: [
+              { html:`<h2 class="slide-title">Tebak Output 1 🕵️‍♂️</h2><div class="slide-text"><p>Perhatikan kode berikut:</p><div class="code-block"><span class="keyword">weather</span> <span class="operator">=</span> <span class="string">"hujan"</span><br><br><span class="keyword">if</span> weather <span class="operator">==</span> <span class="string">"cerah"</span>:<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Main bola di luar!"</span>)<br><span class="keyword">else</span>:<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Main game di rumah."</span>)</div><p>Apa yang akan dicetak?</p><div style="display:flex;gap:20px;justify-content:center;margin-top:20px;"><button onclick="checkGuess(this,false,'Karena <code>weather</code> adalah <code>&quot;hujan&quot;</code>, kondisi <code>if</code> bernilai <b>False</b>, jadi ke <code>else</code>.')" style="background:#FFF;border:4px solid #1A1A1A;border-radius:16px;padding:15px 30px;font-size:20px;font-family:'Fredoka',sans-serif;font-weight:bold;cursor:pointer;box-shadow:6px 6px 0px #1A1A1A;">Main bola di luar!</button><button onclick="checkGuess(this,true,'Karena <code>weather</code> adalah <code>&quot;hujan&quot;</code>, kondisi <code>if</code> bernilai <b>False</b>, jadi ke <code>else</code>.')" style="background:#FFF;border:4px solid #1A1A1A;border-radius:16px;padding:15px 30px;font-size:20px;font-family:'Fredoka',sans-serif;font-weight:bold;cursor:pointer;box-shadow:6px 6px 0px #1A1A1A;">Main game di rumah.</button></div><div class="guess-feedback" style="display:none;padding:15px;border-radius:12px;border:3px solid #1A1A1A;font-size:20px;font-weight:bold;text-align:center;margin-top:20px;line-height:1.4;"></div></div>` },
+              { html:`<h2 class="slide-title">Tebak Output 2 🕵️‍♂️</h2><div class="slide-text"><p>Perhatikan kode berikut:</p><div class="code-block"><span class="keyword">score</span> <span class="operator">=</span> <span class="string">80</span><br><br><span class="keyword">if</span> score <span class="operator">&gt;</span> <span class="string">75</span>:<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Kamu Lulus!"</span>)<br><span class="keyword">else</span>:<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Coba lagi tahun depan."</span>)</div><p>Apa yang akan dicetak?</p><div style="display:flex;gap:20px;justify-content:center;margin-top:20px;"><button onclick="checkGuess(this,true,'Karena <code>80</code> lebih besar dari <code>75</code>, kondisi bernilai <b>True</b>.')" style="background:#FFF;border:4px solid #1A1A1A;border-radius:16px;padding:15px 30px;font-size:20px;font-family:'Fredoka',sans-serif;font-weight:bold;cursor:pointer;box-shadow:6px 6px 0px #1A1A1A;">Kamu Lulus!</button><button onclick="checkGuess(this,false,'Karena <code>80</code> lebih besar dari <code>75</code>, kondisi bernilai <b>True</b>.')" style="background:#FFF;border:4px solid #1A1A1A;border-radius:16px;padding:15px 30px;font-size:20px;font-family:'Fredoka',sans-serif;font-weight:bold;cursor:pointer;box-shadow:6px 6px 0px #1A1A1A;">Coba lagi tahun depan.</button></div><div class="guess-feedback" style="display:none;padding:15px;border-radius:12px;border:3px solid #1A1A1A;font-size:20px;font-weight:bold;text-align:center;margin-top:20px;line-height:1.4;"></div></div>` },
+              { html:`<h2 class="slide-title">Tebak Output 3 🕵️‍♂️</h2><div class="slide-text"><p>Perhatikan kode berikut:</p><div class="code-block"><span class="keyword">is_hungry</span> <span class="operator">=</span> <span class="keyword">False</span><br><br><span class="keyword">if</span> is_hungry <span class="operator">==</span> <span class="keyword">True</span>:<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Waktunya makan!"</span>)<br><span class="keyword">else</span>:<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Lanjut belajar."</span>)</div><p>Apa yang akan dicetak?</p><div style="display:flex;gap:20px;justify-content:center;margin-top:20px;"><button onclick="checkGuess(this,false,'Karena <code>is_hungry</code> adalah <b>False</b>, pengecekan <code>False == True</code> bernilai salah, jadi ke <code>else</code>.')" style="background:#FFF;border:4px solid #1A1A1A;border-radius:16px;padding:15px 30px;font-size:20px;font-family:'Fredoka',sans-serif;font-weight:bold;cursor:pointer;box-shadow:6px 6px 0px #1A1A1A;">Waktunya makan!</button><button onclick="checkGuess(this,true,'Karena <code>is_hungry</code> adalah <b>False</b>, pengecekan <code>False == True</code> bernilai salah, jadi ke <code>else</code>.')" style="background:#FFF;border:4px solid #1A1A1A;border-radius:16px;padding:15px 30px;font-size:20px;font-family:'Fredoka',sans-serif;font-weight:bold;cursor:pointer;box-shadow:6px 6px 0px #1A1A1A;">Lanjut belajar.</button></div><div class="guess-feedback" style="display:none;padding:15px;border-radius:12px;border:3px solid #1A1A1A;font-size:20px;font-weight:bold;text-align:center;margin-top:20px;line-height:1.4;"></div></div>` }
+            ]
+          },
+          { time:617, shown:false, resume:false,
+            questions: [
+              { question:"Multi-branch decision adalah keputusan dengan banyak cabang pilihan yang dapat dieksekusi bersamaan.", answer:false, explanation:"Salah. Program hanya menjalankan satu cabang yang kondisinya pertama kali terpenuhi." },
+              { question:"Dalam Python, kita dapat membuat percabangan lebih dari dua jalan menggunakan kata kunci 'elif'.", answer:true, explanation:"Benar. 'elif' memungkinkan mengecek kondisi baru jika kondisi sebelumnya salah." },
+              { question:"Urutan kondisi pada if-elif sangat penting karena Python membaca dari atas ke bawah dan berhenti pada kondisi pertama yang benar.", answer:true, explanation:"Benar. Python mengeksekusi blok kode dari kondisi pertama yang True." }
+            ]
+          }
+        ]
+      },
+      3: { kicker:"Checkpoint 03 · Logika Tambahan", title:"Multi Branch Conditionals", duration:"Video 3 · Cabang & Operator", videoId:"_jm2p3pstrM", bookmarks:[{time:0,label:"Mengenal Elif"},{time:198,label:"Kategori Nilai"},{time:397,label:"Kesalahan Umum"}],
+        quizzes: [
+          { time:594, shown:false, resume:false,
+            questions: [
+              { html:`<h2 class="slide-title">Latihan 1: Lengkapi Kode! 🧩</h2><div class="slide-text"><p>Program mengecek kategori usia. Jika usia 18+ dianggap "Dewasa", kalau di bawah 18 masih "Biasa aja".</p><p>Lengkapi bagian yang kosong!</p><div class="code-block" style="font-size:16px;"><span class="keyword">age</span> <span class="operator">=</span> <span class="string">15</span><br><br><span class="keyword">if</span> age <span class="operator">&gt;=</span> <span class="string">18</span>:<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Dewasa"</span>)<br><input type="text" id="mb1-kw" placeholder="keyword" style="width:90px;font-family:monospace;font-size:16px;padding:5px;border:3px solid #1A1A1A;border-radius:8px;color:#1A1A1A;"> <input type="text" id="mb1-cond" placeholder="kondisinya..." style="width:150px;font-family:monospace;font-size:16px;padding:5px;border:3px solid #1A1A1A;border-radius:8px;color:#1A1A1A;"> :<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Biasa aja"</span>)</div><div style="display:flex;gap:20px;justify-content:center;margin-top:20px;"><button onclick="checkMB1QGuess(document.getElementById('mb1-kw').value,document.getElementById('mb1-cond').value,this,'Tepat! Kita memakai <code>elif</code> untuk mengecek <code>age &lt; 18</code>.')" style="background:#FFE500;border:4px solid #1A1A1A;border-radius:16px;padding:15px 30px;font-size:20px;font-family:'Fredoka',sans-serif;font-weight:bold;cursor:pointer;box-shadow:6px 6px 0px #1A1A1A;">Cek Kode Saya!</button></div><div class="guess-feedback" style="display:none;padding:15px;border-radius:12px;border:3px solid #1A1A1A;font-size:20px;font-weight:bold;text-align:center;margin-top:20px;line-height:1.4;"></div></div>` },
+              { html:`<h2 class="slide-title">Latihan 2: Perbaiki Bug! 🐛</h2><div class="slide-text"><p>Ada bug! Siswa dengan nilai 95 harusnya dapat "A", tapi malah dapat "B".</p><p>Ketik angka yang benar untuk memperbaiki urutan!</p><div class="code-block" style="font-size:16px;"><span class="keyword">score</span> <span class="operator">=</span> <span class="string">95</span><br><br><span class="keyword">if</span> score <span class="operator">&gt;=</span> <input type="text" id="mb2-val1" placeholder="angka" style="width:80px;font-family:monospace;font-size:16px;padding:5px;border:3px solid #1A1A1A;border-radius:8px;color:#1A1A1A;"> :<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"A"</span>)<br><span class="keyword">elif</span> score <span class="operator">&gt;=</span> <input type="text" id="mb2-val2" placeholder="angka" style="width:80px;font-family:monospace;font-size:16px;padding:5px;border:3px solid #1A1A1A;border-radius:8px;color:#1A1A1A;"> :<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"B"</span>)<br><span class="keyword">else</span>:<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"C"</span>)</div><div style="display:flex;gap:20px;justify-content:center;margin-top:20px;flex-wrap:wrap;"><button onclick="checkMB2QGuess(document.getElementById('mb2-val1').value,document.getElementById('mb2-val2').value,this,'Mantap! Syarat paling sulit (&gt;= 90) harus di atas.')" style="background:#FFE500;border:4px solid #1A1A1A;border-radius:16px;padding:15px 30px;font-size:20px;font-family:'Fredoka',sans-serif;font-weight:bold;cursor:pointer;box-shadow:6px 6px 0px #1A1A1A;">Cek Kode Saya!</button></div><div class="guess-feedback" style="display:none;padding:15px;border-radius:12px;border:3px solid #1A1A1A;font-size:20px;font-weight:bold;text-align:center;margin-top:20px;line-height:1.4;"></div></div>` },
+              { html:`<h2 class="slide-title">Latihan 3: Tebak Output 🕵️‍♂️</h2><div class="slide-text"><p>Perhatikan kode berikut:</p><div class="code-block"><span class="keyword">hari</span> <span class="operator">=</span> <span class="string">"Rabu"</span><br><br><span class="keyword">if</span> hari <span class="operator">==</span> <span class="string">"Sabtu"</span>:<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Bermain"</span>)<br><span class="keyword">elif</span> hari <span class="operator">==</span> <span class="string">"Minggu"</span>:<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Jalan-jalan"</span>)<br><span class="keyword">else</span>:<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Sekolah"</span>)</div><p>Apa yang dicetak?</p><div style="display:flex;gap:20px;justify-content:center;margin-top:20px;"><button onclick="checkGuess(this,false,'Bukan Sabtu!')" style="background:#FFF;border:4px solid #1A1A1A;border-radius:16px;padding:15px 30px;font-size:20px;font-family:'Fredoka',sans-serif;font-weight:bold;cursor:pointer;box-shadow:6px 6px 0px #1A1A1A;">Bermain</button><button onclick="checkGuess(this,false,'Bukan Minggu!')" style="background:#FFF;border:4px solid #1A1A1A;border-radius:16px;padding:15px 30px;font-size:20px;font-family:'Fredoka',sans-serif;font-weight:bold;cursor:pointer;box-shadow:6px 6px 0px #1A1A1A;">Jalan-jalan</button><button onclick="checkGuess(this,true,'Benar! Karena bukan Sabtu dan bukan Minggu, program menjalankan <code>else</code>.')" style="background:#FFF;border:4px solid #1A1A1A;border-radius:16px;padding:15px 30px;font-size:20px;font-family:'Fredoka',sans-serif;font-weight:bold;cursor:pointer;box-shadow:6px 6px 0px #1A1A1A;">Sekolah</button></div><div class="guess-feedback" style="display:none;padding:15px;border-radius:12px;border:3px solid #1A1A1A;font-size:20px;font-weight:bold;text-align:center;margin-top:20px;line-height:1.4;"></div></div>` }
+            ]
+          }
+        ]
+      },
+      4: { kicker:"Checkpoint 04 · Bersarang", title:"Nested Conditionals", duration:"Video 4 · Kondisi dalam kondisi", videoId:"_e3hs1nWuME", bookmarks:[{time:0,label:"Nested Conditionals"},{time:219,label:"Pengecekan Bertahap"},{time:439,label:"Contoh Kode"}],
+        quizzes:[{time:649,shown:false,resume:true,resumeTime:652,questions:[{html:`<h2 class="slide-title">Latihan: Kurung Penyelamat! 🛡️</h2><div class="slide-text"><p><strong>Skenario Game Online:</strong> Pemain bisa login jika password benar <strong>DAN</strong> (admin <strong>ATAU</strong> premium).</p><ul><li>Tuliskan logika yang tepat. Gunakan <strong>tanda kurung</strong>!</li></ul><div class="code-block" style="font-size:18px;"><span class="keyword">password_ok</span> <span class="operator">=</span> <span class="keyword">True</span><br><span class="keyword">is_admin</span> <span class="operator">=</span> <span class="keyword">False</span><br><span class="keyword">is_premium</span> <span class="operator">=</span> <span class="keyword">True</span><br><br><span class="keyword">if</span> <input type="text" id="paren-input" placeholder="ketik kondisinya..." style="width:450px;font-family:monospace;font-size:18px;padding:5px;border:3px solid #1A1A1A;border-radius:8px;color:#1A1A1A;"> :<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Welcome back, Player!"</span>)<br><span class="keyword">else</span>:<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Akses ditolak."</span>)</div><div style="display:flex;gap:20px;justify-content:center;margin-top:20px;"><button onclick="checkParenGuess(document.getElementById('paren-input').value,this,'Tepat! Tanda kurung memastikan pengecekan admin/premium lebih dulu.')" style="background:#FFE500;border:4px solid #1A1A1A;border-radius:16px;padding:15px 30px;font-size:20px;font-family:'Fredoka',sans-serif;font-weight:bold;cursor:pointer;box-shadow:6px 6px 0px #1A1A1A;">Cek Kode Saya!</button></div><div class="guess-feedback" style="display:none;padding:15px;border-radius:12px;border:3px solid #1A1A1A;font-size:20px;font-weight:bold;text-align:center;margin-top:20px;line-height:1.4;"></div></div>`}]}]
+      },
+      5: { kicker:"Checkpoint 05 · Logika Kombinasi", title:"Logical Operator", duration:"Video 5 · Menggabungkan kondisi", videoId:"_iRZY0-_skc", bookmarks:[{time:0,label:"Logical Operator (And, Or)"},{time:366,label:"Not Operator"},{time:732,label:"Kondisi Kompleks"}],
+        quizzes:[
+          {time:326,shown:false,resume:true,resumeTime:330,questions:[{html:`<h2 class="slide-title">Latihan: Logika <code>and</code> 🧩</h2><div class="slide-text"><p>Lengkapi program beasiswa!</p><ul><li>Syarat: Nilai &gt; 80 <strong>dan</strong> aktif organisasi True.</li></ul><div class="code-block"><span class="keyword">nilai</span> <span class="operator">=</span> <span class="string">85</span><br><span class="keyword">aktif_organisasi</span> <span class="operator">=</span> <span class="keyword">True</span><br><br><span class="keyword">if</span> nilai <span class="operator">&gt;</span> <span class="string">80</span> <input type="text" id="and-input" placeholder="ketik kondisinya..." style="width:350px;font-family:monospace;font-size:20px;padding:5px;border:3px solid #1A1A1A;border-radius:8px;color:#1A1A1A;"> :<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Selamat, kamu dapat beasiswa!"</span>)<br><span class="keyword">else</span>:<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Belum memenuhi syarat."</span>)</div><div style="display:flex;gap:20px;justify-content:center;margin-top:20px;"><button onclick="checkAndGuess(document.getElementById('and-input').value,this,'Tepat! <code>and</code> memastikan kedua syarat terpenuhi.')" style="background:#FFE500;border:4px solid #1A1A1A;border-radius:16px;padding:15px 30px;font-size:20px;font-family:'Fredoka',sans-serif;font-weight:bold;cursor:pointer;box-shadow:6px 6px 0px #1A1A1A;">Cek Kode Saya!</button></div><div class="guess-feedback" style="display:none;padding:15px;border-radius:12px;border:3px solid #1A1A1A;font-size:20px;font-weight:bold;text-align:center;margin-top:20px;line-height:1.4;"></div></div>`}]},
+          {time:535,shown:false,resume:true,resumeTime:539,questions:[{html:`<h2 class="slide-title">Latihan: Logika <code>or</code> 🧩</h2><div class="slide-text"><p>Lengkapi program diskon!</p><ul><li>Syarat: Pelajar <strong>atau</strong> punya kupon.</li></ul><div class="code-block"><span class="keyword">status</span> <span class="operator">=</span> <span class="string">"umum"</span><br><span class="keyword">ada_kupon</span> <span class="operator">=</span> <span class="keyword">True</span><br><br><span class="keyword">if</span> status <span class="operator">==</span> <span class="string">"pelajar"</span> <input type="text" id="or-input" placeholder="ketik kondisinya..." style="width:250px;font-family:monospace;font-size:20px;padding:5px;border:3px solid #1A1A1A;border-radius:8px;color:#1A1A1A;"> :<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Hore! Kamu dapat diskon."</span>)<br><span class="keyword">else</span>:<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Harga normal."</span>)</div><div style="display:flex;gap:20px;justify-content:center;margin-top:20px;"><button onclick="checkOrGuess(document.getElementById('or-input').value,this,'Tepat! <code>or</code> memberi diskon karena punya kupon.')" style="background:#FFE500;border:4px solid #1A1A1A;border-radius:16px;padding:15px 30px;font-size:20px;font-family:'Fredoka',sans-serif;font-weight:bold;cursor:pointer;box-shadow:6px 6px 0px #1A1A1A;">Cek Kode Saya!</button></div><div class="guess-feedback" style="display:none;padding:15px;border-radius:12px;border:3px solid #1A1A1A;font-size:20px;font-weight:bold;text-align:center;margin-top:20px;line-height:1.4;"></div></div>`}]},
+          {time:1097,shown:false,resume:true,resumeTime:1101,questions:[{html:`<h2 class="slide-title">Latihan: Nested ke Logical 🛠️</h2><div class="slide-text"><p>Ubah kode bercabang yang ribet ini menjadi satu baris!</p><div class="code-block" style="font-size:16px;margin-bottom:10px;"><span style="color:#6c757d;font-style:italic;"># Kode Awal (Ribet):</span><br><span class="keyword">if</span> hari <span class="operator">==</span> <span class="string">"sabtu"</span>:<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span> cuaca <span class="operator">==</span> <span class="string">"cerah"</span>:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Main bola"</span>)</div><div class="code-block" style="font-size:16px;"><span style="color:#6c757d;font-style:italic;"># Kode Barumu (Singkat):</span><br><span class="keyword">if</span> hari <span class="operator">==</span> <span class="string">"sabtu"</span> <input type="text" id="logical-input" placeholder="ketik kelanjutannya..." style="width:250px;font-family:monospace;font-size:16px;padding:5px;border:3px solid #1A1A1A;border-radius:8px;color:#1A1A1A;"> :<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Main bola"</span>)</div><div style="display:flex;gap:20px;justify-content:center;margin-top:20px;"><button onclick="checkNestedToLogicalGuess(document.getElementById('logical-input').value,this,'Keren! Dengan <code>and</code>, kamu cek dua syarat sekaligus.')" style="background:#FFE500;border:4px solid #1A1A1A;border-radius:16px;padding:15px 30px;font-size:20px;font-family:'Fredoka',sans-serif;font-weight:bold;cursor:pointer;box-shadow:6px 6px 0px #1A1A1A;">Cek Kode Saya!</button></div><div class="guess-feedback" style="display:none;padding:15px;border-radius:12px;border:3px solid #1A1A1A;font-size:20px;font-weight:bold;text-align:center;margin-top:20px;line-height:1.4;"></div></div>`}]}
+        ]
+      },
+      6: { kicker:"Checkpoint 06 · Financial Literacy", title:"Needs vs Wants & Risks", duration:"Video 6 · Financial Literacy", videoId:"bMsKBaRsKmc", bookmarks:[{time:0,label:"Kebutuhan vs Keinginan"},{time:739,label:"Langkah Membuat Budget"},{time:1479,label:"Menilai Risiko"}],
+        quizzes:[
+          {time:176,shown:false,resume:true,resumeTime:176,questions:[{html:`<h2 class="slide-title">Latihan 1: Kebutuhan Siswa 📚</h2><div class="slide-text"><p>Apa contoh <strong>Kebutuhan</strong> kamu sebagai siswa/i?</p><p>Tuliskan 5 contoh:</p><div style="display:flex;flex-direction:column;gap:10px;align-items:center;"><input type="text" class="needs-input" placeholder="Kebutuhan 1..." style="width:80%;font-family:'Fredoka',sans-serif;font-size:16px;padding:10px;border:3px solid #1A1A1A;border-radius:8px;"><input type="text" class="needs-input" placeholder="Kebutuhan 2..." style="width:80%;font-family:'Fredoka',sans-serif;font-size:16px;padding:10px;border:3px solid #1A1A1A;border-radius:8px;"><input type="text" class="needs-input" placeholder="Kebutuhan 3..." style="width:80%;font-family:'Fredoka',sans-serif;font-size:16px;padding:10px;border:3px solid #1A1A1A;border-radius:8px;"><input type="text" class="needs-input" placeholder="Kebutuhan 4..." style="width:80%;font-family:'Fredoka',sans-serif;font-size:16px;padding:10px;border:3px solid #1A1A1A;border-radius:8px;"><input type="text" class="needs-input" placeholder="Kebutuhan 5..." style="width:80%;font-family:'Fredoka',sans-serif;font-size:16px;padding:10px;border:3px solid #1A1A1A;border-radius:8px;"></div><div style="display:flex;justify-content:center;margin-top:20px;"><button onclick="checkNeedsWantsGuess('needs-input',this)" style="background:#FFE500;border:4px solid #1A1A1A;border-radius:16px;padding:15px 30px;font-size:20px;font-family:'Fredoka',sans-serif;font-weight:bold;cursor:pointer;box-shadow:6px 6px 0px #1A1A1A;">Kumpulkan</button></div><div class="guess-feedback" style="display:none;padding:15px;border-radius:12px;border:3px solid #1A1A1A;font-size:20px;font-weight:bold;text-align:center;margin-top:20px;line-height:1.4;"></div></div>`}]},
+          {time:220,shown:false,resume:true,resumeTime:220,questions:[{html:`<h2 class="slide-title">Latihan 2: Keinginan Siswa 🎮</h2><div class="slide-text"><p>Apa contoh <strong>Keinginan</strong> yang berkaitan dengan sekolah?</p><p>Tuliskan 5 contoh:</p><div style="display:flex;flex-direction:column;gap:10px;align-items:center;"><input type="text" class="wants-input" placeholder="Keinginan 1..." style="width:80%;font-family:'Fredoka',sans-serif;font-size:16px;padding:10px;border:3px solid #1A1A1A;border-radius:8px;"><input type="text" class="wants-input" placeholder="Keinginan 2..." style="width:80%;font-family:'Fredoka',sans-serif;font-size:16px;padding:10px;border:3px solid #1A1A1A;border-radius:8px;"><input type="text" class="wants-input" placeholder="Keinginan 3..." style="width:80%;font-family:'Fredoka',sans-serif;font-size:16px;padding:10px;border:3px solid #1A1A1A;border-radius:8px;"><input type="text" class="wants-input" placeholder="Keinginan 4..." style="width:80%;font-family:'Fredoka',sans-serif;font-size:16px;padding:10px;border:3px solid #1A1A1A;border-radius:8px;"><input type="text" class="wants-input" placeholder="Keinginan 5..." style="width:80%;font-family:'Fredoka',sans-serif;font-size:16px;padding:10px;border:3px solid #1A1A1A;border-radius:8px;"></div><div style="display:flex;justify-content:center;margin-top:20px;"><button onclick="checkNeedsWantsGuess('wants-input',this)" style="background:#FFE500;border:4px solid #1A1A1A;border-radius:16px;padding:15px 30px;font-size:20px;font-family:'Fredoka',sans-serif;font-weight:bold;cursor:pointer;box-shadow:6px 6px 0px #1A1A1A;">Kumpulkan</button></div><div class="guess-feedback" style="display:none;padding:15px;border-radius:12px;border:3px solid #1A1A1A;font-size:20px;font-weight:bold;text-align:center;margin-top:20px;line-height:1.4;"></div></div>`}]},
+          {time:772,shown:false,resume:true,resumeTime:785,questions:[{html:`<h2 class="slide-title">Mini Activity: Tentukan Kategori 🎯</h2><div class="slide-text"><p>Pilih 3 barang dari tabel dan buat program Python!</p><table style="width:100%;border-collapse:collapse;margin-top:10px;font-size:14px;margin-bottom:15px;"><thead><tr style="background:var(--blue);color:#fff;"><th style="padding:5px;border:2px solid #1A1A1A;">Barang</th><th style="padding:5px;border:2px solid #1A1A1A;">Kategori</th></tr></thead><tbody><tr><td style="padding:5px;border:1px solid #1A1A1A;">Buku tulis</td><td style="padding:5px;border:1px solid #1A1A1A;">Kebutuhan</td></tr><tr><td style="padding:5px;border:1px solid #1A1A1A;">Air minum</td><td style="padding:5px;border:1px solid #1A1A1A;">Kebutuhan</td></tr><tr><td style="padding:5px;border:1px solid #1A1A1A;">Skin game</td><td style="padding:5px;border:1px solid #1A1A1A;">Keinginan</td></tr><tr><td style="padding:5px;border:1px solid #1A1A1A;">Snack tambahan</td><td style="padding:5px;border:1px solid #1A1A1A;">Keinginan</td></tr><tr><td style="padding:5px;border:1px solid #1A1A1A;">Pulsa internet kelas online</td><td style="padding:5px;border:1px solid #1A1A1A;">Kebutuhan</td></tr><tr><td style="padding:5px;border:1px solid #1A1A1A;">Gantungan kunci</td><td style="padding:5px;border:1px solid #1A1A1A;">Keinginan</td></tr></tbody></table><textarea id="python-ide-6" spellcheck="false" placeholder="# Tulis programmu di sini" style="width:100%;height:180px;background:#1e1e1e;color:#d4d4d4;font-family:monospace;font-size:14px;padding:10px;border-radius:8px;border:1px solid #444;margin-bottom:10px;"></textarea><div style="display:flex;gap:10px;justify-content:center;margin-bottom:10px;"><button onclick="runPyodideCode('python-ide-6','ide-output-6')" style="background:var(--green);border:2px solid #1A1A1A;border-radius:8px;padding:8px 16px;font-weight:bold;cursor:pointer;">Jalankan Kode</button><button onclick="checkIde6Guess(this)" style="background:#FFE500;border:2px solid #1A1A1A;border-radius:8px;padding:8px 16px;font-weight:bold;cursor:pointer;">Kumpulkan</button></div><div id="ide-output-6" style="background:black;color:white;padding:10px;border-radius:8px;min-height:50px;font-family:monospace;white-space:pre-wrap;font-size:12px;margin-bottom:10px;">Output program akan muncul di sini...</div><div class="guess-feedback" style="display:none;padding:10px;border-radius:8px;border:2px solid #1A1A1A;font-weight:bold;text-align:center;"></div></div>`}]},
+          {time:2123,shown:false,resume:false,resumeTime:2127,questions:[{html:`<h2 class="slide-title">Selesai Menonton! 🎉</h2><div class="slide-text"><p>Kamu sudah menyelesaikan Video 6!</p><p>Mengelola keuangan itu soal membuat keputusan. Kamu harus menimbang antara Kebutuhan dan Keinginan, serta Level Risiko.</p><p>Silakan lanjut ke Tab 7 untuk <strong>Tugas Akhir</strong>.</p></div>`}]}
+        ]
+      },
+      7: { kicker:"Mandatory Assignment", title:"Smart Budget & Risk Planner", duration:"Tugas Akhir Misi Conditional", videoId:"bMsKBaRsKmc", startSeconds:2137, quizzes:[] }
+    };
+
+    const stepPanels = document.querySelectorAll(".step-panel");
+    const lessonTabs = document.querySelectorAll(".lesson-tab");
+    const prevButton = document.getElementById("prevButton");
+    const nextButton = document.getElementById("nextButton");
+    const lessonKicker = document.getElementById("lessonKicker");
+    const lessonTitle = document.getElementById("lessonTitle");
+    const durationPill = document.getElementById("durationPill");
+    const progressText = document.getElementById("progressText");
+    const progressFill = document.getElementById("progressFill");
+    const quizOverlay = document.getElementById("quizOverlay");
+    const quizQuestion = document.getElementById("quizQuestion");
+    const quizFeedback = document.getElementById("quizFeedback");
+    const quizNext = document.getElementById("quizNext");
+    const quizReview = document.getElementById("quizReview");
+    const quizReturn = document.getElementById("quizReturn");
+    const quizReturnButton = document.getElementById("quizReturnButton");
+    const quizProgress = document.getElementById("quizProgress");
+    const answerButtons = document.querySelectorAll(".answer-button");
+    const completionToast = document.getElementById("completionToast");
+    const playButtons = document.querySelectorAll(".video-play, .video-center-play, .play-pause");
+    const muteButtons = document.querySelectorAll(".video-mute");
+    const fullscreenButtons = document.querySelectorAll(".video-fullscreen");
+    const seekInputs = document.querySelectorAll(".video-seek");
+
+    let currentStep = 1;
+    const totalSteps = Object.keys(courseData).length;
+    const players = {};
+    const videoWatchedStatus = {1:false,2:false,3:false,4:false,5:false,6:false,7:false};
+    const timeCheckers = {};
+    let youtubeApiReady = false;
+
+    window.checkGuess = function(btn, isCorrect, explanation) {
+      const container = btn.parentElement; const feedback = container.nextElementSibling;
+      container.querySelectorAll('button').forEach(b => { b.disabled = true; b.style.opacity = '0.5'; });
+      btn.style.opacity = '1'; feedback.style.display = 'block';
+      if (isCorrect) { feedback.innerHTML = `✅ <strong>TEPAT SEKALI!</strong><br>${explanation}`; feedback.style.backgroundColor = "#00E676"; feedback.style.color = "#1A1A1A"; }
+      else { feedback.innerHTML = `❌ <strong>SALAH!</strong><br>${explanation}`; feedback.style.backgroundColor = "#FF0055"; feedback.style.color = "white"; }
+      document.getElementById("quizNext").classList.add("visible");
+    };
+    window.checkMB1QGuess = function(kwVal, condVal, btn, explanation) {
+      const container = btn.parentElement; const feedback = container.nextElementSibling;
+      let kw = kwVal.replace(/\s+/g,'').toLowerCase(); let cond = condVal.replace(/\s+/g,'').toLowerCase();
+      feedback.style.display = 'block';
+      if (kw === 'elif' && (cond === 'age<18' || cond === 'age<=17')) { feedback.innerHTML = `✅ <strong>TEPAT SEKALI!</strong><br>${explanation}`; feedback.style.backgroundColor = "#00E676"; feedback.style.color = "#1A1A1A"; btn.disabled = true; btn.style.opacity = '0.5'; document.getElementById('mb1-kw').disabled = true; document.getElementById('mb1-cond').disabled = true; }
+      else { feedback.innerHTML = `❌ <strong>KODE BELUM TEPAT!</strong><br>Coba periksa lagi. Apa sintaks untuk cabang kedua? Dan bagaimana mengecek umur di bawah 18?`; feedback.style.backgroundColor = "#FF0055"; feedback.style.color = "white"; }
+      document.getElementById("quizNext").classList.add("visible");
+    };
+    window.checkNeedsWantsGuess = function(className, btn) {
+      const inputs = document.querySelectorAll('.'+className); let allFilled = true;
+      inputs.forEach(input => { if (input.value.trim() === '') allFilled = false; });
+      const container = btn.parentElement; const feedback = container.nextElementSibling;
+      if (!allFilled) { feedback.style.display = 'block'; feedback.innerHTML = `❌ Lengkapi kelima contohnya dulu ya!`; feedback.style.backgroundColor = "#FF0055"; feedback.style.color = "white"; return; }
+      btn.disabled = true; btn.style.opacity = '0.5'; feedback.style.display = 'block';
+      feedback.innerHTML = `✅ <strong>Tersimpan!</strong><br>Terima kasih sudah membagikan pemikiranmu.`; feedback.style.backgroundColor = "#00E676"; feedback.style.color = "#1A1A1A";
+      document.getElementById("quizNext").classList.add("visible");
+    };
+    window.checkIde6Guess = function(btn) {
+      const code = document.getElementById('python-ide-6').value.toLowerCase();
+      const keywords = ['buku tulis','air minum','skin game','snack tambahan','pulsa','gantungan kunci'];
+      let matchCount = 0; keywords.forEach(kw => { if (code.includes(kw)) matchCount++; });
+      const container = btn.parentElement; const feedback = container.nextElementSibling.nextElementSibling;
+      feedback.style.display = 'block';
+      if (matchCount >= 3) { feedback.innerHTML = `✅ <strong>Bagus!</strong> Kamu sudah memakai setidaknya 3 barang dari tabel.`; feedback.style.backgroundColor = "#00E676"; feedback.style.color = "#1A1A1A"; btn.disabled = true; btn.style.opacity = '0.5'; document.getElementById("quizNext").classList.add("visible"); }
+      else { feedback.innerHTML = `❌ Kamu baru memasukkan ${matchCount} barang. Minimal butuh 3.`; feedback.style.backgroundColor = "#FF0055"; feedback.style.color = "white"; }
+    };
+    const pyodideBaseUrl = "https://cdn.jsdelivr.net/pyodide/v0.25.0/full/";
+    let pyodideReadyPromise = null;
+    function ensurePyodideScript() { if (typeof loadPyodide === "function") return Promise.resolve(); return new Promise((resolve, reject) => { const s = document.querySelector('script[data-pyodide-loader]'); if (s) { s.addEventListener("load",resolve,{once:true}); s.addEventListener("error",reject,{once:true}); return; } const sc = document.createElement("script"); sc.src = pyodideBaseUrl+"pyodide.js"; sc.dataset.pyodideLoader = "true"; sc.addEventListener("load",resolve,{once:true}); sc.addEventListener("error",()=>reject(new Error("Pyodide gagal dimuat.")),{once:true}); document.head.appendChild(sc); }); }
+    function initPyodide() { if (!pyodideReadyPromise) pyodideReadyPromise = ensurePyodideScript().then(()=>loadPyodide({indexURL:pyodideBaseUrl})); return pyodideReadyPromise; }
+    window.runPyodideCode = async function(inputId, outputId) { const code = document.getElementById(inputId).value; const output = document.getElementById(outputId); output.innerHTML = "Menjalankan..."; output.style.color = "white"; try { let pyodide = await initPyodide(); pyodide.setStdout({batched:(msg)=>{if(output.innerHTML==="Menjalankan...")output.innerHTML="";output.innerHTML+=msg+"\n";}}); await pyodide.runPythonAsync(code); if(output.innerHTML==="Menjalankan...")output.innerHTML="Program selesai tanpa output teks."; } catch(err) { output.innerHTML=err; output.style.color="#FF4444"; } };
+    window.runAssignmentCode = function() { runPyodideCode('python-ide-7','ide-output-7'); };
+    window.submitAssignmentCode = function() { alert("✅ Tugas berhasil dikumpulkan! Selamat kamu telah menyelesaikan Misi Conditional!"); };
+    window.checkMB2QGuess = function(v1,v2,btn,explanation) { const container = btn.parentElement; const feedback = container.nextElementSibling; v1 = v1.replace(/\s+/g,''); v2 = v2.replace(/\s+/g,''); feedback.style.display = 'block'; if (v1==='90'&&v2==='80') { feedback.innerHTML=`✅ <strong>TEPAT SEKALI!</strong><br>${explanation}`; feedback.style.backgroundColor="#00E676"; feedback.style.color="#1A1A1A"; btn.disabled=true; btn.style.opacity='0.5'; document.getElementById('mb2-val1').disabled=true; document.getElementById('mb2-val2').disabled=true; } else { feedback.innerHTML=`❌ <strong>URUTAN MASIH SALAH!</strong><br>Kondisi paling ketat (>= 90 untuk A) harus paling atas!`; feedback.style.backgroundColor="#FF0055"; feedback.style.color="white"; } document.getElementById("quizNext").classList.add("visible"); };
+
+    let shuffledQuestions = []; let currentQuestionIdx = 0; let resumeVideoAfterQuiz = false; let resumeVideoTime = null;
+    let requestedFullscreenFrame = null; let activeQuizConfig = null; let activeQuizStep = null;
+    let replayingQuizVideo = false; let replayCheckpointArmed = false;
+    Object.keys(courseData).forEach(stepId => { videoWatchedStatus[stepId] = false; });
+
+    function renderBookmarks(step) { const sd = courseData[step]; const panel = document.getElementById("step-"+step); if (!panel||!sd||!sd.bookmarks||sd.bookmarks.length===0) return; let c = panel.querySelector(".bookmarks-container"); if (!c) { c = document.createElement("div"); c.className = "bookmarks-container"; const bv = panel.querySelector(".strips")||panel.querySelector(".reading-section"); if (bv) panel.insertBefore(c, bv); else panel.appendChild(c); } c.innerHTML = ""; sd.bookmarks.forEach(bm => { const btn = document.createElement("button"); btn.className = "bookmark-btn"; btn.type = "button"; const m = Math.floor(bm.time/60); const s = (bm.time%60).toString().padStart(2,"0"); btn.innerHTML = `<span class="bookmark-time">${m}:${s}</span> ${bm.label}`; btn.onclick = () => { const player = players[step]; if (player && typeof player.seekTo === "function") { player.seekTo(bm.time,true); if (typeof player.playVideo === "function") player.playVideo(); panel.querySelector(".video-frame").scrollIntoView({behavior:"smooth",block:"center"}); } }; c.appendChild(btn); }); }
+
+    function showStep(step) {
+      if (!courseData[step]) return; currentStep = step;
+      if (activeQuizStep !== null && activeQuizStep !== step) { replayingQuizVideo = false; replayCheckpointArmed = false; quizReturn.classList.remove("visible"); }
+      stepPanels.forEach((panel,index) => { panel.hidden = index+1 !== step; });
+      lessonTabs.forEach(tab => { const isActive = Number(tab.dataset.step) === step; tab.classList.toggle("active",isActive); if (isActive) { tab.setAttribute("aria-current","step"); tab.scrollIntoView({behavior:"smooth",block:"nearest",inline:"center"}); } else { tab.removeAttribute("aria-current"); } });
+      lessonKicker.textContent = courseData[step].kicker; lessonTitle.textContent = courseData[step].title; durationPill.textContent = courseData[step].duration;
+      progressText.textContent = step+" dari "+totalSteps; progressFill.style.width = (step/totalSteps*100)+"%";
+      initializeYouTubePlayer(step); renderBookmarks(step);
+      prevButton.disabled = step === 1;
+      if (step === totalSteps) { nextButton.innerHTML = "Tandai selesai <span aria-hidden=\"true\">✓</span>"; nextButton.disabled = false; }
+      else { nextButton.innerHTML = "Lanjut ke video "+(step+1)+" <span aria-hidden=\"true\">→</span>"; nextButton.disabled = false; }
+      Object.keys(players).forEach(id => { if (Number(id) !== step && players[id] && typeof players[id].pauseVideo === "function") players[id].pauseVideo(); });
+      document.querySelector(".main").scrollIntoView({behavior:"smooth",block:"start"});
+    }
+    lessonTabs.forEach(tab => { tab.addEventListener("click",()=> showStep(Number(tab.dataset.step))); });
+    prevButton.addEventListener("click",()=> showStep(currentStep-1));
+    nextButton.addEventListener("click",()=> { if (currentStep < totalSteps) { showStep(currentStep+1); return; } progressText.textContent = totalSteps+" dari "+totalSteps+" · selesai"; progressFill.style.width = "100%"; completionToast.classList.add("show"); window.setTimeout(()=>completionToast.classList.remove("show"),3800); });
+
+    function shuffle(items) { const r = [...items]; for (let i = r.length-1; i > 0; i--) { const j = Math.floor(Math.random()*(i+1)); [r[i],r[j]] = [r[j],r[i]]; } return r; }
+    function openQuiz(questionsArray, shouldResumeVideo=false, seekTime=null, quizConfig=null, stepId=currentStep) { const fe = getFullscreenElement()||requestedFullscreenFrame; if (fe&&fe.classList.contains("video-frame")) fe.appendChild(quizOverlay); if (quizConfig) { activeQuizConfig=quizConfig; activeQuizStep=Number(stepId); } else { activeQuizConfig=null; activeQuizStep=null; } replayingQuizVideo=false; replayCheckpointArmed=false; quizReturn.classList.remove("visible"); resumeVideoAfterQuiz=shouldResumeVideo; resumeVideoTime=seekTime; shuffledQuestions=shuffle(questionsArray); currentQuestionIdx=0; quizOverlay.classList.add("open"); quizReview.classList.toggle("visible",Boolean(activeQuizConfig&&players[activeQuizStep])); document.body.style.overflow="hidden"; renderQuestion(); window.setTimeout(()=>document.querySelector(".answer-button.true").focus(),50); }
+    function closeQuiz(resumeVideo=false,seekTime=null) { quizOverlay.classList.remove("open"); document.body.style.overflow=""; if (resumeVideo&&players[currentStep]) { if (seekTime!==null&&typeof players[currentStep].seekTo==="function") players[currentStep].seekTo(seekTime,true); if (typeof players[currentStep].playVideo==="function") players[currentStep].playVideo(); } if (!getFullscreenElement()&&quizOverlay.parentElement!==document.body) document.body.appendChild(quizOverlay); }
+    function replayActiveQuizVideo() { if (!activeQuizConfig||activeQuizStep===null) return; const player = players[activeQuizStep]; if (!player||typeof player.seekTo!=="function") return; const replayStart = Math.max(0,activeQuizConfig.time-30); if (currentStep!==activeQuizStep) showStep(activeQuizStep); const fe = getFullscreenElement()||requestedFullscreenFrame; if (fe&&fe.classList.contains("video-frame")) fe.appendChild(quizReturn); activeQuizConfig.shown=false; replayingQuizVideo=true; replayCheckpointArmed=false; closeQuiz(false); quizReturn.classList.add("visible"); player.seekTo(replayStart,true); if (typeof player.playVideo==="function") player.playVideo(); window.setTimeout(()=>{ if (!replayingQuizVideo||typeof player.getCurrentTime!=="function") return; if (Math.abs(player.getCurrentTime()-replayStart)>2) player.seekTo(replayStart,true); },300); }
+    function returnToActiveQuiz() { if (!activeQuizConfig||activeQuizStep===null) return; const player = players[activeQuizStep]; if (player&&typeof player.pauseVideo==="function") player.pauseVideo(); activeQuizConfig.shown=true; openQuiz(activeQuizConfig.questions,activeQuizConfig.resume!==undefined?activeQuizConfig.resume:true,activeQuizConfig.resumeTime,activeQuizConfig,activeQuizStep); }
+    function formatVideoTime(v) { const t = Number.isFinite(v)?Math.max(0,Math.floor(v)):0; return Math.floor(t/60)+":"+String(t%60).padStart(2,"0"); }
+    function getFullscreenElement() { return document.fullscreenElement||document.webkitFullscreenElement; }
+    function updateVideoControls(stepId) { const player = players[stepId]; if (!player||typeof player.getCurrentTime!=="function") return; const dur = player.getDuration()||0; const cur = player.getCurrentTime()||0; const si = document.querySelector('.video-seek[data-step="'+stepId+'"]'); const tl = document.querySelector('.video-time[data-step="'+stepId+'"]'); if (si&&!si.matches(":active")) si.value = dur?(cur/dur*100):0; if (tl) tl.textContent = formatVideoTime(cur)+" / "+formatVideoTime(dur); }
+    playButtons.forEach(button => { button.addEventListener("click",()=>{ const stepId = button.dataset.step; const player = players[stepId]; if (!player||typeof player.getPlayerState!=="function") { initializeYouTubePlayer(stepId); return; } if (player.getPlayerState()===YT.PlayerState.PLAYING) player.pauseVideo(); else player.playVideo(); }); });
+    muteButtons.forEach(button => { button.addEventListener("click",()=>{ const player = players[button.dataset.step]; if (!player||typeof player.isMuted!=="function") return; if (player.isMuted()) { player.unMute(); button.textContent="🔊"; button.setAttribute("aria-label","Matikan suara"); } else { player.mute(); button.textContent="🔇"; button.setAttribute("aria-label","Nyalakan suara"); } }); });
+    seekInputs.forEach(input => { input.addEventListener("input",()=>{ const player = players[input.dataset.step]; if (!player||typeof player.seekTo!=="function") return; player.seekTo((player.getDuration()||0)*Number(input.value)/100,true); }); });
+    fullscreenButtons.forEach(button => { button.addEventListener("click",()=>{ const frame = document.querySelector('.video-frame[data-video-step="'+button.dataset.step+'"]'); if (!frame) return; if (getFullscreenElement()) { const exit = document.exitFullscreen||document.webkitExitFullscreen; if (exit) exit.call(document); return; } const req = frame.requestFullscreen||frame.webkitRequestFullscreen; if (req) { requestedFullscreenFrame=frame; Promise.resolve(req.call(frame)).catch(()=>{ requestedFullscreenFrame=null; }); } }); });
+    function handleFullscreenChange() { const fe = getFullscreenElement(); requestedFullscreenFrame = fe&&fe.classList.contains("video-frame")?fe:null; fullscreenButtons.forEach(button => { const frame = document.querySelector('.video-frame[data-video-step="'+button.dataset.step+'"]'); const isFs = fe===frame; button.textContent = isFs?"✕":"⛶"; button.setAttribute("aria-label",isFs?"Keluar dari layar penuh":"Tampilkan layar penuh"); }); if (!fe&&!quizOverlay.classList.contains("open")&&quizOverlay.parentElement!==document.body) document.body.appendChild(quizOverlay); if (!fe&&quizReturn.parentElement!==document.body) document.body.appendChild(quizReturn); }
+    document.addEventListener("fullscreenchange",handleFullscreenChange);
+    document.addEventListener("webkitfullscreenchange",handleFullscreenChange);
+    function renderProgress() { quizProgress.innerHTML=""; shuffledQuestions.forEach((_,i)=>{ const dot = document.createElement("span"); dot.className="quiz-dot"; if(i<currentQuestionIdx)dot.classList.add("done"); if(i===currentQuestionIdx)dot.classList.add("active"); quizProgress.appendChild(dot); }); }
+    function renderQuestion() { if (currentQuestionIdx>=shuffledQuestions.length) { quizQuestion.textContent="Checkpoint selesai. Kamu siap melanjutkan pembelajaran."; quizQuestion.style.display="block"; document.getElementById("answerRow").style.display="none"; quizFeedback.className="quiz-feedback correct"; quizFeedback.textContent="Bagus. Semua pertanyaan sudah kamu jawab."; quizFeedback.style.display="block"; quizNext.textContent="Lanjut belajar →"; quizNext.classList.add("visible"); let ch=document.getElementById("quizCustomHtml"); if(ch)ch.style.display="none"; renderProgress(); return; } const item=shuffledQuestions[currentQuestionIdx]; if(item.html) { quizQuestion.style.display="none"; document.getElementById("answerRow").style.display="none"; quizFeedback.style.display="none"; let ch=document.getElementById("quizCustomHtml"); if(!ch){ch=document.createElement("div");ch.id="quizCustomHtml";quizQuestion.parentNode.insertBefore(ch,document.getElementById("answerRow"));} ch.innerHTML=item.html; ch.style.display="block"; quizNext.textContent="Soal berikutnya →"; quizNext.classList.remove("visible"); } else { let ch=document.getElementById("quizCustomHtml"); if(ch)ch.style.display="none"; quizQuestion.style.display="block"; document.getElementById("answerRow").style.display="flex"; quizQuestion.textContent=item.question; quizFeedback.style.removeProperty("display"); quizFeedback.className="quiz-feedback"; quizFeedback.textContent=""; quizNext.textContent="Soal berikutnya →"; quizNext.classList.remove("visible"); answerButtons.forEach(button=>{button.disabled=false;}); } renderProgress(); }
+    function checkAnswer(answer) { const item=shuffledQuestions[currentQuestionIdx]; const isCorrect=answer===item.answer; answerButtons.forEach(b=>{b.disabled=true;}); quizFeedback.className="quiz-feedback "+(isCorrect?"correct":"wrong"); quizFeedback.textContent=(isCorrect?"Tepat. ":"Belum tepat. ")+item.explanation; quizNext.classList.add("visible"); quizNext.focus(); }
+    answerButtons.forEach(button => { button.addEventListener("click",()=>checkAnswer(button.dataset.answer==="true")); });
+    quizReview.addEventListener("click",replayActiveQuizVideo);
+    quizReturnButton.addEventListener("click",returnToActiveQuiz);
+    quizNext.addEventListener("click",()=>{ if(currentQuestionIdx>=shuffledQuestions.length){closeQuiz(resumeVideoAfterQuiz,resumeVideoTime);return;} currentQuestionIdx+=1; renderQuestion(); });
+    const openQuizBtn = document.getElementById("openQuizButton"); if(openQuizBtn){openQuizBtn.addEventListener("click",()=>{if(players[currentStep]&&typeof players[currentStep].pauseVideo==="function")players[currentStep].pauseVideo();openQuiz(courseData[2].quizzes[0].questions,false);});}
+    function checkParenGuess(userVal,btn,explanation) { const container=btn.parentElement; const feedback=container.nextElementSibling; let n=userVal.replace(/\s+/g,'').toLowerCase(); feedback.style.display='block'; if(n==='password_okand(is_adminoris_premium)'||n==='(is_adminoris_premium)andpassword_ok'||n==='password_ok==trueand(is_admin==trueoris_premium==true)'){feedback.innerHTML=`✅ <strong>TEPAT SEKALI!</strong><br>${explanation}`;feedback.style.backgroundColor="#00E676";feedback.style.color="#1A1A1A";btn.disabled=true;btn.style.opacity='0.5';document.getElementById('paren-input').disabled=true;}else{feedback.innerHTML=`❌ <strong>KODE BELUM TEPAT!</strong><br>Pastikan kamu menggabungkan 'is_admin or is_premium' di dalam tanda kurung (), lalu gunakan 'and password_ok'.`;feedback.style.backgroundColor="#FF0055";feedback.style.color="white";} }
+    function initializeYouTubePlayer(stepId) { const nId=String(stepId); if(!youtubeApiReady||players[nId]||!courseData[nId])return; const playerId="youtube-player-"+nId; const domEl=document.getElementById(playerId); const frame=document.querySelector('.video-frame[data-video-step="'+nId+'"]'); if(!domEl)return; if(frame)frame.classList.remove("player-error"); players[nId]=new YT.Player(playerId,{videoId:courseData[nId].videoId,playerVars:{playsinline:1,rel:0,controls:0,disablekb:1,fs:0,iv_load_policy:3,start:courseData[nId].startSeconds||0},events:{onReady:(e)=>{const iframe=e.target.getIframe();iframe.removeAttribute("allowfullscreen");iframe.setAttribute("tabindex","-1");iframe.setAttribute("aria-hidden","true");if(frame)frame.classList.add("player-ready");updateVideoControls(nId);},onError:()=>{if(frame)frame.classList.add("player-error");},onStateChange:(e)=>handlePlayerStateChange(nId,e)}}); }
+    function onYouTubeIframeAPIReady(){if(youtubeApiReady)return;youtubeApiReady=true;initializeYouTubePlayer(currentStep);}
+    function handlePlayerStateChange(stepId,event) { if(event.data===YT.PlayerState.ENDED){videoWatchedStatus[stepId]=true;if(Number(stepId)===currentStep)nextButton.disabled=false;} const isPlaying=event.data===YT.PlayerState.PLAYING; document.querySelectorAll('.video-play[data-step="'+stepId+'"], .play-pause[data-step="'+stepId+'"]').forEach(pb=>{pb.textContent=isPlaying?"❚❚":"▶";pb.setAttribute("aria-label",isPlaying?"Jeda video":"Putar video");}); document.querySelectorAll('.video-center-play[data-step="'+stepId+'"]').forEach(pb=>{pb.classList.toggle("is-playing",isPlaying);}); updateVideoControls(stepId); window.clearInterval(timeCheckers[stepId]); if(event.data===YT.PlayerState.PLAYING){timeCheckers[stepId]=window.setInterval(()=>{updateVideoControls(stepId);checkVideoQuizzes(stepId);},300);} }
+    function checkVideoQuizzes(stepId) { const player=players[stepId]; if(!player||typeof player.getCurrentTime!=="function")return; const currentTime=player.getCurrentTime(); const stepConfig=courseData[stepId]; if(!stepConfig||!stepConfig.quizzes)return; for(let quiz of stepConfig.quizzes){if(replayingQuizVideo&&quiz===activeQuizConfig){if(currentTime<quiz.time-0.5)replayCheckpointArmed=true;if(!replayCheckpointArmed)continue;}if(!quiz.shown&&currentTime>=quiz.time){quiz.shown=true;player.pauseVideo();window.clearInterval(timeCheckers[stepId]);const shouldResume=quiz.resume!==undefined?quiz.resume:true;openQuiz(quiz.questions,shouldResume,quiz.resumeTime,quiz,stepId);break;}} }
+    function checkAndGuess(userVal,btn,explanation){const container=btn.parentElement;const feedback=container.nextElementSibling;let n=userVal.replace(/\s+/g,'').toLowerCase();feedback.style.display='block';if(n==='andaktif_organisasi==true'||n==='andaktif_organisasi'||n==='and(aktif_organisasi==true)'){feedback.innerHTML=`✅ <strong>TEPAT SEKALI!</strong><br>${explanation}`;feedback.style.backgroundColor="#00E676";feedback.style.color="#1A1A1A";btn.disabled=true;btn.style.opacity='0.5';document.getElementById('and-input').disabled=true;}else{feedback.innerHTML=`❌ <strong>KODE BELUM TEPAT!</strong><br>Coba lagi! Butuh operator 'and' diikuti kondisi pengecekan variabel aktif_organisasi.`;feedback.style.backgroundColor="#FF0055";feedback.style.color="white";}}
+    function checkOrGuess(userVal,btn,explanation){const container=btn.parentElement;const feedback=container.nextElementSibling;let n=userVal.replace(/\s+/g,'').toLowerCase();feedback.style.display='block';if(n==='orada_kupon==true'||n==='orada_kupon'||n==='or(ada_kupon==true)'){feedback.innerHTML=`✅ <strong>TEPAT SEKALI!</strong><br>${explanation}`;feedback.style.backgroundColor="#00E676";feedback.style.color="#1A1A1A";btn.disabled=true;btn.style.opacity='0.5';document.getElementById('or-input').disabled=true;}else{feedback.innerHTML=`❌ <strong>KODE BELUM TEPAT!</strong><br>Coba lagi! Butuh operator 'or' diikuti kondisi pengecekan variabel ada_kupon.`;feedback.style.backgroundColor="#FF0055";feedback.style.color="white";}}
+    function checkNestedToLogicalGuess(userVal,btn,explanation){const container=btn.parentElement;const feedback=container.nextElementSibling;let n=userVal.replace(/\s+/g,'').toLowerCase();feedback.style.display='block';if(n==='andcuaca=="cerah"'||n==="andcuaca=='cerah'"){feedback.innerHTML=`✅ <strong>TEPAT SEKALI!</strong><br>${explanation}`;feedback.style.backgroundColor="#00E676";feedback.style.color="#1A1A1A";btn.disabled=true;btn.style.opacity='0.5';document.getElementById('logical-input').disabled=true;}else{feedback.innerHTML=`❌ <strong>KODE BELUM TEPAT!</strong><br>Pastikan kamu menggunakan 'and' lalu cek 'cuaca == "cerah"'.`;feedback.style.backgroundColor="#FF0055";feedback.style.color="white";}}
+    window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
+    if (window.YT && typeof window.YT.Player === "function") onYouTubeIframeAPIReady();
+  </script>
+</body>
+</html>
