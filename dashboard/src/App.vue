@@ -1613,12 +1613,12 @@ const goToStep = (step) => {
     currentStep.value = step;
     return;
   }
-  // for (let i = 1; i < step; i++) {
-  //   if (!isStepFinished(i)) {
-  //     showDashboardNotice({ type: 'warning', title: 'Modul belum selesai', message: `Selesaikan video dan kuis/tugas di Modul ${i} terlebih dahulu sebelum membuka modul berikutnya.` });
-  //     return;
-  //   }
-  // }
+  for (let i = 1; i < step; i++) {
+    if (!isStepFinished(i)) {
+      showDashboardNotice({ type: 'warning', title: 'Modul belum selesai', message: `Selesaikan video dan kuis/tugas di Modul ${i} terlebih dahulu sebelum membuka modul berikutnya.` });
+      return;
+    }
+  }
   currentStep.value = step;
 };
 
@@ -1635,10 +1635,10 @@ const prevStep = () => {
 };
 
 const nextStep = () => {
-  // if (!isStepFinished(currentStep.value)) {
-  //   showDashboardNotice({ type: 'warning', title: 'Modul belum selesai', message: 'Selesaikan video dan kuis/tugas di modul ini terlebih dahulu sebelum lanjut.' });
-  //   return;
-  // }
+  if (!isStepFinished(currentStep.value)) {
+    showDashboardNotice({ type: 'warning', title: 'Modul belum selesai', message: 'Selesaikan video dan kuis/tugas di modul ini terlebih dahulu sebelum lanjut.' });
+    return;
+  }
   if (currentStep.value < Object.keys(courseData).length) {
     currentStep.value++;
   }
