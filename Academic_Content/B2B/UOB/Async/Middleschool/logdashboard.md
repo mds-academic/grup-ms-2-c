@@ -488,3 +488,66 @@ Semua fitur di atas berhasil diimplementasikan dan merujuk pada flow yang ada di
 - **File Diubah:** `grupC/dashboard/src/App.vue`
 - **Perubahan:** Mengubah sistem evaluasi pada fungsi `handleStandardAnswer`. Berhubung semua soal di Grup C berwujud pilihan ganda, sistem jatah 3x nyawa/kesempatan menjawab dihapuskan. Jika siswa memilih jawaban yang keliru, kotak opsi langsung terkunci (*disabled*) dan sistem akan seketika memberikan *feedback*/pembahasan serta memunculkan tombol "Lanjut" untuk beralih ke aktivitas berikutnya.
 - **Status**: Selesai. Kuis kini beroperasi jauh lebih cepat dan tidak membebani siswa untuk mencoba ulang pada opsi-opsi sisa (pilihan ganda).
+
+---
+
+# Changelog & Update Log: Middleschool Grup D Dashboard
+
+## 58. Replikasi Pengaturan UI dan Logika dari Grup B ke Grup D
+- **File Diubah:** `grupD/dashboard/src/App.vue`, `grupD/dashboard/src/style.css`
+- **Perubahan:** Menyalin struktur kerangka utama (seperti *settings*, cara kerja pop-up kuis, logika *video blocking*, *progress bar*, dan pesan peringatan) secara identik dari Grup B ke Grup D.
+- **Status**: Selesai. Seluruh fitur canggih kini diwarisi oleh Grup D.
+
+## 59. Penyesuaian Data Materi, Durasi, dan Kuis Grup D (Tab 1 & 2)
+- **File Diubah:** `grupD/dashboard/src/courseData.js`, `grupD/dashboard/src/App.vue`
+- **Perubahan:** 
+  - Mengubah video ID menjadi `P8Ea0v8Gy2o` sesuai materi Grup D.
+  - **Tab 1:** Memotong durasi video mulai detik 00:04 hingga 13:14. Menambahkan "Mini Quiz 1" pada detik 13:13.
+  - **Tab 2 (Baru):** Menambahkan tab khusus "Mini Project Kalkulator Cerdas" tepat setelah Tab 1. Durasi video 13:18 hingga 14:39. Instruksi tugas dimasukkan ke dalam teks bacaan, dan *form* pengumpulan tugas (upload file `.aia` / link) di-render spesifik di Tab 2.
+- **Status**: Selesai.
+
+## 60. Penyesuaian Data Materi Grup D (Tab 3)
+- **File Diubah:** `grupD/dashboard/src/courseData.js`
+- **Perubahan:** 
+  - **Tab 3:** Memotong durasi video mulai detik 14:43 hingga 19:54.
+  - Menambahkan "Mini Quiz 3" pada detik 19:53 yang menanyakan tentang keuntungan modularisasi kode sesuai referensi gambar.
+- **Status**: Selesai.
+
+## 61. Penyesuaian Data Materi Grup D (Tab 4)
+- **File Diubah:** `grupD/dashboard/src/courseData.js`
+- **Perubahan:** 
+  - **Tab 4:** Memperbarui durasi akhir video menjadi menit 28:05 (detik 1685).
+  - Menyesuaikan kemunculan "Mini Quiz 4" menjadi pada detik 1684 (28:04) yang membahas tentang blok TinyDB sesuai instruksi.
+- **Status**: Selesai.
+
+## 62. Penyesuaian Data Materi Grup D (Tab 5)
+- **File Diubah:** `grupD/dashboard/src/courseData.js`
+- **Perubahan:** 
+  - **Tab 5:** Memperbarui durasi awal dan akhir video menjadi dari menit 28:24 (detik 1704) sampai 33:28 (detik 2008).
+  - Menyesuaikan kemunculan "Mini Quiz 5" menjadi pada detik 2007 (33:27) sesuai instruksi dan screenshot (Sikap saat menerima feedback).
+- **Status**: Selesai.
+
+## 63. Penyesuaian Data Materi Grup D (Tab 6)
+- **File Diubah:** `grupD/dashboard/src/courseData.js`
+- **Perubahan:** 
+  - **Tab 6:** Memperbarui durasi awal dan akhir video menjadi dari menit 33:38 (detik 2018) sampai 37:41 (detik 2261).
+  - Menyesuaikan kemunculan "Mini Quiz 6" menjadi pada detik 2260 (37:40) tentang Solusi Digital Berdampak Positif, sesuai instruksi dan gambar referensi.
+- **Status**: Selesai.
+
+## 64. Pembuatan Tab 7: Mini Project "Merancang Solusi Digital"
+- **File Diubah:** `grupD/dashboard/src/courseData.js`, `grupD/dashboard/src/App.vue`, `Code.gs`
+- **Perubahan:** 
+  - **Tab 7:** Menambahkan tab baru sebagai checkpoint terakhir dengan durasi video 37:47 (detik 2267) sampai 38:23 (detik 2303).
+  - Mengembangkan UI formulir pengumpulan ide yang baru di dalam `App.vue` yang mencakup:
+    - Text Box 1: Observasi Lingkungan
+    - Text Box 2: Penemu Solusi Digital
+    - Upload File Gambar: UI Designer (khusus format JPG/PNG)
+  - Menyambungkan form input dengan logika penyimpanan backend via `Code.gs` dengan menambahkan kolom `Idea_Obs`, `Idea_Sol`, dan `Idea_UI_Code` di Google Sheets (pada grup `ghs2d`).
+- **Status**: Selesai. Seluruh mekanisme form input, *placeholder* text, validasi khusus gambar (JPG/PNG), hingga pengiriman ke sheet sudah berfungsi.
+
+## 65. Generate Thumbnail Otomatis (Grup D)
+- **Proses:** 
+  - Membuat *script* `generate_thumbs.js` berbasis Node.js dan Puppeteer khusus untuk Grup D.
+  - Menyesuaikan 7 judul spesifik materi Grup D (mulai dari "Membuat dan Memanggil Procedures" hingga "Brainstorming Ide Aplikasi").
+  - Menjalankan *script* untuk merender HTML secara otomatis menjadi 7 file gambar (`thumb_1.png` hingga `thumb_7.png`) dengan desain bergaya *neo-brutalism* yang sama seperti Grup B.
+- **Status**: Selesai. Semua *thumbnail* telah di-generate dan tersimpan di folder `public/`, dan *dashboard* Grup D kini memiliki tampilan *thumbnail* video yang cantik dan rapi.

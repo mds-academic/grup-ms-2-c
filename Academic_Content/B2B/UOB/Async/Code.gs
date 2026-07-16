@@ -184,11 +184,13 @@ function doPost(e) {
     sheetName = 'ops-student-result-ghs2d';
     headers = [
       "Timestamp", "Students_Name", "Students_School", "Students_Email",
-      "V1_Q1_Ans", "V1_Q1_Att", "V1_Q2_Ans", "V1_Q2_Att", "V1_Q3_Ans", "V1_Q3_Att",
-      "V2_Q1_Ans", "V2_Q1_Att", "V2_Q2_Ans", "V2_Q2_Att", "V2_Q3_Ans", "V2_Q3_Att",
+      "V1_Q1_Ans", "V1_Q1_Att",
+      "Project1_Code",
+      "V2_Q1_Ans", "V2_Q1_Att",
+      "V3_Q1_Ans", "V3_Q1_Att",
       "V4_Q1_Ans", "V4_Q1_Att",
-      "V5_Q1_Ans", "V5_Q1_Att", "V5_Q2_Ans", "V5_Q2_Att",
-      "Final_Project_Code", "Final_Project_Attempts", "Final_Project_Score"
+      "V5_Q1_Ans", "V5_Q1_Att",
+      "Idea_Obs", "Idea_Sol", "Idea_UI_Code"
     ];
   }
 
@@ -252,6 +254,20 @@ function doPost(e) {
     ];
   }
 
+  if (group === 'gms2d') {
+    sheetName = 'ops-student-result-gms2d';
+    headers = [
+      "Timestamp", "Students_Name", "Students_School", "Students_Email",
+      "V1_Q1_Ans", "V1_Q1_Att",
+      "Project1_Code",
+      "V3_Q1_Ans", "V3_Q1_Att",
+      "V4_Q1_Ans", "V4_Q1_Att",
+      "V5_Q1_Ans", "V5_Q1_Att",
+      "V6_Q1_Ans", "V6_Q1_Att",
+      "Idea_Obs", "Idea_Sol", "Idea_UI_Code"
+    ];
+  }
+
   const acceptedPayloadKeys = Object.keys(payload)
     .filter(function(key) {
       return headers.indexOf(key) > -1;
@@ -276,6 +292,7 @@ function doPost(e) {
   }
 
   // Handle file upload
+  let uploadedFileUrl = '';
   if (payload.fileData && payload.fileName) {
     try {
       const folder = DriveApp.getFolderById("1LShQpFJ_aAQ1sFmVSGbULd90XIx4aUnR");
@@ -286,8 +303,9 @@ function doPost(e) {
       const blob = Utilities.newBlob(Utilities.base64Decode(base64Data), payload.mimeType || 'application/octet-stream', payload.fileName);
       const file = folder.createFile(blob);
       file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
-      
-      payload[payload.fileColumn || "Mini_Project_Link"] = file.getUrl();
+
+      uploadedFileUrl = file.getUrl();
+      payload[payload.fileColumn || "Mini_Project_Link"] = uploadedFileUrl;
       delete payload.fileData; // Prevent writing huge base64 string
     } catch (e) {
       return respond({ success: false, message: "Gagal upload file: " + e.toString() });
@@ -366,6 +384,7 @@ function doPost(e) {
     rowIndex: rowIndex,
     mode: saveMode,
     columnsWritten: rowData.length,
+    fileUrl: uploadedFileUrl,
     acceptedPayloadKeys: acceptedPayloadKeys,
     ignoredPayloadKeys: ignoredPayloadKeys,
     headerWarnings: headerWarnings
