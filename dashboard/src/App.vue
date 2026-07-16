@@ -54,6 +54,12 @@ const quizModalStyles = ref({ transform: 'translateY(50px) scale(0.95)', opacity
 const currentStep = ref(1);
 const totalSteps = Object.keys(courseData).length;
 const APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz58EffczfpcNL0bvbD6VZvrY3mrVNtmpWasSwJT0baOowD2yGu_KNM0YNul9EtxxKVpg/exec';
+const LEARNING_STATE_STORAGE_KEY = 'mds_gms2c_learning_state';
+const LOGIN_STORAGE_KEY = 'mds_gms2c_student_login';
+const PROGRESS_STORAGE_KEY = 'mds_gms2c_student_progress';
+let learningStateHydrated = false;
+let lastLearningStatePersistedAt = 0;
+const restoredVideoTimes = {};
 const isLoggedIn = ref(false);
 const loginSchool = ref('');
 const loginEmail = ref('');
@@ -109,7 +115,7 @@ Object.keys(courseData).forEach(stepId => {
   let qCounter = 1;
   courseData[stepId].quizzes?.forEach(quiz => {
     quiz.questions.forEach(q => {
-      q.qid = `V${stepId}_Q${qCounter}`;
+      if (!q.qid) q.qid = `V${stepId}_Q${qCounter}`;
       qCounter++;
     });
   });
@@ -117,8 +123,8 @@ Object.keys(courseData).forEach(stepId => {
 
 const saveProgress = (key, value) => {
   studentProgress.value[key] = value;
-  localStorage.setItem('mds_student_progress', JSON.stringify(studentProgress.value));
-  syncToSheets();
+  localStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify(studentProgress.value));
+  return syncToSheets();
 };
 
 const markQuestionFailed = (qid) => {
@@ -126,7 +132,7 @@ const markQuestionFailed = (qid) => {
   studentProgress.value[`${qid}_Ans`] = '0';
   studentProgress.value[`${qid}_Score`] = 0;
   studentProgress.value[`${qid}_Failed`] = true;
-  localStorage.setItem('mds_student_progress', JSON.stringify(studentProgress.value));
+  localStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify(studentProgress.value));
   syncToSheets();
 };
 
@@ -136,12 +142,20 @@ const projectFile = ref(null);
 const projectUploadStatus = ref('');
 const projectUploadMessage = ref('');
 const isUploading = ref(false);
+const MAX_PROJECT_FILE_BYTES = 10 * 1024 * 1024;
 
 const handleProjectFileChange = (e) => {
   const file = e.target.files[0];
   if (file) {
-    if (!file.name.endsWith('.aia')) {
+    if (!file.name.toLowerCase().endsWith('.aia')) {
       projectUploadMessage.value = 'Hanya menerima file berekstensi .aia';
+      projectUploadStatus.value = 'error';
+      e.target.value = null;
+      projectFile.value = null;
+      return;
+    }
+    if (file.size > MAX_PROJECT_FILE_BYTES) {
+      projectUploadMessage.value = 'Ukuran file maksimal 10 MB. Kompres project atau pilih file yang lebih kecil.';
       projectUploadStatus.value = 'error';
       e.target.value = null;
       projectFile.value = null;
@@ -155,7 +169,8 @@ const handleProjectFileChange = (e) => {
 
 const submitProject = async () => {
   if (projectUploadType.value === 'link') {
-    if (!projectLink.value.startsWith('https://gallery.appinventor.mit.edu/?galleryid')) {
+    const normalizedProjectLink = projectLink.value.trim();
+    if (!normalizedProjectLink.startsWith('https://gallery.appinventor.mit.edu/?galleryid')) {
       projectUploadStatus.value = 'error';
       projectUploadMessage.value = 'Link galeri tidak valid. Pastikan formatnya https://gallery.appinventor.mit.edu/?galleryid...';
       return;
@@ -163,7 +178,8 @@ const submitProject = async () => {
     isUploading.value = true;
     try {
       const fileCol = 'Project1_Code';
-      saveProgress(fileCol, projectLink.value);
+      const syncResult = await saveProgress(fileCol, normalizedProjectLink);
+      if (syncResult?.success !== true) throw new Error(syncResult?.message || 'Progress belum tersimpan');
       projectUploadStatus.value = 'success';
       projectUploadMessage.value = 'Link project berhasil disimpan!';
     } catch (e) {
@@ -210,7 +226,8 @@ const submitProject = async () => {
         if (result.success) {
           projectUploadStatus.value = 'success';
           projectUploadMessage.value = 'File project berhasil diunggah!';
-          saveProgress(fileCol, result.fileUrl || 'uploaded_aia'); 
+          const syncResult = await saveProgress(fileCol, result.fileUrl || 'uploaded_aia');
+          if (syncResult?.success !== true) throw new Error(syncResult?.message || 'URL file belum tersimpan');
         } else {
           throw new Error(result.message);
         }
@@ -233,19 +250,27 @@ const submitProject = async () => {
 const syncToSheets = async () => {
   if (!isLoggedIn.value) return;
   const payload = {
+    Group: 'gms2c',
     Students_Email: studentData.value.email,
     Students_Name: studentData.value.name,
     Students_School: studentData.value.school,
     ...studentProgress.value
   };
   try {
-    await fetch(APP_SCRIPT_URL, {
+    const response = await fetch(APP_SCRIPT_URL, {
       method: 'POST',
       body: JSON.stringify(payload),
       headers: { 'Content-Type': 'text/plain;charset=utf-8' } // text/plain untuk bypass CORS AppScript
     });
+    const result = await response.json();
+    if (!response.ok || result.success !== true) {
+      throw new Error(result.message || `Sync ditolak (${response.status})`);
+    }
+    console.log('[MDS Debug] Progress tersimpan:', { payload, response: result });
+    return result;
   } catch(err) {
     console.error("Sync error", err);
+    return { success: false, message: err.message };
   }
 };
 
@@ -275,7 +300,7 @@ const handleLogin = async () => {
       studentData.value = { name: data.name, school: data.school, email: data.email };
       isLoggedIn.value = true;
       loginEmailAttempts.value = 0;
-      localStorage.setItem('mds_student_login', JSON.stringify(studentData.value));
+      localStorage.setItem(LOGIN_STORAGE_KEY, JSON.stringify(studentData.value));
     } else {
       loginEmailAttempts.value = nextAttempt;
       loginErrorTitle.value = data.needsRfo ? 'Perlu bantuan RFO' : 'Email belum cocok';
@@ -384,7 +409,7 @@ onUnmounted(() => {
 });
 
 const handleLogout = () => {
-  localStorage.removeItem('mds_student_login');
+  localStorage.removeItem(LOGIN_STORAGE_KEY);
   isLoggedIn.value = false;
   loginSchool.value = '';
   loginEmail.value = '';
@@ -402,15 +427,16 @@ const handleLogout = () => {
 onMounted(() => {
   window.addEventListener('resize', updateWidth);
 
-  const savedLogin = localStorage.getItem('mds_student_login');
+  const savedLogin = localStorage.getItem(LOGIN_STORAGE_KEY);
   if (savedLogin) {
     studentData.value = JSON.parse(savedLogin);
     isLoggedIn.value = true;
   }
-  const savedProgress = localStorage.getItem('mds_student_progress');
+  const savedProgress = localStorage.getItem(PROGRESS_STORAGE_KEY);
   if (savedProgress) {
     studentProgress.value = JSON.parse(savedProgress);
   }
+  restoreLearningState();
 });
 
 const videoWatchedStatus = ref({
@@ -457,6 +483,76 @@ const quizState = ref({
   choicesDisabled: false,
   selectedChoice: null
 });
+
+const persistLearningState = ({ force = false } = {}) => {
+  if (!learningStateHydrated) return;
+
+  const now = Date.now();
+  if (!force && now - lastLearningStatePersistedAt < 1500) return;
+  lastLearningStatePersistedAt = now;
+
+  const quizShown = {};
+  const lastVideoTime = {};
+  Object.keys(courseData).forEach((stepId) => {
+    quizShown[stepId] = (courseData[stepId]?.quizzes || []).map((quiz, index) =>
+      quiz.shown === true || quizState.value.shownQuizzes?.[`${stepId}_${index}`] === true
+    );
+    const player = players[stepId];
+    lastVideoTime[stepId] = player && typeof player.getCurrentTime === 'function'
+      ? Math.floor(player.getCurrentTime() || 0)
+      : Math.floor(getVideoStartBoundary(stepId) + (playerStates.value[stepId]?.currentTime || 0));
+  });
+
+  localStorage.setItem(LEARNING_STATE_STORAGE_KEY, JSON.stringify({
+    currentStep: Number(currentStep.value),
+    videoWatchedStatus: { ...videoWatchedStatus.value },
+    quizShown,
+    lastVideoTime,
+    updatedAt: new Date().toISOString()
+  }));
+};
+
+const restoreLearningState = () => {
+  learningStateHydrated = true;
+  try {
+    const savedState = JSON.parse(localStorage.getItem(LEARNING_STATE_STORAGE_KEY) || 'null');
+    if (!savedState || typeof savedState !== 'object') return;
+
+    const restoredStep = Number(savedState.currentStep);
+    if (courseData[restoredStep]) currentStep.value = restoredStep;
+
+    Object.keys(videoWatchedStatus.value).forEach((stepId) => {
+      videoWatchedStatus.value[stepId] = savedState.videoWatchedStatus?.[stepId] === true;
+    });
+
+    Object.keys(courseData).forEach((stepId) => {
+      const quizzes = courseData[stepId]?.quizzes || [];
+      quizzes.forEach((quiz, index) => {
+        const wasShown = savedState.quizShown?.[stepId]?.[index] === true;
+        quiz.shown = wasShown;
+        if (quizState.value.shownQuizzes && wasShown) {
+          quizState.value.shownQuizzes[`${stepId}_${index}`] = true;
+        }
+      });
+
+      const absoluteTime = Number(savedState.lastVideoTime?.[stepId]);
+      if (!Number.isFinite(absoluteTime)) return;
+      restoredVideoTimes[stepId] = absoluteTime;
+      const relativeTime = Math.max(0, absoluteTime - getVideoStartBoundary(stepId));
+      if (playerStates.value[stepId]) {
+        playerStates.value[stepId].currentTime = relativeTime;
+        playerStates.value[stepId].currentTimeFormatted = formatVideoTime(relativeTime);
+        playerStates.value[stepId].hasStarted = relativeTime > 0 || videoWatchedStatus.value[stepId];
+      }
+    });
+  } catch (err) {
+    console.warn('Gagal memulihkan progress belajar:', err);
+  }
+};
+
+watch(currentStep, () => persistLearningState({ force: true }));
+watch(videoWatchedStatus, () => persistLearningState({ force: true }), { deep: true });
+
 
 const quizReturn = ref({
   isVisible: false
@@ -551,6 +647,17 @@ const updateVideoControls = (stepId) => {
   playerStates.value[stepId].progress = getSeekValue(stepId);
   playerStates.value[stepId].durationFormatted = formatVideoTime(endBoundary);
   playerStates.value[stepId].currentTimeFormatted = formatVideoTime(Math.min(endBoundary, startBoundary + segmentCurrentTime));
+
+  const percentage = segmentDuration > 0
+    ? Math.min(1, segmentCurrentTime / segmentDuration)
+    : 0;
+  const hasQuiz = (stepData?.quizzes || []).length > 0;
+  const requiredPercentage = hasQuiz ? 0.90 : 0.95;
+
+  if (percentage >= requiredPercentage && !videoWatchedStatus.value[stepId]) {
+    videoWatchedStatus.value[stepId] = true;
+    console.log(`[DEBUG] Video ${stepId} reached required watch percentage (${requiredPercentage * 100}%). Marked as watched.`);
+  }
 };
 
 const getSeekMin = (stepId) => {
@@ -718,7 +825,12 @@ const initializeYouTubePlayer = (stepId) => {
         playerStates.value[normalizedStepId].isReady = true;
         playerStates.value[normalizedStepId].duration = event.target.getDuration() || 0;
         
-        enforceVideoBoundaries(normalizedStepId);
+        const restoredTime = restoredVideoTimes[normalizedStepId];
+        if (Number.isFinite(restoredTime) && restoredTime > getVideoStartBoundary(normalizedStepId)) {
+          event.target.seekTo(restoredTime, true);
+        } else {
+          enforceVideoBoundaries(normalizedStepId);
+        }
         updateVideoControls(normalizedStepId);
       },
       onError: () => {
@@ -760,6 +872,7 @@ const handlePlayerStateChange = (stepId, event) => {
     timeCheckers[stepId] = window.setInterval(() => {
       updateVideoControls(stepId);
       checkVideoQuizzes(stepId);
+      persistLearningState();
     }, 300);
   }
 };
@@ -782,6 +895,7 @@ const checkVideoQuizzes = (stepId) => {
 
     if (!quiz.shown && currentTime >= quiz.time) {
       quiz.shown = true;
+      persistLearningState({ force: true });
       player.pauseVideo();
       window.clearInterval(timeCheckers[stepId]);
 
@@ -1015,7 +1129,7 @@ const handleStandardAnswer = (answer) => {
   quizState.value.selectedChoice = answer;
   if (item.qid) {
     studentProgress.value[attKey] = attempts;
-    localStorage.setItem('mds_student_progress', JSON.stringify(studentProgress.value));
+    localStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify(studentProgress.value));
     syncToSheets();
   } else {
     failedAttempts.value[item.question] = attempts;

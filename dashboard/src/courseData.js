@@ -139,7 +139,7 @@ export const courseData = {
         ]
       },
       {
-        time: 472,
+        time: 470,
         title: "Kuis Flowchart 🧠",
         questions: [
           {
@@ -317,7 +317,7 @@ export const courseData = {
       </article>`,
     quizzes: [
       {
-        time: 721,
+        time: 719,
         title: "Kuis Fungsi Mutator 🧠",
         questions: [
           {
@@ -403,7 +403,7 @@ export const courseData = {
       </article>`,
     quizzes: [
       {
-        time: 1173,
+        time: 1171,
         title: "Kuis Digital 1 🧠",
         questions: [
           {
@@ -493,8 +493,9 @@ export const courseData = {
       </article>`,
     quizzes: [
       {
-        time: 1593,
-        title: "Kuis Prioritas 1 🧠",
+        time: 1590,
+        resume: false,
+        title: "Kuis Prioritas 🧠",
         questions: [
           {
             qid: "V4_Q1",
@@ -505,13 +506,7 @@ export const courseData = {
             ],
             answer: "A. Kebutuhan (Needs)",
             explanation: "Paket internet untuk mengirim tugas adalah kebutuhan (needs) karena wajib dipenuhi untuk kegiatan belajarmu."
-          }
-        ]
-      },
-      {
-        time: 1593,
-        title: "Kuis Prioritas 2 🧠",
-        questions: [
+          },
           {
             qid: "V4_Q2",
             question: "Membeli gacha/top-up diamond agar karakter game-mu lebih keren adalah...",
@@ -642,7 +637,7 @@ export const courseData = {
       </article>`,
     quizzes: [
       {
-        time: 1908,
+        time: 1906,
         title: "Kuis Blok Keuangan 🧠",
         questions: [
           {
