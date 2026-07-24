@@ -592,8 +592,11 @@ const enforceVideoBoundaries = (stepId) => {
     // Set video as watched since it hit the artificial end boundary
     if (!videoWatchedStatus.value[stepId]) {
       videoWatchedStatus.value[stepId] = true;
-      checkVideoQuizzes(stepId);
     }
+
+    // Use the configured boundary as the trigger time. YouTube can report 0
+    // immediately after ENDED, which previously made the final quiz get skipped.
+    checkVideoQuizzes(stepId, endBoundary);
     
     // Keep it at endBoundary
     if (currentTime > endBoundary + 0.5) {
@@ -854,9 +857,12 @@ const handlePlayerStateChange = (stepId, event) => {
 
   if (event.data === window.YT.PlayerState.ENDED) {
     videoWatchedStatus.value[stepId] = true;
-    checkVideoQuizzes(stepId);
-    
-    restartVideoFromBoundary(stepId, false);
+    const stepConfig = courseData[stepId];
+    const endTime = stepConfig?.endSeconds || event.target.getDuration() || 0;
+    const quizOpened = checkVideoQuizzes(stepId, endTime);
+
+    // Do not restart while the final checkpoint is being displayed.
+    if (!quizOpened) restartVideoFromBoundary(stepId, false);
     
     introPlayed.value[stepId] = false;
     playerStates.value[stepId].hasStarted = false;
@@ -877,11 +883,13 @@ const handlePlayerStateChange = (stepId, event) => {
   }
 };
 
-const checkVideoQuizzes = (stepId) => {
+const checkVideoQuizzes = (stepId, currentTimeOverride = null) => {
   const player = players[stepId];
   if (!player || typeof player.getCurrentTime !== 'function') return;
 
-  const currentTime = player.getCurrentTime();
+  const currentTime = Number.isFinite(currentTimeOverride)
+    ? currentTimeOverride
+    : player.getCurrentTime();
   const stepConfig = courseData[stepId];
   if (!stepConfig || !stepConfig.quizzes) return;
 
